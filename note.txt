@@ -1,0 +1,14 @@
+- trang home:
++ Bỏ tour Đà Nẵng
++ Bỏ tour hot
++ Bỏ tour ghép dài ngày
++ Bỏ danh sách tour
++ Bỏ vé tham quan
++ Bỏ hướng dẫn đặt dịch vụ
+- Không cần làm trang đăng nhập (Đã có sẵn)
+- Thanh công cụ:
++ Bỏ Tours
++ Khoảnh khắc
+- Phần liên hệ trên đầu trang chỉ để lại hotline và zalo
+- 3 icon liên hệ bên trái chỉ để zalo và thêm facebook
+- Trang khoảnh khắc, liên hệ, trợ giúp chưa cần

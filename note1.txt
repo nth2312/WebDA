@@ -1,0 +1,25 @@
+- trang home:
++ Bỏ tour Đà Nẵng
++ Bỏ tour hot
++ Bỏ tour ghép dài ngày
++ Bỏ danh sách tour
++ Bỏ vé tham quan
++ Bỏ hướng dẫn đặt dịch vụ
++ Trang home hiển thị những địa điểm du lịch (Trong database) - Khi ấn vào từng địa điểm sẽ hiển thị ra thông tin về những địa điểm đó (Lịch sử, mô tả về chức năng, vị trí trên map<Google map>)
+
+- Không cần làm trang đăng nhập (Đã có sẵn)
+
+- Thanh công cụ:
++ Bỏ Tours
++ Khoảnh khắc
+
+- Bỏ phần trên cùng (hotline, zalo, viber, ...)
+
+- 3 icon liên hệ bên trái chỉ để hotline, zalo và thêm facebook (Thông tin và link hiện ra khi di chuột vào, có thể ấn vào link facebook)
+
+- Trang khoảnh khắc, liên hệ, trợ giúp chưa cần 
+
+- Chức năng:
++ Trang Hotels hiển thị danh sách các hotel trong khu vực (Danh sách có sẵn)
++ Trang Blog hiển thị các link đến các bài viết review trên facebook
++ Trang vé tham quan hiển thị vé tham quan đến các địa danh (bao gồm free ở trên và mất tiền ở dưới, data lấy từ database)

@@ -1,7 +1,8 @@
 from flask import Flask
-from flask import render_template, url_for, make_response, request
+from flask import render_template, url_for, make_response, request, session, redirect
 
 app = Flask(__name__)
+app.secret_key = 'DHCNHN'
 
 def IsValidLogin(username, password):
     if (username == "admin" and password == "admin"):
@@ -9,7 +10,7 @@ def IsValidLogin(username, password):
     return False
 
 def LogUser(username):
-    index = make_response(render_template('main.html'))
+    index = make_response(redirect(url_for('MainPage')))
     index.set_cookie('username', username)
     return index
 
@@ -19,7 +20,7 @@ def MainPage():
     if cookie is not None:
         return render_template('main.html')
     else:
-        return render_template('login.html')
+        return redirect(url_for('LoginPage'))
 
 @app.route('/login')
 def LoginPage():

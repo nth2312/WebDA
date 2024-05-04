@@ -3,19 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/mdb/css/login.css">
     <title>Login</title>
 </head>
 <body>
-    <h2>Login</h2>
-    {% if error %}
+    <!-- {% if error %}
     <p style="color: red;">{{ error }}</p>
-    {% endif %}
-    <form method="post" action="/login">
+    {% endif %} -->
+    <!-- <form method="post" action="/login">
         <label for="username">Username:</label><br>
         <input type="text" id="username" name="username"><br>
         <label for="password">Password:</label><br>
         <input type="password" id="password" name="password"><br><br>
         <input type="submit" value="Login">
-    </form>
+    </form> -->
+    <div class="container">
+        <div class="bt-form-login-simple-1">
+            <form class="form" autocomplete="off" method="post" action="/login">
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        placeholder="Email"
+                        class="form-input"
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="Password"
+                        class="form-input"
+                    />
+                </div>
+                <div class="form-meta">
+                    <div class="form-remember">
+                        <input
+                            type="checkbox"
+                            name="remember-account"
+                            id="remember-account"
+                        />
+                        <label for="remember-account">
+                            Remember for 30 days
+                        </label>
+                    </div>
+                    <a href="#" class="form-link">
+                        Forgot Password
+                    </a>
+                </div>
+                <button type="submit" class="form-btn">
+                    Login
+                </button>
+            </form>
+            <div class="form-option">
+                Don&#x27;t have an account?
+                <a href="#">Sign up for free</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

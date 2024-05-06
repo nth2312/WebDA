@@ -12,6 +12,26 @@
     {% endif %}
     <div class="container">
         <div class="bt-form-login-simple-1">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category == 'error' %}
+                            <style>
+                            .error-message {
+                            color: #ffffff;
+                            background-color: red;
+                            border-radius: 5px;
+                            padding: 10px;
+                            margin-bottom: 20px;
+                            }
+                            </style>
+                                <div class="error-message">
+                                    {{ message }}
+                                </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
             <form class="form" autocomplete="off" method="post" action="/signin">
                 <div class="form-group">
                     <label for="email">Username *</label>

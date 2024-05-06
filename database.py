@@ -40,6 +40,3 @@ class Database:
             print("Error")
 
         cursor.close()
-
-dtb = Database()
-print(dtb.GetData('tbl_user'))

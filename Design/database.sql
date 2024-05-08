@@ -56,4 +56,4 @@ create table tbl_user_feedback(
     foreign key (user_username) references tbl_user(user_username)
 );
 
-insert into tbl_user values("nth2312", "NTH23122", "truonghieu2312@gmail.com");
+insert into tbl_user values("khanhhue", "Khanhhue16112002@", "yangyihye2002@gmail.com");

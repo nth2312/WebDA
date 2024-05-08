@@ -2,6 +2,7 @@ from flask import Flask
 from flask import render_template, url_for, make_response, request, session, redirect, flash
 from database import Database
 
+
 app = Flask(__name__)
 app.secret_key = 'DHCNHN'
 db = Database()

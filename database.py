@@ -40,3 +40,6 @@ class Database:
             print("Error")
 
         cursor.close()
+
+# db = Database()
+# print(db.GetDataWithCol('tbl_user', 'user_username'))

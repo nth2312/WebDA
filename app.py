@@ -37,7 +37,7 @@ def Login():
                 remember = request.form['remember-account']
             except:
                 remember = "off"
-            if request.form['remember-account'] == "on":
+            if remember == "on":
                     index = make_response(redirect(url_for('MainPage')))
                     index.set_cookie('username', request.form['username'])
                     return index
@@ -53,25 +53,27 @@ def Login():
 def SignIn():
     if request.method == 'POST':
         userInfor = [request.form['username'], request.form['password'], request.form['email']]
-        if (isValidInput(userInfor[0]) == 0 and isValidInput(userInfor[1]) == 0 and isValidEmail(userInfor[2]) == 1):
+        if (checkValidUsername(userInfor[0]) == 0 and isValidPassword(userInfor[1]) == 0 and isValidEmail(userInfor[2]) == 1):
             db.InsertUser(request.form['username'], request.form['password'], request.form['email'])
             return redirect(url_for('LoginPage'))
         else:
-            if (isValidInput(userInfor[0]) == 1):
+            if (checkValidUsername(userInfor[0]) == 5):
+                flash('This username is already exist', 'error')
+            if (checkValidUsername(userInfor[0]) == 1):
                 flash('Username must have 5-10 characters', 'error')
-            if (isValidInput(userInfor[0]) == 2):
+            if (checkValidUsername(userInfor[0]) == 2):
                 flash('Username must have at least 1 uppercase letter', 'error')
-            if (isValidInput(userInfor[0]) == 3):
+            if (checkValidUsername(userInfor[0]) == 3):
                 flash('Username must have at least 1 lowercase letter', 'error')
-            if (isValidInput(userInfor[0]) == 4):
+            if (checkValidUsername(userInfor[0]) == 4):
                 flash('Username must have at least 1 character', 'error')
-            if (isValidInput(userInfor[1]) == 1):
+            if (isValidPassword(userInfor[1]) == 1):
                 flash('Password must have 5-10 characters', 'error')
-            if (isValidInput(userInfor[1]) == 2):
+            if (isValidPassword(userInfor[1]) == 2):
                 flash('Password must have at least 1 uppercase letter', 'error')
-            if (isValidInput(userInfor[1]) == 3):
+            if (isValidPassword(userInfor[1]) == 3):
                 flash('Password must have at least 1 lowercase letter', 'error')
-            if (isValidInput(userInfor[1]) == 4):
+            if (isValidPassword(userInfor[1]) == 4):
                 flash('Password must have at least 1 character', 'error')
             if (isValidEmail(userInfor[2]) == 0):
                 flash('Invalid email', 'error')

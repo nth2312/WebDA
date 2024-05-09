@@ -1,7 +1,37 @@
-def isValidInput(input):
+from database import Database
+
+def isValidPassword(input):
     checkLower = 0
     checkUpper = 0
     checkNumb = 0
+    if len(input) < 5 or len(input) > 12:
+        return 1
+    else:
+        for char in input:
+            if char.isupper():
+                checkUpper = 1
+            if char.islower():
+                checkLower = 1
+            if char.isdigit():
+                checkNumb = 1
+        if (checkLower == 0):
+            return 2
+        if (checkUpper == 0):
+            return 3
+        if (checkNumb == 0):
+            return 4
+        if (checkLower == checkUpper == checkNumb):
+            return 0
+
+def checkValidUsername(input):
+    db = Database()
+    userList = db.GetDataWithCol('tbl_user', 'user_username')
+    checkLower = 0
+    checkUpper = 0
+    checkNumb = 0
+    for user in userList:
+        if input == str(user[0]):
+            return 5
     if len(input) < 5 or len(input) > 10:
         return 1
     else:
@@ -39,4 +69,4 @@ def isValidEmail(email):
 
 # while True:
 #     s = input()
-#     print(isValidEmail(s))
+#     print(checkValidUsername(s))

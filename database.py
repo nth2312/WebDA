@@ -43,3 +43,4 @@ class Database:
 
 # db = Database()
 # print(db.GetDataWithCol('tbl_user', 'user_username'))
+# print(db.GetData('tbl_admin'))

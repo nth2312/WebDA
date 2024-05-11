@@ -27,7 +27,7 @@
     -webkit-appearance: none;
     -ms-appearance: none;
     -o-appearance: none;
-    background: url(../img/icon-select.png) right center no-repeat;
+    background: url(../images/icon-select.png) right center no-repeat;
     color: #999999;
     transition: all 500ms ease;
     -webkit-transition: all 500ms ease;
@@ -867,7 +867,7 @@ ul.products .image-box .onsale {
     -ms-appearance: none;
     -moz-appearance: none;
     -o-appearance: none;
-    background: #ffffff url(../img/icon-select.png) right center no-repeat;
+    background: #ffffff url(../images/icon-select.png) right center no-repeat;
     cursor: pointer;
 }
 
@@ -1307,7 +1307,7 @@ ul.products .image-box .onsale {
 
 .widget.widget_price_filter .price_slider_wrapper .ui-widget-content {
     border-radius: 5px;
-    background-image: url('../img/sprite-skin-flat.png');
+    background-image: url('../images/sprite-skin-flat.png');
     background-position: 0 0;
     height: 12px;
 }
@@ -1315,7 +1315,7 @@ ul.products .image-box .onsale {
 .widget.widget_price_filter .ui-slider .ui-slider-range {
     position: absolute;
     z-index: 1;
-    background-image: url('../img/sprite-skin-flat.png');
+    background-image: url('../images/sprite-skin-flat.png');
     background-position: 0 -60px;
 }
 
@@ -1333,7 +1333,7 @@ ul.products .image-box .onsale {
     width: 16px;
     height: 18px;
     margin-left: -8px;
-    background-image: url('../img/sprite-skin-flat.png');
+    background-image: url('../images/sprite-skin-flat.png');
     background-position: 0 -120px;
 }
 

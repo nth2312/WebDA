@@ -852,19 +852,19 @@ img.tp-slider-alternative-image {
 }
 
 .tp-dottedoverlay.twoxtwo {
-    background: url(../assets/gridtile.png)
+    background: url(../static/gridtile.png)
 }
 
 .tp-dottedoverlay.twoxtwowhite {
-    background: url(../assets/gridtile_white.png)
+    background: url(../static/gridtile_white.png)
 }
 
 .tp-dottedoverlay.threexthree {
-    background: url(../assets/gridtile_3x3.png)
+    background: url(../static/gridtile_3x3.png)
 }
 
 .tp-dottedoverlay.threexthreewhite {
-    background: url(../assets/gridtile_3x3_white.png)
+    background: url(../static/gridtile_3x3_white.png)
 }
 
 .tp-shadowcover {
@@ -1332,16 +1332,16 @@ img.tp-slider-alternative-image {
 .tp-caption.slidelink a div {
     width: 3000px;
     height: 1500px;
-    background: url(../assets/coloredbg.png)
+    background: url(../static/coloredbg.png)
 }
 
 .tp-caption.slidelink a span {
-    background: url(../assets/coloredbg.png)
+    background: url(../static/coloredbg.png)
 }
 
 .tp-loader.spinner0,
 .tp-loader.spinner5 {
-    background-image: url(/assets/images/loader.gif);
+    background-image: url(/static/images/loader.gif);
     background-repeat: no-repeat
 }
 

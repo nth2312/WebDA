@@ -9,15 +9,15 @@ create table tbl_user(
 
 create table tbl_hotel(
 	hotel_id int primary key,
-    hotel_name varchar(25),
-    hotel_address varchar(25),
+    hotel_name nvarchar(50),
+    hotel_address nvarchar(50),
     average_price int
 );
 
 create table tbl_place(
 	place_id int primary key,
-    place_name varchar(25),
-    place_address varchar(25),
+    place_name nvarchar(50),
+    place_address nvarchar(50),
     entry_price int
 );
 
@@ -32,7 +32,7 @@ create table tbl_hotel_review(
     hotel_id int,
     review_like int,
     review_dislike int,
-    review_comment varchar(100),
+    review_comment nvarchar(100),
     foreign key (user_username) references tbl_user(user_username),
     foreign key (hotel_id) references tbl_hotel(hotel_id)
 );
@@ -43,7 +43,7 @@ create table tbl_place_review(
     place_id int,
     review_like int,
     review_dislike int,
-    review_comment varchar(100),
+    review_comment nvarchar(100),
     foreign key (user_username) references tbl_user(user_username),
     foreign key (place_id) references tbl_place(place_id)
 );
@@ -51,9 +51,7 @@ create table tbl_place_review(
 create table tbl_user_feedback(
 	id int primary key,
     fb_type varchar(10),
-    fb_detail varchar(25),
+    fb_detail nvarchar(50),
     user_username varchar(10),
     foreign key (user_username) references tbl_user(user_username)
 );
-
-insert into tbl_user values("nth2312", "NTH23122", "truonghieu2312@gmail.com");

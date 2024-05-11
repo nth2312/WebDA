@@ -41,7 +41,7 @@ function renderMap(_center, markersData, zoom, mapType, mapTypeControl) {
     for (var key in markersData) {
         markersData[key].forEach(function (item) {
 
-            icon_url = theme_url + '/img/pins/' + item.type + '.png';
+            icon_url = theme_url + '/images/pins/' + item.type + '.png';
 
             if (item.type == 'Tours' && typeof tour_icon != 'undefined') {
                 icon_url = tour_icon;

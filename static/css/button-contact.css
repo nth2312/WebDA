@@ -21,14 +21,14 @@
 }
 
 .hk-option-button-contact ul li a span.zalo {
-    background-image: url("/assets/images/zalo.svg");
+    background-image: url("/static/images/zalo.svg");
     background-size: 50%;
     background-repeat: no-repeat;
     background-position: center center
 }
 
 .hk-option-button-contact ul li a span.phone {
-    background-image: url("/assets/images/call-now.svg");
+    background-image: url("/static/images/call-now.svg");
     background-size: 50%;
     background-repeat: no-repeat;
     background-position: center center;
@@ -41,7 +41,7 @@
 }
 
 .hk-option-button-contact ul li a span.messages {
-    background-image: url("/assets/images/messenger.png");
+    background-image: url("/static/images/messenger.png");
     background-size: 50%;
     background-repeat: no-repeat;
     background-position: center center

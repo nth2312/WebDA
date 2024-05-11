@@ -9,9 +9,14 @@ db = Database()
 
 def IsValidLogin(username, password):
     userInfor = db.GetData("tbl_user")
+    adminInfor = db.GetData("tbl_admin")
     for user in userInfor:
         if (username == user[0] and password == user[1]):
-            return True
+            return 1
+    for admin in adminInfor:
+        if (username == admin[0] and password == admin[1]):
+            return 0
+    return 2
 
 @app.route('/')
 def MainPage():
@@ -32,7 +37,7 @@ def SignInPage():
 @app.route('/login', methods = ['POST', 'GET'])
 def Login():
     if request.method == 'POST':
-        if IsValidLogin(request.form['username'], request.form['password']):
+        if IsValidLogin(request.form['username'], request.form['password']) == 1:
             try:
                 remember = request.form['remember-account']
             except:
@@ -45,6 +50,8 @@ def Login():
                 index = make_response(redirect(url_for('MainPage')))
                 index.set_cookie('username', request.form['username'], max_age=10)
                 return index
+        elif IsValidLogin(request.form['username'], request.form['password']) == 0:
+            return render_template('adminView.html')
         else:
             flash('Invalid username or password', 'error')
     return render_template('login.html')

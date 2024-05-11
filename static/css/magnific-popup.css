@@ -391,7 +391,7 @@ img.mfp-img {
 .mfp-preloader {
     width: 30px;
     height: 30px;
-    background: #FFF url(../img/loading.gif) no-repeat center center;
+    background: #FFF url(../images/loading.gif) no-repeat center center;
     opacity: 0.8;
     margin: 0 auto;
     -webkit-animation: rotateplane 1.2s infinite ease-in-out;

@@ -904,7 +904,7 @@ a#forgot_pw:hover {
 
 /* Footer  */
 footer {
-    background: #333 url(../img/pattern.png) repeat 0 0;
+    background: #333 url(../images/pattern.png) repeat 0 0;
     color: #fff;
     padding: 30px 0 10px 0;
 }
@@ -1194,7 +1194,7 @@ a#email_footer:before {
 #hero {
     position: relative;
     height: 600px;
-    background: #4d536d url(../img/slide_hero.jpg) no-repeat center center;
+    background: #4d536d url(../images/slide_hero.jpg) no-repeat center center;
     background-size: cover;
     color: #fff;
     width: 100%;
@@ -1227,7 +1227,7 @@ a#email_footer:before {
 .header-video {
     position: relative;
     overflow: hidden;
-    background: #4d536d url(../img/slide_hero.jpg) no-repeat center center;
+    background: #4d536d url(../images/slide_hero.jpg) no-repeat center center;
     background-size: cover;
 }
 
@@ -1322,7 +1322,7 @@ video {
     display: inline-block;
     right: 15px;
     top: 20px;
-    background: url(../img/arrow_down_2.png);
+    background: url(../images/arrow_down_2.png);
     height: 6px;
     width: 10px;
     position: absolute;
@@ -1384,7 +1384,7 @@ video {
 }
 
 .nav-submit-button {
-    background: #fff url(../img/search-bt.png) no-repeat center center;
+    background: #fff url(../images/search-bt.png) no-repeat center center;
     border: none;
     cursor: pointer;
     display: block;
@@ -1862,7 +1862,7 @@ a#modify_col_bt .icon_set_1_icon-78 {
     padding: 18px 0 20px 0;
     color: #fff;
     font-size: 13px;
-    background: url(../img/shadow_single.png) repeat-x bottom left;
+    background: url(../images/shadow_single.png) repeat-x bottom left;
     width: 100%;
 }
 
@@ -2094,7 +2094,7 @@ a#modify_col_bt .icon_set_1_icon-78 {
 #hero_2 {
     position: relative;
     height: 470px;
-    background: #4d536d url(../img/slide_hero_2.jpg) no-repeat center center;
+    background: #4d536d url(../images/slide_hero_2.jpg) no-repeat center center;
     background-size: cover;
     color: #fff;
     width: 100%;
@@ -2330,7 +2330,7 @@ input.qty2 {
 }
 
 .dec {
-    background: #fff url(../img/minus.png) no-repeat center center;
+    background: #fff url(../images/minus.png) no-repeat center center;
     border: 1px solid #cccccc;
     left: 0;
     top: 0;
@@ -2343,7 +2343,7 @@ input.qty2 {
 }
 
 .inc {
-    background: #fff url(../img/plus.png) no-repeat center center;
+    background: #fff url(../images/plus.png) no-repeat center center;
     right: 0;
     top: 0;
     border: 1px solid #cccccc;
@@ -2409,7 +2409,7 @@ input.qty2 {
 .features-bg {
     position: relative;
     min-height: 400px;
-    /*background: url(../img/features-intro-01.jpg) no-repeat center center;*/
+    /*background: url(../images/features-intro-01.jpg) no-repeat center center;*/
     background-size: cover;
 }
 
@@ -2512,7 +2512,7 @@ ul#contact-info {
     top: -20px;
     height: 45px;
     width: 100%;
-    background: url(../img/tape.png) no-repeat center top;
+    background: url(../images/tape.png) no-repeat center top;
     display: block;
 }
 
@@ -2533,7 +2533,7 @@ ul#contact-info {
     display: block;
     text-transform: none;
     font-size: 12px;
-    background: url(../img/slide_hero.jpg) no-repeat center center;
+    background: url(../images/slide_hero.jpg) no-repeat center center;
     background-size: cover;
 }
 
@@ -2827,7 +2827,7 @@ ul.list_icons li i {
     margin: 5px 14px 10px 0;
     height: 33px;
     line-height: 33px;
-    background: #ededed url(../img/tag_bg.png) no-repeat 91% center;
+    background: #ededed url(../images/tag_bg.png) no-repeat 91% center;
     padding: 0 28px 0 11px;
     color: #555;
     -webkit-border-top-right-radius: 20px;
@@ -3622,7 +3622,7 @@ ul.page-numbers>li>span:focus {
     width: 100%;
     overflow: hidden;
     height: 40px;
-    background: #434343 url(../img/down_arrow_select.png) no-repeat right center;
+    background: #434343 url(../images/down_arrow_select.png) no-repeat right center;
     border: none;
     margin-bottom: 15px;
     -webkit-border-radius: 3px;
@@ -3659,7 +3659,7 @@ ul.page-numbers>li>span:focus {
     width: 100%;
     overflow: hidden;
     height: 34px;
-    background: #fff url(../img/down_arrow_select_filters.png) no-repeat right center;
+    background: #fff url(../images/down_arrow_select_filters.png) no-repeat right center;
     border: none;
     margin: 0;
     padding: 0;
@@ -3890,7 +3890,7 @@ ul.page-numbers>li>span:focus {
     text-align: left;
     left: 0;
     bottom: 0;
-    background: url(../img/shadow_tour.png) repeat-x left bottom;
+    background: url(../images/shadow_tour.png) repeat-x left bottom;
     width: 100%;
     padding: 10px 10px 8px 5px;
     color: #fff;
@@ -3930,11 +3930,11 @@ ul.page-numbers>li>span:focus {
 }
 
 .ribbon.popular {
-    background: url(../img/ribbon_popular.png) no-repeat 0 0;
+    background: url(../images/ribbon_popular.png) no-repeat 0 0;
 }
 
 .ribbon.top_rated {
-    background: url(../img/ribbon_top_rated.png) no-repeat 0 0;
+    background: url(../images/ribbon_top_rated.png) no-repeat 0 0;
 }
 
 /* Tooltips */
@@ -4237,7 +4237,7 @@ ul.page-numbers>li>span:focus {
 /*Banners*/
 .banner {
     position: relative;
-    background: #fff url(../img/banner_bg.png) no-repeat center bottom;
+    background: #fff url(../images/banner_bg.png) no-repeat center bottom;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -4260,12 +4260,12 @@ ul.page-numbers>li>span:focus {
 
 .banner:after {
     left: 0;
-    background: url(../img/shadow-bg.png) no-repeat top left;
+    background: url(../images/shadow-bg.png) no-repeat top left;
 }
 
 .banner:before {
     right: 0;
-    background: url(../img/shadow-bg.png) no-repeat top right;
+    background: url(../images/shadow-bg.png) no-repeat top right;
 }
 
 .banner a {
@@ -4295,7 +4295,7 @@ ul.page-numbers>li>span:focus {
 }
 
 .banner.colored {
-    background: #e04f67 url(../img/banner_bg_colored.png) no-repeat center bottom;
+    background: #e04f67 url(../images/banner_bg_colored.png) no-repeat center bottom;
     color: #fff;
 }
 
@@ -4484,7 +4484,7 @@ blockquote.styled {
 #search_container {
     position: relative;
     height: 700px;
-    background: #4d536d url(../img/slide_hero.jpg) no-repeat center top;
+    background: #4d536d url(../images/slide_hero.jpg) no-repeat center top;
     background-size: cover;
     color: #fff;
     width: 100%;
@@ -4786,7 +4786,7 @@ ul.plan-features {
     left: -7px;
     top: -7px;
     display: block;
-    background: url(../img/ribbon.png) no-repeat 0 0;
+    background: url(../images/ribbon.png) no-repeat 0 0;
     z-index: 101;
 }
 
@@ -4835,7 +4835,7 @@ ul.plan-features {
     left: -5px;
     top: -5px;
     display: block;
-    background: url(../img/ribbon.png) no-repeat 0 0;
+    background: url(../images/ribbon.png) no-repeat 0 0;
     z-index: 101;
 }
 
@@ -4997,7 +4997,7 @@ ul.plan-features {
     color: #fff;
     text-align: center;
     text-transform: uppercase;
-    background: url(../img/badge_save.png);
+    background: url(../images/badge_save.png);
     font-size: 11px;
     line-height: 12px;
     padding-top: 32px;
@@ -5109,7 +5109,7 @@ a.dropdown-toggle.icon-search {
 /* IE9 fix that affect the pages with parallax header (ex.single_hotel.html); Issue: submenu disappear when move the cursor to the submenu (only if you did not scroll the page) */
 .ie9 a.menu-item-has-children,
 .ie9 a.menu-item-has-children-mega {
-    background: url(../img/fix_ie_9_menu.png);
+    background: url(../images/fix_ie_9_menu.png);
 }
 
 /* All styles for screen size over 992px

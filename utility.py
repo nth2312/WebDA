@@ -67,6 +67,9 @@ def isValidEmail(email):
     else:
         return 0
 
-# while True:
-#     s = input()
-#     print(checkValidUsername(s))
+def tupeToDict(data, key):
+    returnDict = []
+    for row in data:
+        data_dict = {key: value for key, value in zip(key, row)}
+        returnDict.append(data_dict)
+    return returnDict

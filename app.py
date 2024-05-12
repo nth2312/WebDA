@@ -7,6 +7,14 @@ app = Flask(__name__)
 app.secret_key = 'DHCNHN'
 db = Database()
 
+hotels = db.GetData('tbl_hotel')
+hotelkeys = ['hotel_id', 'hotel_name', 'hotel_address', 'average_price']
+hotelList = tupeToDict(hotels, hotelkeys)
+
+places = db.GetData('tbl_place')
+placekeys = ['place_id', 'place_name', 'place_address', 'entry_price']
+placeList = tupeToDict(places, placekeys)
+
 def IsValidLogin(username, password):
     userInfor = db.GetData("tbl_user")
     adminInfor = db.GetData("tbl_admin")
@@ -22,7 +30,7 @@ def IsValidLogin(username, password):
 def MainPage():
     cookie = request.cookies.get('username')
     if cookie is not None:
-        return render_template('main.html')
+        return render_template('main.html', hotelList=hotelList, placeList=placeList)
     else:
         return redirect(url_for('LoginPage'))
 

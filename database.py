@@ -40,7 +40,18 @@ class Database:
             print("Error")
 
         cursor.close()
+    
+    def Query(self, query):
+        cursor = self.db.cursor()
+        cursor.execute(query)
+        rows = cursor.fetchall()
 
-# db = Database()
+        return rows
+
+db = Database()
 # print(db.GetDataWithCol('tbl_user', 'user_username'))
-# print(db.GetData('tbl_admin'))
+# print(db.GetData('tbl_place'))
+
+# places = db.GetData('tbl_place')
+# placekeys = ['place_id', 'place_name', 'place_address', 'entry_price']
+# placeList = tupeToDict(places, placekeys)

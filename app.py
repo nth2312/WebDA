@@ -1,19 +1,12 @@
 from flask import Flask
 from flask import render_template, url_for, make_response, request, session, redirect, flash
 from database import Database
-from utility import *
+from utility import Utility
 
 app = Flask(__name__)
 app.secret_key = 'DHCNHN'
 db = Database()
-
-hotels = db.GetData('tbl_hotel')
-hotelkeys = ['hotel_id', 'hotel_name', 'hotel_address', 'average_price']
-hotelList = tupeToDict(hotels, hotelkeys)
-
-places = db.GetData('tbl_place')
-placekeys = ['place_id', 'place_name', 'place_address', 'entry_price']
-placeList = tupeToDict(places, placekeys)
+utility = Utility()
 
 def IsValidLogin(username, password):
     userInfor = db.GetData("tbl_user")
@@ -30,7 +23,7 @@ def IsValidLogin(username, password):
 def MainPage():
     cookie = request.cookies.get('username')
     if cookie is not None:
-        return render_template('main.html', hotelList=hotelList, placeList=placeList)
+        return render_template('main.html', hotelList=utility.hotelList[:6], placeList=utility.placeList[:6])
     else:
         return redirect(url_for('LoginPage'))
 
@@ -41,6 +34,15 @@ def LoginPage():
 @app.route('/signin')
 def SignInPage():
     return render_template('signin.html')
+
+@app.route('/detail/<place_name>')
+def PlaceDetailPage(place_name):
+    place = utility.getDetailPlaceInfor(place_name)
+    return render_template('detail.html', place=place)
+
+# @app.route('/detail')
+# def DetailPage():
+#     return render_template('detail.html', place=utility.getDetailInfor(1))
 
 @app.route('/login', methods = ['POST', 'GET'])
 def Login():
@@ -68,29 +70,29 @@ def Login():
 def SignIn():
     if request.method == 'POST':
         userInfor = [request.form['username'], request.form['password'], request.form['email']]
-        if (checkValidUsername(userInfor[0]) == 0 and isValidPassword(userInfor[1]) == 0 and isValidEmail(userInfor[2]) == 1):
+        if (utility.checkValidUsername(userInfor[0]) == 0 and utility.isValidPassword(userInfor[1]) == 0 and utility.isValidEmail(userInfor[2]) == 1):
             db.InsertUser(request.form['username'], request.form['password'], request.form['email'])
             return redirect(url_for('LoginPage'))
         else:
-            if (checkValidUsername(userInfor[0]) == 5):
+            if (utility.checkValidUsername(userInfor[0]) == 5):
                 flash('This username is already exist', 'error')
-            if (checkValidUsername(userInfor[0]) == 1):
+            if (utility.checkValidUsername(userInfor[0]) == 1):
                 flash('Username must have 5-10 characters', 'error')
-            if (checkValidUsername(userInfor[0]) == 2):
+            if (utility.checkValidUsername(userInfor[0]) == 2):
                 flash('Username must have at least 1 uppercase letter', 'error')
-            if (checkValidUsername(userInfor[0]) == 3):
+            if (utility.checkValidUsername(userInfor[0]) == 3):
                 flash('Username must have at least 1 lowercase letter', 'error')
-            if (checkValidUsername(userInfor[0]) == 4):
+            if (utility.checkValidUsername(userInfor[0]) == 4):
                 flash('Username must have at least 1 character', 'error')
-            if (isValidPassword(userInfor[1]) == 1):
+            if (utility.isValidPassword(userInfor[1]) == 1):
                 flash('Password must have 5-10 characters', 'error')
-            if (isValidPassword(userInfor[1]) == 2):
+            if (utility.isValidPassword(userInfor[1]) == 2):
                 flash('Password must have at least 1 uppercase letter', 'error')
-            if (isValidPassword(userInfor[1]) == 3):
+            if (utility.isValidPassword(userInfor[1]) == 3):
                 flash('Password must have at least 1 lowercase letter', 'error')
-            if (isValidPassword(userInfor[1]) == 4):
+            if (utility.isValidPassword(userInfor[1]) == 4):
                 flash('Password must have at least 1 character', 'error')
-            if (isValidEmail(userInfor[2]) == 0):
+            if (utility.isValidEmail(userInfor[2]) == 0):
                 flash('Invalid email', 'error')
             return render_template('signin.html')
 

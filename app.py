@@ -1,7 +1,8 @@
 from flask import Flask
-from flask import render_template, url_for, make_response, request, session, redirect, flash
+from flask import render_template, url_for, make_response, request, session, redirect, flash, jsonify
 from database import Database
 from utility import Utility
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'DHCNHN'
@@ -40,9 +41,40 @@ def PlaceDetailPage(place_name):
     place = utility.getDetailPlaceInfor(place_name)
     return render_template('detail.html', place=place)
 
-# @app.route('/detail')
-# def DetailPage():
-#     return render_template('detail.html', place=utility.getDetailInfor(1))
+@app.route('/CommentSubmit', methods=['POST'])
+def submit_review():
+    review = request.form.get('review')
+
+    #Prepare data
+    reviewList = db.GetData('tbl_place_review')
+    comment_id = len(reviewList) + 1
+    comment_username = request.cookies['username']
+    comment_placeid = review.split("|")[0]
+    comment_like = comment_dislike = 0
+    comment_comment = review.split("|")[1]
+    comment_time = datetime.now().strftime('%Y-%m-%d')
+
+    comment = {
+        'id': comment_id,
+        'user_username': comment_username,
+        'place_id': comment_placeid,
+        'review_like': comment_like,
+        'review_dislike': comment_dislike,
+        'review_comment': comment_comment,
+        'review_time': comment_time,    
+    }
+    db.InsertData('tbl_place_review', comment)
+
+    return jsonify(comment)
+
+@app.route('/GetComment', methods=['POST'])
+def get_comment():
+    place_id = request.json
+    place_id = place_id['place_id']
+
+    data = db.Query(f'Select * from tbl_place_review where place_id = {place_id}')
+    data = utility.tupeToDict(data, ['id', 'user_username', 'place_id', 'review_like', 'review_dislike', 'review_comment', 'review_time'])
+    return jsonify(data)
 
 @app.route('/login', methods = ['POST', 'GET'])
 def Login():
@@ -65,6 +97,12 @@ def Login():
         else:
             flash('Invalid username or password', 'error')
     return render_template('login.html')
+
+@app.route('/logout')
+def Logout():
+    res = make_response(redirect(url_for('Login')))
+    res.delete_cookie('username')
+    return res
 
 @app.route('/signin', methods = ['POST', 'GET'])
 def SignIn():

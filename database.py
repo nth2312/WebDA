@@ -41,6 +41,19 @@ class Database:
 
         cursor.close()
     
+    def InsertData(self, table_name, data):
+        cursor = self.db.cursor()
+        try:
+            placeholders = ','.join(['%s'] * len(data))
+            columns = ', '.join(data.keys())
+            sql = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
+            cursor.execute(sql, list(data.values()))
+            self.db.commit()
+        except Exception as e:
+            print(f"Error: {e}")
+        finally:
+            cursor.close()
+    
     def Query(self, query):
         cursor = self.db.cursor()
         cursor.execute(query)
@@ -49,6 +62,12 @@ class Database:
         return rows
 
 db = Database()
+# data = {
+#     'user_username': 'user1',
+#     'user_password': "password",
+#     'user_email': "user@gmail.com"
+# }
+# db.InsertData('tbl_user', data)
 # print(db.GetDataWithCol('tbl_user', 'user_username'))
 # print(db.GetData('tbl_place'))
 

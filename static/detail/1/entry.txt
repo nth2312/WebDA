@@ -1,6 +1,1 @@
-T2-T5: 9.30-21.30
-T6-CN: 9.30-22.00
-*
-Người lớn|40000
-Sinh viên|20000
-Học sinh|10000
+Người lớn| 40.000 VNĐ/người@Sinh viên| 20.000 VNĐ/người@Học sinh| 10.000 VNĐ/người

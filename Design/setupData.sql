@@ -38,3 +38,5 @@ insert into tbl_hotel values(7, "Melia Hotel", "44b Lý Thường Kiệt", 32750
 insert into tbl_hotel values(8, "Sofitel Legend Metropole", "15 Ngô Quyền", 7520000);
 insert into tbl_hotel values(9, "Mercure La Gare", "94 Lý Thường Kiệt", 1240000);
 insert into tbl_hotel values(10, "Moon View 2", "61 Hàng Than", 1350000);
+
+insert into tbl_place_review values(1, "user1", 3, 0, 0, "Tôi thích nơi này", curdate());

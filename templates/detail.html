@@ -23,6 +23,7 @@
             s.parentNode.insertBefore(wf, s);
         })();
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots">
     <!-- This site is optimized with the Yoast SEO Premium plugin v18.4 (Yoast SEO v18.6) - https://yoast.com/wordpress/plugins/seo/ -->
     <title>{{place.place_name}}</title>
@@ -232,11 +233,7 @@
                     <div class="col-md-8 col-sm-8">
                         <h1>{{place.place_name}}</h1>
                         <span>{{place.place_address}}</span>
-                        <span class="rating"><i class="icon-smile"></i><i class="icon-smile"></i><i
-                                class="icon-smile"></i><i class="icon-smile"></i><i
-                                class="icon-smile"></i><small>(0)</small></span>
                     </div>
-                    
                 </div>
             </div>
         </div>
@@ -244,7 +241,7 @@
     <div id="position">
         <div class="container">
             <ul>
-                <li><a href="#" title="Trang chủ">Trang chủ</a></li>
+                <li><a href="{{url_for('MainPage')}}" title="Trang chủ">Trang chủ</a></li>
                 <li class="active">{{place.place_name}}</li>
             </ul>
         </div>
@@ -313,32 +310,27 @@
                     data-href="https://webdulichdanang.com/tour/combo-hoang-hon-ba-na" data-layout="button"
                     data-share="true" data-show-faces="true" data-size="small"></div>
                 <div class="row">
+                    <section class="content-item" id="comments">
+                        <div class="container">   
+                            <div class="row">
+                                <div class="col-sm-8" id="comments-container">   
+                                    <h3>Bình luận</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                     <div class="col-md-3">
                         <h3>Đánh giá</h3>
-                        <!-- <a class="btn_1 add_bottom_15" data-target="#myReview" data-toggle="modal" href="#">Để lại đánh
-                            giá</a> -->
                     </div>
                     <div class="col-md-9">
-                        <div id="general_rating">2 Đánh giá 
-                            <div class="rating">
-                                <i class="fa fa-icon-star"></i>
-                                <i class="fa fa-icon-star"></i>
-                                <i class="fa fa-icon-star"></i>
-                                <i class="fa fa-icon-star"></i>
-                                <i class="fa fa-icon-star"></i>
-                            </div>
+                        <div id="general_rating">
+                            Hãy giúp chúng tôi cải thiện
                         </div>
                         <div class="row" id="rating_summary">
                             <div class="col-md-12">
-                                <form>
-                                    <textarea style="width: 100%; height:100px" placeholder="Your review..."></textarea>
-                                    <input type="submit" style="background-color: #04AA6D;
-                                    border: none;
-                                    color: white;
-                                    padding: 16px 32px;
-                                    text-decoration: none;
-                                    margin: 4px 2px;
-                                    cursor: pointer;" value="Submit">
+                                <form id="comment_form">
+                                    <textarea id="review" name="review" style="width: 100%; height:100px" placeholder="Your review..."></textarea>
+                                    <input type="submit" name="submit" style="background-color: #04AA6D; border: none; color: white; padding: 16px 32px; text-decoration: none; margin: 4px 2px; cursor: pointer;" value="Submit">
                                 </form>
                             </div>
                         </div>
@@ -347,6 +339,129 @@
                         </div>
                     </div>
                 </div>
+                
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Function to render all comments
+                        function renderAllComments(comments) {
+                            const commentsContainer = document.getElementById('comments-container');
+                            //commentsContainer.innerHTML = ''; // Clear the container first
+                            comments.forEach(comment => {
+                                renderComment(comment);
+                            });
+                        }
+                
+                        // Function to render a single comment
+                        function renderComment(comment) {
+                            const commentsContainer = document.getElementById('comments-container');
+                            const mediaDiv = document.createElement('div');
+                            mediaDiv.classList.add('media');
+
+                            const userImg = document.createElement('img');
+                            userImg.classList.add('media-object');
+                            userImg.src = '/static/images/user.png'; // Change this to actual avatar URL if available
+                            userImg.style.height = '50px';
+                            userImg.style.width = '50px';
+                            userImg.alt = '';
+
+                            const a_pullLeft = document.createElement('a');
+                            a_pullLeft.classList.add('pull-left')
+                            a_pullLeft.appendChild(userImg);
+
+                            const mediaBodyDiv = document.createElement('div');
+                            mediaBodyDiv.classList.add('media-body');
+
+                            const mediaHeading = document.createElement('h4');
+                            mediaHeading.classList.add('media-heading');
+                            mediaHeading.textContent = comment.user_username;
+                            mediaHeading.style.fontWeight = 'bold'; // Đặt độ đậm cho văn bản
+                            mediaHeading.style.color = 'blue'; // Đặt màu cho văn bản 
+                            mediaHeading.style.fontSize = '25px';  
+                            mediaHeading.style.paddingTop = '15px';
+                            mediaHeading.style.paddingLeft = '15px';
+
+                            const commentText = document.createElement('p');
+                            commentText.textContent = comment.review_comment;
+
+                            const mediaDetailUl = document.createElement('ul');
+                            mediaDetailUl.classList.add('list-unstyled', 'list-inline', 'media-detail', 'pull-left');
+
+                            const timestamp = comment.review_time; // Assume timestamp is in milliseconds
+                            const date = new Date(timestamp);
+
+                            // Format the date as "DD/MM/YYYY"
+                            const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+                            // Create li element for formatted date
+                            const dateLi = document.createElement('li');
+                            dateLi.innerHTML = `<i class="fa fa-calendar"></i> ${formattedDate}`;
+                            mediaDetailUl.appendChild(dateLi);
+
+                            const likeLi = document.createElement('li');
+                            likeLi.innerHTML = `<a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i> ${comment.review_like}</a>`;
+                            mediaDetailUl.appendChild(likeLi);
+
+                            const dislikeLi = document.createElement('li');
+                            dislikeLi.innerHTML = `<a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i> ${comment.review_dislike}</a>`;
+                            mediaDetailUl.appendChild(dislikeLi);
+                            mediaDetailUl.style.paddingLeft = '18px';
+
+                            mediaBodyDiv.appendChild(mediaHeading);
+                            mediaBodyDiv.appendChild(commentText);
+                            mediaBodyDiv.appendChild(mediaDetailUl);
+
+                            mediaDiv.appendChild(a_pullLeft);
+                            mediaDiv.appendChild(mediaBodyDiv);
+
+                            commentsContainer.appendChild(mediaDiv);
+                        }
+                                
+                        // Fetch existing comments when the page loads
+                        fetch('/GetComment', {
+                            method: 'POST', // Phương thức của yêu cầu
+                            headers: {
+                                'Content-Type': 'application/json' // Định dạng dữ liệu của yêu cầu
+                            },
+                            body: JSON.stringify({ place_id: '{{place.place_id}}' }) // Dữ liệu cần gửi đi, ở đây là id của place
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            renderAllComments(data);
+                        })
+                
+                        // Form submission event listener
+                        document.getElementById('comment_form').addEventListener('submit', function(event) {
+                            event.preventDefault();
+                
+                            var review = document.getElementById('review').value;
+                            var place_id = "{{place.place_id}}";
+                
+                            // Combine place_id and review into a single string
+                            var data = place_id + "|" + review;
+                
+                            var formData = new FormData();
+                            formData.append('review', data);
+                            
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('POST', '/CommentSubmit', true);
+                            
+                            xhr.onload = function() {
+                                if (xhr.status === 200) {
+                                    // Parse the response as JSON
+                                    var newComment = JSON.parse(xhr.responseText);
+                                    // Render the new comment
+                                    renderComment(newComment);
+                                    // Clear the input field after submission
+                                    document.getElementById('review').value = '';
+                                } else {
+                                    document.getElementById('response').innerHTML = 'An error occurred.';
+                                }
+                            };
+                            
+                            xhr.send(formData);
+                        });
+                    });
+                </script>
             </div><!--End  single_tour_desc-->
             <aside class="col-md-4">
                 <p class="hidden-sm hidden-xs">
@@ -483,16 +598,8 @@
 						<div class="menu-lien-ket-container">
 							<ul class="menu" id="menu-lien-ket">
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1904"
-									id="menu-item-1904"><a href="#">Trang Chủ</a>
+									id="menu-item-1904"><a href="{{url_for('MainPage')}}">Trang Chủ</a>
 								</li>
-								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1907"
-									id="menu-item-1907"><a href="#">Blog</a></li>
-								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1905"
-									id="menu-item-1905"><a href="#">Quảng Cáo</a></li>
-								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1906"
-									id="menu-item-1906"><a href="#">Chính Sách</a></li>
-								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2693"
-									id="menu-item-2693"><a href="#">Hỗ Trợ</a></li>
 							</ul>
 						</div>
 					</div>
@@ -645,6 +752,7 @@
     <!-- <script id="google-recaptcha-js"
         src="https://www.google.com/recaptcha/api.js?render=6LfUe3wkAAAAAJwYdl-OKdjf5h0fdMsJlPpvwGX5&amp;ver=3.0"
         type="text/javascript"></script> -->
+    <script src="/static/js/comment.js"></script>
     <script id="ct_script_common-js" src="/static/js/common_scripts_min.js" type="text/javascript"></script>
     <script id="ct_script_jquery_validate-js" src="/static/js/jquery.validate.min.js" type="text/javascript"></script>
     <script id="ct_script_datepicker-js-extra" type="text/javascript">

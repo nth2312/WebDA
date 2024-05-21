@@ -345,7 +345,7 @@
                         // Function to render all comments
                         function renderAllComments(comments) {
                             const commentsContainer = document.getElementById('comments-container');
-                            //commentsContainer.innerHTML = ''; // Clear the container first
+                            commentsContainer.innerHTML = ''; // Clear the container first
                             comments.forEach(comment => {
                                 renderComment(comment);
                             });
@@ -356,66 +356,66 @@
                             const commentsContainer = document.getElementById('comments-container');
                             const mediaDiv = document.createElement('div');
                             mediaDiv.classList.add('media');
-
+                
                             const userImg = document.createElement('img');
                             userImg.classList.add('media-object');
                             userImg.src = '/static/images/user.png'; // Change this to actual avatar URL if available
                             userImg.style.height = '50px';
                             userImg.style.width = '50px';
                             userImg.alt = '';
-
+                
                             const a_pullLeft = document.createElement('a');
-                            a_pullLeft.classList.add('pull-left')
+                            a_pullLeft.classList.add('pull-left');
                             a_pullLeft.appendChild(userImg);
-
+                
                             const mediaBodyDiv = document.createElement('div');
                             mediaBodyDiv.classList.add('media-body');
-
+                
                             const mediaHeading = document.createElement('h4');
                             mediaHeading.classList.add('media-heading');
                             mediaHeading.textContent = comment.user_username;
-                            mediaHeading.style.fontWeight = 'bold'; // Đặt độ đậm cho văn bản
-                            mediaHeading.style.color = 'blue'; // Đặt màu cho văn bản 
-                            mediaHeading.style.fontSize = '25px';  
-                            mediaHeading.style.paddingTop = '15px';
-                            mediaHeading.style.paddingLeft = '15px';
-
+                            mediaHeading.style.fontWeight = 'bold'; // Set font weight
+                            mediaHeading.style.color = 'blue'; // Set color
+                            mediaHeading.style.fontSize = '25px'; // Set font size
+                            mediaHeading.style.paddingTop = '15px'; // Set padding top
+                            mediaHeading.style.paddingLeft = '15px'; // Set padding left
+                
                             const commentText = document.createElement('p');
                             commentText.textContent = comment.review_comment;
-
+                
                             const mediaDetailUl = document.createElement('ul');
                             mediaDetailUl.classList.add('list-unstyled', 'list-inline', 'media-detail', 'pull-left');
-
+                
                             const timestamp = comment.review_time; // Assume timestamp is in milliseconds
                             const date = new Date(timestamp);
-
+                
                             // Format the date as "DD/MM/YYYY"
                             const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-
+                
                             // Create li element for formatted date
                             const dateLi = document.createElement('li');
                             dateLi.innerHTML = `<i class="fa fa-calendar"></i> ${formattedDate}`;
                             mediaDetailUl.appendChild(dateLi);
-
+                
                             const likeLi = document.createElement('li');
-                            likeLi.innerHTML = `<a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i> ${comment.review_like}</a>`;
+                            likeLi.innerHTML = `<a href="#" class="like-btn" data-id="${comment.id}"><i class="fa fa-thumbs-up" aria-hidden="true"></i> ${comment.review_like}</a>`;
                             mediaDetailUl.appendChild(likeLi);
-
+                
                             const dislikeLi = document.createElement('li');
-                            dislikeLi.innerHTML = `<a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i> ${comment.review_dislike}</a>`;
+                            dislikeLi.innerHTML = `<a href="#" class="dislike-btn" data-id="${comment.id}"><i class="fa fa-thumbs-down" aria-hidden="true"></i> ${comment.review_dislike}</a>`;
                             mediaDetailUl.appendChild(dislikeLi);
                             mediaDetailUl.style.paddingLeft = '18px';
-
+                
                             mediaBodyDiv.appendChild(mediaHeading);
                             mediaBodyDiv.appendChild(commentText);
                             mediaBodyDiv.appendChild(mediaDetailUl);
-
+                
                             mediaDiv.appendChild(a_pullLeft);
                             mediaDiv.appendChild(mediaBodyDiv);
-
+                
                             commentsContainer.appendChild(mediaDiv);
                         }
-                                
+                
                         // Fetch existing comments when the page loads
                         fetch('/GetComment', {
                             method: 'POST', // Phương thức của yêu cầu
@@ -428,6 +428,7 @@
                         .then(data => {
                             renderAllComments(data);
                         })
+                        .catch(error => console.error('Error fetching comments:', error));
                 
                         // Form submission event listener
                         document.getElementById('comment_form').addEventListener('submit', function(event) {
@@ -436,32 +437,92 @@
                             var review = document.getElementById('review').value;
                             var place_id = "{{place.place_id}}";
                 
-                            // Combine place_id and review into a single string
-                            var data = place_id + "|" + review;
+                            if (review != ""){
+                                var data = place_id + "|" + review;
+                    
+                                var formData = new FormData();
+                                formData.append('review', data);
+                    
+                                var xhr = new XMLHttpRequest();
+                                xhr.open('POST', '/CommentSubmit', true);
+                    
+                                xhr.onload = function() {
+                                    if (xhr.status === 200) {
+                                        // Parse the response as JSON
+                                        var newComment = JSON.parse(xhr.responseText);
+                                        // Render the new comment
+                                        renderComment(newComment);
+                                        // Clear the input field after submission
+                                        document.getElementById('review').value = '';
+                                    } else {
+                                        document.getElementById('response').innerHTML = 'An error occurred.';
+                                    }
+                                };
+                    
+                                xhr.send(formData);
+                            }else{
+                                alert("Bạn chưa nhập comment nào");
+                            }
+                        });
                 
-                            var formData = new FormData();
-                            formData.append('review', data);
-                            
-                            var xhr = new XMLHttpRequest();
-                            xhr.open('POST', '/CommentSubmit', true);
-                            
-                            xhr.onload = function() {
-                                if (xhr.status === 200) {
-                                    // Parse the response as JSON
-                                    var newComment = JSON.parse(xhr.responseText);
-                                    // Render the new comment
-                                    renderComment(newComment);
-                                    // Clear the input field after submission
-                                    document.getElementById('review').value = '';
-                                } else {
-                                    document.getElementById('response').innerHTML = 'An error occurred.';
-                                }
-                            };
-                            
-                            xhr.send(formData);
+                        // Event listener for like buttons
+                        document.addEventListener('click', function(event) {
+                            if (event.target.closest('.like-btn')) {
+                                event.preventDefault();
+                                const likeBtn = event.target.closest('.like-btn');
+                                const commentId = likeBtn.getAttribute('data-id');
+                
+                                const reactInfor = {
+                                    'comment_id': commentId,
+                                    'action': 'like'
+                                };
+                
+                                fetch('/React', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(reactInfor)
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    // Update the like count
+                                    likeBtn.innerHTML = `<i class="fa fa-thumbs-up" aria-hidden="true"></i> ${data.new_like_count}`;
+                                })
+                                .catch(error => console.error('Error:', error));
+                            }
+                        });
+                
+                        // Event listener for dislike buttons
+                        document.addEventListener('click', function(event) {
+                            if (event.target.closest('.dislike-btn')) {
+                                event.preventDefault();
+                                const dislikeBtn = event.target.closest('.dislike-btn');
+                                const commentId = dislikeBtn.getAttribute('data-id');
+                
+                                const reactInfor = {
+                                    'comment_id': commentId,
+                                    'action': 'dislike'
+                                };
+                
+                                fetch('/React', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(reactInfor)
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    // Update the dislike count
+                                    dislikeBtn.innerHTML = `<i class="fa fa-thumbs-down" aria-hidden="true"></i> ${data.new_dislike_count}`;
+                                })
+                                .catch(error => console.error('Error:', error));
+                            }
                         });
                     });
                 </script>
+                
             </div><!--End  single_tour_desc-->
             <aside class="col-md-4">
                 <p class="hidden-sm hidden-xs">

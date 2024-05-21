@@ -61,6 +61,12 @@ class Database:
 
         return rows
 
+    def InsertQuery(self, query):
+        cursor = self.db.cursor()
+        cursor.execute(query)
+        self.db.commit()
+        cursor.close()
+
 db = Database()
 # data = {
 #     'user_username': 'user1',

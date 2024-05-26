@@ -156,11 +156,11 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-3 col-sm-3 col-xs-3">
-					<div id="logo">
-						<a href="#"><img alt="City tours" class="logo_normal" data-retina="true" height="34"
-								src="/static/images/logo-ngang.webp" width="100%" height="100%" /></a>
-						<a href="#"><img alt="City tours" class="logo_sticky" data-retina="true" height="34"
-								src="/static/images/logo-ngang.webp" width="100%" height="100%" /></a>
+					<div id="logo" >
+						<img alt="City tours" class="logo_normal" data-retina="true" height="34"
+								src="/static/images/logo-ngang.webp" width="100%" height="100%" />
+						<img alt="City tours" class="logo_sticky" data-retina="true" height="34"
+								src="/static/images/logo-ngang.webp" width="100%" height="100%" />
 					</div>
 				</div>
 				<nav class="col-md-9 col-sm-9 col-xs-9">
@@ -174,28 +174,18 @@
 						<div class="menu-menu-chinh-container">
 							<ul class="menu" id="menu-menu-chinh">
 								<li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-1455"
-									id="menu-item-1455"><a aria-current="page" href="{{url_for('MainPage')}}">Home</a></li>
-								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1457"
-									id="menu-item-1457"><a href="#">Hotels</a></li>
-								<li class="menu-item menu-item-type-post_type menu-item-object-page 1menu-item-2201"
-									id="menu-item-2201"><a href="#">Blog</a></li>
+									id="menu-item-1455"><a aria-current="page" href="/">Home</a></li>
+                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1457"
+									id="menu-item-1457"><a href="/all/hotel">Hotels</a></li>
+								<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2201"
+									id="menu-item-2201"><a href="#blog">Blog</a></li>
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2451"
-									id="menu-item-2451"><a href="#">Địa điểm</a></li>
-								<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1478"
-									id="menu-item-1478"><a href="#">Liên hệ</a></li>
-								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1458"
-									id="menu-item-1458"><a>Trợ giúp</a>
-									<ul class="sub-menu">
-										<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1495"
-											id="menu-item-1495"><a href="https://www.google.com/maps/place/Ho%C3%A0n+Ki%E1%BA%BFm,+H%C3%A0+N%E1%BB%99i,+Vi%E1%BB%87t+Nam/@21.0304298,105.8343224,14z/data=!3m1!4b1!4m6!3m5!1s0x3135abbf59d8f429:0x7830a3dfd6e566a1!8m2!3d21.027964!4d105.8510132!16s%2Fm%2F03m3vn7?hl=vi-VN&entry=ttu">Bản đồ</a>
-										</li>
-										<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1484"
-											id="menu-item-1484"><a href="#">Hướng dẫn du
-												lịch</a></li>
-										<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1479"
-											id="menu-item-1479"><a href="#">Hỏi
-												đáp</a></li>
-									</ul>
+									id="menu-item-2451"><a href="/all/place">Places</a></li>
+								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1458"
+									id="menu-item-1458"><a href="https://www.google.com/maps/place/Ho%C3%A0n+Ki%E1%BA%BFm,+H%C3%A0+N%E1%BB%99i,+Vi%E1%BB%87t+Nam/@21.0304298,105.8343224,14z/data=!3m1!4b1!4m6!3m5!1s0x3135abbf59d8f429:0x7830a3dfd6e566a1!8m2!3d21.027964!4d105.8510132!16s%2Fm%2F03m3vn7?hl=vi-VN&entry=ttu">Bản đồ</a>
+								</li>
+								<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1478 logout-menu-item" id="menu-item-1478">
+									<a href="/logout">Đăng xuất</a>
 								</li>
 							</ul>
 						</div>
@@ -619,7 +609,7 @@
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1909"
 									id="menu-item-1909"><a href="#">Blog</a></li>
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2694"
-									id="menu-item-2694"><a href="#">Địa điểm</a></li>
+									id="menu-item-2694"><a href="#">Places</a></li>
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1910"
 									id="menu-item-1910"><a href="https://www.google.com/maps/place/Ho%C3%A0n+Ki%E1%BA%BFm,+H%C3%A0+N%E1%BB%99i,+Vi%E1%BB%87t+Nam/@21.0304298,105.8343224,14z/data=!3m1!4b1!4m6!3m5!1s0x3135abbf59d8f429:0x7830a3dfd6e566a1!8m2!3d21.027964!4d105.8510132!16s%2Fm%2F03m3vn7?hl=vi-VN&entry=ttu">Bản đồ</a></li>
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1289"
@@ -640,7 +630,7 @@
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2695"
 									id="menu-item-2695"><a href="#">Hướng Dẫn</a></li>
 								<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1914"
-									id="menu-item-1914"><a href="#">Địa Điểm</a></li>
+									id="menu-item-1914"><a href="#">Places</a></li>
 								<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1916"
 									id="menu-item-1916"><a href="#">Đặc Sản</a></li>
 								

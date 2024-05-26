@@ -127,6 +127,11 @@
 <body
 	class="home page-template page-template-templates page-template-template-full-width page-template-templatestemplate-full-width-php page page-id-199 wpb-js-composer js-comp-ver-6.9.0 vc_responsive">
 	<div class="layer"></div>
+	<style>
+		html {
+			scroll-behavior: smooth;
+		}
+	</style>
 	<header class="plain">
 		<div class="container">
 			<div class="row">
@@ -149,13 +154,13 @@
 						<div class="menu-menu-chinh-container">
 							<ul class="menu" id="menu-menu-chinh">
 								<li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-1455"
-									id="menu-item-1455"><a aria-current="page" href="/">Home</a></li>
+									id="menu-item-1455"><a aria-current="page" href="#">Home</a></li>
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1457"
-									id="menu-item-1457"><a href="/all/hotel">Hotels</a></li>
+									id="menu-item-1457"><a href="#hotel-container">Hotels</a></li>
 								<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2201"
-									id="menu-item-2201"><a href="#">Blog</a></li>
+									id="menu-item-2201"><a href="#blog">Blog</a></li>
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2451"
-									id="menu-item-2451"><a href="/all/place">Địa điểm</a></li>
+									id="menu-item-2451"><a href="#place-container">Places</a></li>
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1458"
 									id="menu-item-1458"><a href="https://www.google.com/maps/place/Ho%C3%A0n+Ki%E1%BA%BFm,+H%C3%A0+N%E1%BB%99i,+Vi%E1%BB%87t+Nam/@21.0304298,105.8343224,14z/data=!3m1!4b1!4m6!3m5!1s0x3135abbf59d8f429:0x7830a3dfd6e566a1!8m2!3d21.027964!4d105.8510132!16s%2Fm%2F03m3vn7?hl=vi-VN&entry=ttu">Bản đồ</a>
 								</li>
@@ -396,7 +401,7 @@
 	<div class="post-content">
 		<div class="post nopadding clearfix">
 			<div class="vc_row wpb_row vc_row-fluid margin_60 inner-container">
-				<div class="container">
+				<div class="container" id="place-container">
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="vc_empty_space" style="height: 26px"><span class="vc_empty_space_inner"></span>
@@ -404,7 +409,7 @@
 							<div>
 								<div class="main_title">
 									<h2>Top <b>Địa</b> Điểm</h2>
-									<p>Địa điểm du lịch ở Quận Hoàn Kiếm, Hà Nội</p>
+									<p>Places du lịch ở Quận Hoàn Kiếm, Hà Nội</p>
 								</div>
 							</div>
 								<div class="hotel-list row add-clearfix">
@@ -444,7 +449,7 @@
 									<!-- </a> -->
 								</div>
 							<div>
-								<p class="text-center add_bottom_30"><a class="btn_1 medium" href="/hotel/"><i
+								<p class="text-center add_bottom_30"><a class="btn_1 medium" href="all/place"><i
 											class="icon-eye-7"></i>Xem thêm điểm du lịch</a></p>
 							</div>
 						</div>
@@ -453,7 +458,7 @@
 			</div>
 
 			<div class="vc_row wpb_row vc_row-fluid margin_60 inner-container">
-				<div class="container">
+				<div class="container" id="hotel-container">
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="vc_empty_space" style="height: 26px"><span class="vc_empty_space_inner"></span>
@@ -504,29 +509,50 @@
 								{% endfor %}
 							</div>
 							<div>
-								<p class="text-center add_bottom_30"><a class="btn_1 medium" href="/hotel/"><i
+								<p class="text-center add_bottom_30"><a class="btn_1 medium" href="all/hotel"><i
 											class="icon-eye-7"></i>Xem thêm khách sạn</a></p>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="main_title">
+			<div class="main_title" id="blog">
 				<h2>Blog&nbsp;<b>du lịch</b>&nbsp;Hoàn Kiếm</h2>
 				<p>Những bài viết chia sẻ về kinh nghiệm du lịch Hoàn Kiếm mới nhất</p>
 			</div>
 			<div class="vc_grid-item vc_clearfix vc_col-sm-3 vc_visible-item fadeIn animated">
 				<div class="vc_grid-item-mini vc_clearfix">
 					<div class="vc_gitem-animated-block  vc_gitem-animate vc_gitem-animate-none" data-vc-animation="none">
-						<div class="vc_gitem-zone vc_gitem-zone-a vc-gitem-zone-height-mode-auto vc-gitem-zone-height-mode-auto-1-1 vc_gitem-is-link" style="background-image: url('https://webdulichdanang.com/wp-content/uploads/2020/02/hoang-hon-ba-na.jpg') !important;"><a href="https://webdulichdanang.com/bang-gia-ve-ba-na-hill-moi-nhat-cap-nhat-thuong-xuyen.html" title="Bảng giá vé Bà Nà Hill 2024 mới nhất cập nhật thường xuyên" class="vc_gitem-link vc-zone-link"></a><img src="https://webdulichdanang.com/wp-content/uploads/2020/02/hoang-hon-ba-na.jpg" class="vc_gitem-zone-img" alt="Bảng giá vé Bà Nà Hill 2024 mới nhất cập nhật thường xuyên"><div class="vc_gitem-zone-mini"><div class="vc_gitem_row vc_row vc_gitem-row-position-middle"><div class="vc_col-sm-12 vc_gitem-col vc_gitem-col-align-"><div class="vc_custom_heading vc_gitem-post-data vc_gitem-post-data-source-post_date"><h3 style="font-size: 22px;color: #ffffff;text-align: center;font-family:Ubuntu Condensed;font-weight:400;font-style:normal"><a href="https://webdulichdanang.com/bang-gia-ve-ba-na-hill-moi-nhat-cap-nhat-thuong-xuyen.html" class="vc_gitem-link" title="Bảng giá vé Bà Nà Hill 2024 mới nhất cập nhật thường xuyên">16/02/2023</a></h3></div><div class="vc_custom_heading vc_gitem-post-data vc_gitem-post-data-source-post_title"><h3 style="font-size: 22px;color: #ffffff;text-align: center;font-family:Roboto Condensed;font-weight:700;font-style:normal"><a href="https://webdulichdanang.com/bang-gia-ve-ba-na-hill-moi-nhat-cap-nhat-thuong-xuyen.html" class="vc_gitem-link" title="Bảng giá vé Bà Nà Hill 2024 mới nhất cập nhật thường xuyên">Bảng giá vé Bà Nà Hill 2024 mới nhất cập nhật thường xuyên</a></h3></div></div></div></div></div><div class="vc_gitem-zone vc_gitem-zone-b vc_custom_1419253765784 vc-gitem-zone-height-mode-auto vc_gitem-is-link"><a href="https://webdulichdanang.com/bang-gia-ve-ba-na-hill-moi-nhat-cap-nhat-thuong-xuyen.html" title="Bảng giá vé Bà Nà Hill 2024 mới nhất cập nhật thường xuyên" class="vc_gitem-link vc-zone-link"></a>
+						<div class="vc_gitem-zone vc_gitem-zone-a vc-gitem-zone-height-mode-auto vc-gitem-zone-height-mode-auto-1-1 vc_gitem-is-link" 
+						style="background-image: url('https://webdulichdanang.com/wp-content/uploads/2020/02/hoang-hon-ba-na.jpg') !important;">
+						<a href="https://webdulichdanang.com/bang-gia-ve-ba-na-hill-moi-nhat-cap-nhat-thuong-xuyen.html" 
+						title="Bảng giá vé Bà Nà Hill 2024 mới nhất cập nhật thường xuyên" class="vc_gitem-link vc-zone-link">
+					</a>
+					<img src="https://webdulichdanang.com/wp-content/uploads/2020/02/hoang-hon-ba-na.jpg" class="vc_gitem-zone-img" alt="Bảng giá vé Bà Nà Hill 2024 mới nhất cập nhật thường xuyên">
+					<div class="vc_gitem-zone-mini">
+						<div class="vc_gitem_row vc_row vc_gitem-row-position-middle">
+							<div class="vc_col-sm-12 vc_gitem-col vc_gitem-col-align-">
+								<div class="vc_custom_heading vc_gitem-post-data vc_gitem-post-data-source-post_date">
+									<h3 style="font-size: 22px;color: #ffffff;text-align: center;font-family:Ubuntu Condensed;font-weight:400;font-style:normal">
+										<a href="https://webdulichdanang.com/bang-gia-ve-ba-na-hill-moi-nhat-cap-nhat-thuong-xuyen.html" class="vc_gitem-link" title="Bảng giá vé Bà Nà Hill 2024 mới nhất cập nhật thường xuyên">16/02/2023</a>
+									</h3>
+								</div>
+								<div class="vc_custom_heading vc_gitem-post-data vc_gitem-post-data-source-post_title">
+									<h3 style="font-size: 22px;color: #ffffff;text-align: center;font-family:Roboto Condensed;font-weight:700;font-style:normal">
+										<a href="https://webdulichdanang.com/bang-gia-ve-ba-na-hill-moi-nhat-cap-nhat-thuong-xuyen.html" class="vc_gitem-link" title="Bảng giá vé Bà Nà Hill 2024 mới nhất cập nhật thường xuyên">Bảng giá vé Bà Nà Hill 2024 mới nhất cập nhật thường xuyên</a>
+									</h3>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="vc_gitem-zone vc_gitem-zone-b vc_custom_1419253765784 vc-gitem-zone-height-mode-auto vc_gitem-is-link"><a href="https://webdulichdanang.com/bang-gia-ve-ba-na-hill-moi-nhat-cap-nhat-thuong-xuyen.html" title="Bảng giá vé Bà Nà Hill 2024 mới nhất cập nhật thường xuyên" class="vc_gitem-link vc-zone-link"></a>
 							<div class="vc_gitem-zone-mini">
-								A
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="vc_clearfix">
-					H
 				</div>
 			</div>
 			
@@ -564,7 +590,7 @@
 													chất lượng luôn mang đến cho du khách những trải nghiệm đầy đủ và
 													tuyệt vời nhất</p>
 												<p><a class="btn_1 outline"
-														href="#">Chi tiết</a>
+														href="#place-container">Chi tiết</a>
 												</p>
 											</div>
 										</div>
@@ -610,8 +636,8 @@
 					<div class="contact-box small-box contact_info" id="ct_contact_info_widget-6">
 						<h3 class="widgettitle">LIÊN HỆ</h3>
 						<div class="contact-info">
-							<a class="phone_number" href="tel:0763.138.101">0763138101</a>
-							<a class="email_address" href="mailto:booking@webdulichdanang.com">hoankiem@gmail.com</a>
+							<a class="phone_number" href="tel:0967296991">0967 296 991</a>
+							<a class="email_address" href="mailto:truonghieu2312@gmail.com">our-email@gmail.com</a>
 						</div>
 					</div>
 				</div>
@@ -622,59 +648,13 @@
 							<ul class="menu" id="menu-menu-footer-2">
 								<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2202"
 									id="menu-item-2202"><a
-										href="#">Hotels</a></li>
-								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1908"
-									id="menu-item-1908"><a href="#">Tours</a>
-								</li>
+										href="#hotel-container">Hotels</a></li>
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1909"
-									id="menu-item-1909"><a href="#">Blog</a></li>
+									id="menu-item-1909"><a href="#blog">Blog</a></li>
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2694"
-									id="menu-item-2694"><a href="#">Địa điểm</a></li>
+									id="menu-item-2694"><a href="#place-container">Places</a></li>
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1910"
 									id="menu-item-1910"><a href="https://www.google.com/maps/place/Ho%C3%A0n+Ki%E1%BA%BFm,+H%C3%A0+N%E1%BB%99i,+Vi%E1%BB%87t+Nam/@21.0304298,105.8343224,14z/data=!3m1!4b1!4m6!3m5!1s0x3135abbf59d8f429:0x7830a3dfd6e566a1!8m2!3d21.027964!4d105.8510132!16s%2Fm%2F03m3vn7?hl=vi-VN&entry=ttu">Bản đồ</a></li>
-								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1289"
-									id="menu-item-1289"><a href="#">Liên hệ</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-3 col-sm-3">
-					<div class="small-box widget_nav_menu" id="nav_menu-3">
-						<h3 class="widgettitle">KHÁM PHÁ</h3>
-						<div class="menu-menu-footer-3-container">
-							<ul class="menu" id="menu-menu-footer-3">
-								<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1912"
-									id="menu-item-1912"><a href="#">Sự Kiện</a></li>
-								<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1911"
-									id="menu-item-1911"><a href="#">Hoạt Động</a></li>
-								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2695"
-									id="menu-item-2695"><a href="#">Hướng Dẫn</a></li>
-								<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1914"
-									id="menu-item-1914"><a href="#">Địa Điểm</a></li>
-								<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1916"
-									id="menu-item-1916"><a href="#">Đặc Sản</a></li>
-								
-							</ul>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-2 col-sm-3">
-					<div class="small-box widget_nav_menu" id="nav_menu-5">
-						<h3 class="widgettitle">LIÊN KẾT</h3>
-						<div class="menu-lien-ket-container">
-							<ul class="menu" id="menu-lien-ket">
-								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1904"
-									id="menu-item-1904"><a href="#">Trang Chủ</a>
-								</li>
-								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1907"
-									id="menu-item-1907"><a href="#">Blog</a></li>
-								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1905"
-									id="menu-item-1905"><a href="#">Quảng Cáo</a></li>
-								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1906"
-									id="menu-item-1906"><a href="#">Chính Sách</a></li>
-								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2693"
-									id="menu-item-2693"><a href="#">Hỗ Trợ</a></li>
-								
 							</ul>
 						</div>
 					</div>

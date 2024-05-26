@@ -3,7 +3,7 @@ const showPlace = (place) => `
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4">
             <div class="img_list">
-                <a href="/hdetail/${place.place_name}">
+                <a href="/pdetail/${place.place_name}">
                     <img alt="${place.place_name}" class="attachment-330x220 size-330x220 wp-post-image" height="220"
                         loading="lazy" sizes="(max-width: 330px) 100vw, 330px"
                         src="/static/images/place/${place.place_id}.jpg"

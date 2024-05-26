@@ -112,7 +112,9 @@ def SignIn():
                 flash('Invalid email', 'error')
             return render_template('signin.html')
 
-#------------------------------------API-------------------------------------     
+#------------------------------------API-------------------------------------   
+
+  
 #------------------------------------PLACE-----------------------------------
 @app.route('/PlaceCommentSubmit', methods=['POST'])
 def submit_place_review():
@@ -165,6 +167,9 @@ def react_comment():
         db.InsertQuery(f'Update tbl_place_review Set review_dislike = {new_dislike_count} Where id = {comment_id}')
         return jsonify({'new_dislike_count': new_dislike_count})
 # -----------------------------------ENDPLACE--------------------------------
+
+
+
 #------------------------------------HOTEL-----------------------------------
 @app.route('/HotelCommentSubmit', methods=['POST'])
 def submit_hotel_review():
@@ -218,6 +223,8 @@ def react_hotel_comment():
         db.InsertQuery(f'Update tbl_hotel_review Set review_dislike = {new_dislike_count} Where id = {comment_id}')
         return jsonify({'new_dislike_count': new_dislike_count})
 # -------------------------------------ENDHOTEL------------------------------
+
+
 #-----------------------------------ELSE-------------------------------------
 @app.route('/GetAllInfor', methods=['POST'])
 def get_all_infor():
@@ -238,6 +245,9 @@ def get_filtered_infor():
     else:
         return {"data": "None"}
 #---------------------------------ENDELSE------------------------------------
+
+
+
 @app.route('/TestAPI')
 def TestAPI():
     return utility.getAllInfor('place')

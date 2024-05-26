@@ -269,12 +269,14 @@
                             <!--Mo ta ngan gon ve lich su dia diem--></p>
                         <div class="meta-related">
                             <div class="rpbt_shortcode">
-                                <ul> <!-- Cac quan an o gan -->
-                                    <li>
-                                        <a href="#">Vé
-                                            công viên Châu Á – Asia Park All In One
-                                        </a>
-                                    </li>
+                                <ul> <!-- Cac quan an o gan --> <strong>Các cửa hàng ở gần</strong>
+                                    {% for store in stores %}
+                                        <li style="padding-left: 20px;">
+                                            <a href="{store.store_link}">
+                                                {{store.store_name}}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
@@ -757,21 +759,30 @@
         });
     </script>
     <script type="text/javascript">
-        $('#collapseMap').on('shown.bs.collapse', function (e) {
-            var markersData = {
-                'Center': [
-                    {
-                        location_latitude: 25.9977352,
-                        location_longitude: 107.9880772,
-                    },
-                ]
-            };
-            var lati = 15.9977352;
-            var long = 107.9880772;
-            var _center = [lati, long];
-            renderMap(_center, markersData, 14, google.maps.MapTypeId.ROADMAP, false);
-        });
-    </script> 
+        // Đảm bảo biến coord được định nghĩa trước khi sử dụng
+        var coord = {{ coord | tojson }};
+        
+        // Kiểm tra xem giá trị của coord có hợp lệ không trước khi sử dụng
+        if (coord && coord.lat !== undefined && coord.long !== undefined) {
+            var lat = coord.lat;
+            var long = coord.long;
+    
+            $('#collapseMap').on('shown.bs.collapse', function (e) {
+                var markersData = {
+                    'Center': [
+                        {
+                            location_latitude: lat,
+                            location_longitude: long,
+                        },
+                    ]
+                };
+                var _center = [lat, long];
+                renderMap(_center, markersData, 14, google.maps.MapTypeId.ROADMAP, false);
+            });
+        } else {
+            console.error("Giá trị của coord không hợp lệ.");
+        }
+    </script>
     <!-- <div id="toTop"></div> -->
     <div id="overlay"><i class="icon-spin3 animate-spin"></i></div>
     <div class="hk-option-button-contact">

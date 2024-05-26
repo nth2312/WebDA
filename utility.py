@@ -87,7 +87,6 @@ class Utility:
     def getDetailHotelInfor(self, hotel_name):
         otherData = self.db.Query(f'Select * from tbl_hotel where hotel_name = "{hotel_name}"')
         otherData = otherData[0]
-        print(otherData)
 
         base_path = f"./static/hdetail/{otherData[0]}"
         historyPath = os.path.join(base_path, 'history.txt')
@@ -131,6 +130,37 @@ class Utility:
         }
         return detail
     
+    def getPlacecoordinates(self, place_id):
+        # placeInfor = self.db.Query(f"select * from place where place_id = {place_id}")
+        # lat = placeInfor[2]
+        # long = placeInfor[3]
+        ret = {
+            'lat': 21.0248218,
+            'long': 105.8507097
+        }
+        return ret
+
+    def getNearStore(self, place_id):
+        #stores = self.db.Query(f"select * from store inner join place_store on store.store_id = place_store.store_id where place.place_id = {place_id}")
+        #stores = self.tupeToDict(stores)
+        stores = [
+            {
+                'store_id': "1",
+                'store_link': "url_to_link",
+                'store_name': "store_name"
+            },
+            {
+                'store_id': "1",
+                'store_link': "url_to_link2",
+                'store_name': "store_name2"
+            },
+            {
+                'store_id': "1",
+                'store_link': "url_to_link3",
+                'store_name': "store_name3"
+            }
+        ]
+        return stores
     def getAllInfor(self, type):
         details = []
 
@@ -279,6 +309,3 @@ class Utility:
             data_dict = {key: value for key, value in zip(key, row)}
             returnDict.append(data_dict)
         return returnDict
-
-# u = Utility()
-# print(u.getDetailHotelInfor("Silk Path Boutique"))

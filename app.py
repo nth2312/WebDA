@@ -47,7 +47,9 @@ def AllPlace():
 @app.route('/pdetail/<place_name>')
 def PlaceDetailPage(place_name):
     place = utility.getDetailPlaceInfor(place_name)
-    return render_template('detailPlace.html', place=place)
+    coordinates = utility.getPlacecoordinates(place['place_id'])
+    stores = utility.getNearStore(place['place_id'])
+    return render_template('detailPlace.html', place=place, stores=stores, coord=coordinates)
 
 @app.route('/hdetail/<hotel_name>')
 def HotelDetailPage(hotel_name):
@@ -202,7 +204,6 @@ def get_hotel_comment():
     hotel_id = hotel_id['hotel_id']
 
     data = db.Query(f'Select * from tbl_hotel_review where hotel_id = {hotel_id}')
-    print(data)
     data = utility.tupeToDict(data, ['id', 'user_username', 'hotel_id', 'review_like', 'review_dislike', 'review_time', 'review_comment'])
     return jsonify(data)
 

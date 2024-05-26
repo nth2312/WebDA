@@ -36,10 +36,23 @@ def LoginPage():
 def SignInPage():
     return render_template('signin.html')
 
-@app.route('/detail/<place_name>')
+@app.route('/all/hotel')
+def AllPage():
+    return render_template('allHotel.html')
+
+@app.route('/all/place')
+def AllPlace():
+    return render_template('allPlace.html')
+
+@app.route('/pdetail/<place_name>')
 def PlaceDetailPage(place_name):
     place = utility.getDetailPlaceInfor(place_name)
-    return render_template('detail.html', place=place)
+    return render_template('detailPlace.html', place=place)
+
+@app.route('/hdetail/<hotel_name>')
+def HotelDetailPage(hotel_name):
+    hotel = utility.getDetailHotelInfor(hotel_name)
+    return render_template('detailHotel.html', hotel=hotel)
 
 @app.route('/login', methods = ['POST', 'GET'])
 def Login():
@@ -99,9 +112,10 @@ def SignIn():
                 flash('Invalid email', 'error')
             return render_template('signin.html')
 
-#------------------------------------API-------------------------------------                                                      |
-@app.route('/CommentSubmit', methods=['POST'])
-def submit_review():
+#------------------------------------API-------------------------------------     
+#------------------------------------PLACE-----------------------------------
+@app.route('/PlaceCommentSubmit', methods=['POST'])
+def submit_place_review():
     review = request.form.get('review')
     #Prepare data
     reviewList = db.GetData('tbl_place_review')
@@ -125,8 +139,8 @@ def submit_review():
 
     return jsonify(comment)
 
-@app.route('/GetComment', methods=['POST'])
-def get_comment():
+@app.route('/GetPlaceComment', methods=['POST'])
+def get_place_comment():
     place_id = request.json
     place_id = place_id['place_id']
 
@@ -134,7 +148,7 @@ def get_comment():
     data = utility.tupeToDict(data, ['id', 'user_username', 'place_id', 'review_like', 'review_dislike', 'review_comment', 'review_time'])
     return jsonify(data)
 
-@app.route('/React', methods=['POST'])
+@app.route('/PlaceReact', methods=['POST'])
 def react_comment():
     data = request.json
     comment_id = data['comment_id']
@@ -150,5 +164,82 @@ def react_comment():
         new_dislike_count = int(currentDisLike) + 1
         db.InsertQuery(f'Update tbl_place_review Set review_dislike = {new_dislike_count} Where id = {comment_id}')
         return jsonify({'new_dislike_count': new_dislike_count})
+# -----------------------------------ENDPLACE--------------------------------
+#------------------------------------HOTEL-----------------------------------
+@app.route('/HotelCommentSubmit', methods=['POST'])
+def submit_hotel_review():
+    review = request.form.get('review')
+    #Prepare data
+    reviewList = db.GetData('tbl_hotel_review')
+    comment_id = len(reviewList) + 1
+    comment_username = request.cookies['username']
+    comment_hotelid = review.split("|")[0]
+    comment_like = comment_dislike = 0
+    comment_comment = review.split("|")[1]
+    comment_time = datetime.now().strftime('%Y-%m-%d')
+
+    comment = {
+        'id': comment_id,
+        'user_username': comment_username,
+        'hotel_id': comment_hotelid,
+        'review_like': comment_like,
+        'review_dislike': comment_dislike,
+        'review_comment': comment_comment,
+        'review_time': comment_time,   
+    }
+    db.InsertData('tbl_hotel_review', comment)
+
+    return jsonify(comment)
+
+@app.route('/GetHotelComment', methods=['POST'])
+def get_hotel_comment():
+    hotel_id = request.json
+    hotel_id = hotel_id['hotel_id']
+
+    data = db.Query(f'Select * from tbl_hotel_review where hotel_id = {hotel_id}')
+    print(data)
+    data = utility.tupeToDict(data, ['id', 'user_username', 'hotel_id', 'review_like', 'review_dislike', 'review_time', 'review_comment'])
+    return jsonify(data)
+
+@app.route('/HotelReact', methods=['POST'])
+def react_hotel_comment():
+    data = request.json
+    comment_id = data['comment_id']
+    action = data['action']
+    # Return the new like or dislike count
+    if action == 'like':
+        currentLike = db.Query(f"select review_like from tbl_hotel_review where id = {comment_id}")[0][0]
+        new_like_count = int(currentLike) + 1
+        db.InsertQuery(f'Update tbl_hotel_review Set review_like = {new_like_count} Where id = {comment_id}')
+        return jsonify({'new_like_count': new_like_count})
+    elif action == 'dislike':
+        currentDisLike = db.Query(f"select review_dislike from tbl_hotel_review where id = {comment_id}")[0][0]
+        new_dislike_count = int(currentDisLike) + 1
+        db.InsertQuery(f'Update tbl_hotel_review Set review_dislike = {new_dislike_count} Where id = {comment_id}')
+        return jsonify({'new_dislike_count': new_dislike_count})
+# -------------------------------------ENDHOTEL------------------------------
+#-----------------------------------ELSE-------------------------------------
+@app.route('/GetAllInfor', methods=['POST'])
+def get_all_infor():
+    type = request.json
+    type = type['type']
+    data = utility.getAllInfor(type)
+    return data
+
+@app.route('/GetFilteredInfor', methods=['POST'])
+def get_filtered_infor():
+    data = request.json
+    range = data['inputLabelText']
+    type = data['type']
+    range = utility.handleInputRange(range)
+    datas = utility.getFilteredInfor(range, type)
+    if len(datas) > 0:
+        return datas
+    else:
+        return {"data": "None"}
+#---------------------------------ENDELSE------------------------------------
+@app.route('/TestAPI')
+def TestAPI():
+    return utility.getAllInfor('place')
 
 app.run(debug=True, host="0.0.0.0")

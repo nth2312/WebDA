@@ -174,10 +174,10 @@
 						<div class="menu-menu-chinh-container">
 							<ul class="menu" id="menu-menu-chinh">
 								<li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-1455"
-									id="menu-item-1455"><a aria-current="page" href="#">Home</a></li>
+									id="menu-item-1455"><a aria-current="page" href="{{url_for('MainPage')}}">Home</a></li>
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1457"
 									id="menu-item-1457"><a href="#">Hotels</a></li>
-								<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2201"
+								<li class="menu-item menu-item-type-post_type menu-item-object-page 1menu-item-2201"
 									id="menu-item-2201"><a href="#">Blog</a></li>
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2451"
 									id="menu-item-2451"><a href="#">Địa điểm</a></li>
@@ -417,7 +417,7 @@
                         }
                 
                         // Fetch existing comments when the page loads
-                        fetch('/GetComment', {
+                        fetch('/GetPlaceComment', {
                             method: 'POST', // Phương thức của yêu cầu
                             headers: {
                                 'Content-Type': 'application/json' // Định dạng dữ liệu của yêu cầu
@@ -444,7 +444,7 @@
                                 formData.append('review', data);
                     
                                 var xhr = new XMLHttpRequest();
-                                xhr.open('POST', '/CommentSubmit', true);
+                                xhr.open('POST', '/PlaceCommentSubmit', true);
                     
                                 xhr.onload = function() {
                                     if (xhr.status === 200) {
@@ -505,7 +505,7 @@
                                     'action': 'dislike'
                                 };
                 
-                                fetch('/React', {
+                                fetch('/PlaceReact', {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json'
@@ -813,7 +813,6 @@
     <!-- <script id="google-recaptcha-js"
         src="https://www.google.com/recaptcha/api.js?render=6LfUe3wkAAAAAJwYdl-OKdjf5h0fdMsJlPpvwGX5&amp;ver=3.0"
         type="text/javascript"></script> -->
-    <script src="/static/js/comment.js"></script>
     <script id="ct_script_common-js" src="/static/js/common_scripts_min.js" type="text/javascript"></script>
     <script id="ct_script_jquery_validate-js" src="/static/js/jquery.validate.min.js" type="text/javascript"></script>
     <script id="ct_script_datepicker-js-extra" type="text/javascript">

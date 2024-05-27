@@ -223,6 +223,23 @@ def react_hotel_comment():
         new_dislike_count = int(currentDisLike) + 1
         db.InsertQuery(f'Update tbl_hotel_review Set review_dislike = {new_dislike_count} Where id = {comment_id}')
         return jsonify({'new_dislike_count': new_dislike_count})
+    
+@app.route('/PlaceReact', methods=['POST'])
+def react_place_comment():
+    data = request.json
+    comment_id = data['comment_id']
+    action = data['action']
+    # Return the new like or dislike count
+    if action == 'like':
+        currentLike = db.Query(f"select review_like from tbl_place_review where id = {comment_id}")[0][0]
+        new_like_count = int(currentLike) + 1
+        db.InsertQuery(f'Update tbl_place_review Set review_like = {new_like_count} Where id = {comment_id}')
+        return jsonify({'new_like_count': new_like_count})
+    elif action == 'dislike':
+        currentDisLike = db.Query(f"select review_dislike from tbl_place_review where id = {comment_id}")[0][0]
+        new_dislike_count = int(currentDisLike) + 1
+        db.InsertQuery(f'Update tbl_place_review Set review_dislike = {new_dislike_count} Where id = {comment_id}')
+        return jsonify({'new_dislike_count': new_dislike_count})
 # -------------------------------------ENDHOTEL------------------------------
 
 
@@ -246,8 +263,6 @@ def get_filtered_infor():
     else:
         return {"data": "None"}
 #---------------------------------ENDELSE------------------------------------
-
-
 
 @app.route('/TestAPI')
 def TestAPI():

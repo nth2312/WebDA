@@ -293,6 +293,3 @@ class Utility:
             data_dict = {key: value for key, value in zip(key, row)}
             returnDict.append(data_dict)
         return returnDict
-    
-u = Utility()
-u.getPlacecoordinates(1)

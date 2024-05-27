@@ -13,6 +13,27 @@ class Utility:
         placekeys = ['place_id', 'place_name', 'place_address', 'entry_price']
         self.placeList = self.tupeToDict(places, placekeys)
 
+    def encode(self, text, key):
+        encoded_chars = []
+        key_length = len(key)
+        for i, char in enumerate(text):
+            key_char = key[i % key_length]
+            encoded_char = chr((ord(char) + ord(key_char)) % 256)
+            encoded_chars.append(encoded_char)
+        encoded_string = ''.join(encoded_chars)
+        return encoded_string
+
+    def decode(self, encoded_text, key):
+        decoded_chars = []
+        key_length = len(key)
+        for i, char in enumerate(encoded_text):
+            key_char = key[i % key_length]
+            decoded_char = chr((ord(char) - ord(key_char)) % 256)
+            decoded_chars.append(decoded_char)
+        decoded_string = ''.join(decoded_chars)
+        return decoded_string
+
+
     def getDetailPlaceInfor(self, place_name):
         otherData = self.db.Query(f'Select * from tbl_place where place_name = "{place_name}"')
         otherData = otherData[0]
@@ -293,3 +314,9 @@ class Utility:
             data_dict = {key: value for key, value in zip(key, row)}
             returnDict.append(data_dict)
         return returnDict
+    
+u = Utility()
+encod = u.encode("Password@123", "User@123")
+decod = u.decode(encod, "User@123")
+print(encod)
+print(decod)

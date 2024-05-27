@@ -13,7 +13,7 @@ def IsValidLogin(username, password):
     userInfor = db.GetData("tbl_user")
     adminInfor = db.GetData("tbl_admin")
     for user in userInfor:
-        if (username == user[0] and password == user[1]):
+        if (username == user[0] and utility.encode(password, username) == user[1]):
             return 1
     for admin in adminInfor:
         if (username == admin[0] and password == admin[1]):
@@ -88,8 +88,10 @@ def Logout():
 def SignIn():
     if request.method == 'POST':
         userInfor = [request.form['username'], request.form['password'], request.form['email']]
+        username = userInfor[0]
+        password = userInfor[1]
         if (utility.checkValidUsername(userInfor[0]) == 0 and utility.isValidPassword(userInfor[1]) == 0 and utility.isValidEmail(userInfor[2]) == 1):
-            db.InsertUser(request.form['username'], request.form['password'], request.form['email'])
+            db.InsertUser(username, utility.encode(password, username), request.form['email'])
             return redirect(url_for('LoginPage'))
         else:
             if (utility.checkValidUsername(userInfor[0]) == 5):

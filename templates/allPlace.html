@@ -367,22 +367,78 @@
 	</footer><!-- End footer -->
 	<div id="toTop"></div><!-- Back to top button -->
 	<div id="overlay"><i class="icon-spin3 animate-spin"></i></div>
-	<div class="hk-option-button-contact">
-		<ul>
-			<li><a href="https://zalo.me/0934579759" target="_blank"><span class="button-hk-contact zalo"
-						style="background-color: #f57600"></span></a></li>
-			<li>
-				<a href="tel:0934579759" target="_blank">
-					<div class="hotline-phone-ring-circle"></div>
-					<div class="hotline-phone-ring-circle-fill"></div>
-					<span class="button-hk-contact phone" style="background-color: #e04f67;"></span>
-					<strong style="background-color: #e04f67;">0934579759</strong>
-				</a>
-			</li>
-			<li><a href="https://www.facebook.com/webdulichdanang" target="_blank"><span
-						class="button-hk-contact messages" style="background-color: #019af9"></span></a></li>
-		</ul>
-	</div>
+	<div class="hk-option-button-contact" style="padding-bottom: 40px;">
+        <ul>
+            <li class="phone-container">
+                <a href="https://zalo.me/0967296991" target="_blank"><span class="button-hk-contact zalo"
+                style="background-color: #f57600"></span></a>
+                <div class="phone-number">
+                    Liên hệ với chúng tôi qua zalo
+                </div>
+            </li>
+            <li class="phone-container">
+                <a href="tel:0967296991" target="_blank">
+                    <div class="hotline-phone-ring-circle"></div>
+                    <div class="hotline-phone-ring-circle-fill"></div>
+                    <span class="button-hk-contact phone" style="background-color: #e04f67"></span>
+                    <strong style="background-color: #e04f67">0967 296 991</strong>
+                    <div class="phone-number">
+                        0967 296 991
+                    </div>
+                </a>
+            </li>
+            <li class="phone-container">
+                <a href="https://m.me/100006570580226" target="_blank"><span class="button-hk-contact messages"
+                style="background-color: #019af9"></span></a>
+                <div class="phone-number">
+                    Gửi tin nhắn cho chúng tôi
+                </div>
+            </li>
+        </ul>
+        <style>
+            phone-container {
+                position: relative;
+                display: inline-block;
+            }
+
+            .phone-number {
+                display: none;
+                position: absolute;
+                top: 50%;
+                left: 100%;
+                transform: translateY(-50%);
+                background-color: white;
+                border: 2px solid black;
+                border-radius: 10px;
+                padding: 5px 10px;
+                margin-left: 10px;
+                z-index: 1000;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                white-space: nowrap;
+            }
+
+            .phone-number img {
+                width: 200px;
+                height: auto;
+            }
+
+            .phone-container:hover .phone-number {
+                display: block;
+                animation: slide-in 0.3s forwards;
+            }
+
+            @keyframes slide-in {
+                from {
+                    opacity: 0;
+                    transform: translateX(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+        </style>
+    </div>
 	<link href="/static/css/mediaelementplayer-legacy.min.css" id="mediaelement-css" media="all" rel="stylesheet"
         type="text/css" />
     <link href="/static/css/wp-mediaelement.min.css" id="wp-mediaelement-css" media="all" rel="stylesheet"

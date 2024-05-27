@@ -131,36 +131,20 @@ class Utility:
         return detail
     
     def getPlacecoordinates(self, place_id):
-        # placeInfor = self.db.Query(f"select * from place where place_id = {place_id}")
-        # lat = placeInfor[2]
-        # long = placeInfor[3]
-        ret = {
-            'lat': 21.0248218,
-            'long': 105.8507097
-        }
-        return ret
+        placeInfor = self.db.Query(f"select * from place where place_id = {place_id}")
+        keys = ['place_id', 'place_name', 'lat', 'long']
+        placeInfor = self.tupeToDict(placeInfor, keys)[0]
+        placeInfor['lat'] = float(placeInfor['lat'])
+        placeInfor['long'] = float(placeInfor['long'])
+        
+        return placeInfor
 
     def getNearStore(self, place_id):
-        #stores = self.db.Query(f"select * from store inner join place_store on store.store_id = place_store.store_id where place.place_id = {place_id}")
-        #stores = self.tupeToDict(stores)
-        stores = [
-            {
-                'store_id': "1",
-                'store_link': "url_to_link",
-                'store_name': "store_name"
-            },
-            {
-                'store_id': "1",
-                'store_link': "url_to_link2",
-                'store_name': "store_name2"
-            },
-            {
-                'store_id': "1",
-                'store_link': "url_to_link3",
-                'store_name': "store_name3"
-            }
-        ]
+        stores = self.db.Query(f"select stores.store_name, stores.link from stores inner join place_store on stores.store_id = place_store.store_id where place_store.place_id = {place_id}")
+        keys = ['store_name', 'store_link']
+        stores = self.tupeToDict(stores, keys)
         return stores
+    
     def getAllInfor(self, type):
         details = []
 
@@ -309,3 +293,6 @@ class Utility:
             data_dict = {key: value for key, value in zip(key, row)}
             returnDict.append(data_dict)
         return returnDict
+    
+u = Utility()
+u.getPlacecoordinates(1)

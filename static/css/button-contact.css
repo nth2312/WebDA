@@ -22,6 +22,7 @@
 
 .hk-option-button-contact ul li a span.zalo {
     background-image: url("/static/images/zalo.svg");
+    border-image-width: 100%;
     background-size: 50%;
     background-repeat: no-repeat;
     background-position: center center

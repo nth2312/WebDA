@@ -50,7 +50,7 @@ create table tbl_place_review(
     foreign key (place_id) references tbl_place(place_id)
 );
 
-ALTER TABLE tbl_place_review MODIFY COLUMN review_comment VARCHAR(200);
+ALTER TABLE tbl_hotel_review MODIFY COLUMN review_comment VARCHAR(200);
 
 create table tbl_user_feedback(
 	id int primary key,
@@ -58,4 +58,23 @@ create table tbl_user_feedback(
     fb_detail nvarchar(50),
     user_username varchar(10),
     foreign key (user_username) references tbl_user(user_username)
+);
+
+create table place(
+	place_id int primary key,
+    place_name nvarchar(50),
+    latitude varchar(50),
+	longitude varchar(50)
+);
+create table stores(
+	store_id int primary key,
+	store_name nvarchar(50),
+    link varchar(100)
+);
+create table place_store(
+	id int primary key,
+    place_id int,
+    store_id int,
+    foreign key (store_id) references stores(store_id),
+    foreign key (place_id) references place(place_id)
 );

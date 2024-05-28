@@ -316,7 +316,7 @@ class Utility:
         return returnDict
     
 u = Utility()
-encod = u.encode("Password@123", "User@123")
-decod = u.decode(encod, "User@123")
-print(encod)
-print(decod)
+# encod = u.encode("admin", "admin")
+# decod = u.decode(encod, "admin")
+# print(encod)
+# print(decod)

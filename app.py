@@ -16,7 +16,7 @@ def IsValidLogin(username, password):
         if (username == user[0] and utility.encode(password, username) == user[1]):
             return 1
     for admin in adminInfor:
-        if (username == admin[0] and password == admin[1]):
+        if (username == admin[0] and utility.encode(password, username) == admin[1]):
             return 0
     return 2
 
@@ -27,6 +27,10 @@ def MainPage():
         return render_template('main.html', hotelList=utility.hotelList[:6], placeList=utility.placeList[:6])
     else:
         return redirect(url_for('LoginPage'))
+
+@app.route('/administrator')
+def AdminPage():
+    return render_template('adminView.html')
 
 @app.route('/login')
 def LoginPage():
@@ -73,7 +77,7 @@ def Login():
                 index.set_cookie('username', request.form['username'], max_age=10)
                 return index
         elif IsValidLogin(request.form['username'], request.form['password']) == 0:
-            return render_template('adminView.html')
+            return redirect(url_for('AdminPage'))
         else:
             flash('Invalid username or password', 'error')
     return render_template('login.html')

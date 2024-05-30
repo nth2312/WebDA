@@ -33,7 +33,6 @@ class Utility:
         decoded_string = ''.join(decoded_chars)
         return decoded_string
 
-
     def getDetailPlaceInfor(self, place_name):
         otherData = self.db.Query(f'Select * from tbl_place where place_name = "{place_name}"')
         otherData = otherData[0]
@@ -265,48 +264,17 @@ class Utility:
             if (checkLower == checkUpper == checkNumb):
                 return 0
 
-    def checkValidUsername(self, input):
+    def isValidUsername(self, input):
         userList = self.db.GetDataWithCol('tbl_user', 'user_username')
-        checkLower = 0
-        checkUpper = 0
-        checkNumb = 0
-        for user in userList:
-            if input == str(user[0]):
-                return 5
-        if len(input) < 5 or len(input) > 10:
-            return 1
-        else:
-            for char in input:
-                if char.isupper():
-                    checkUpper = 1
-                if char.islower():
-                    checkLower = 1
-                if char.isdigit():
-                    checkNumb = 1
-            if (checkLower == 0):
-                return 2
-            if (checkUpper == 0):
-                return 3
-            if (checkNumb == 0):
-                return 4
-            if (checkLower == checkUpper == checkNumb):
-                return 0
+        if input in userList and len(userList) > 0:
+            return False
+        return True
 
     def isValidEmail(self, email):
-        checkA = 0
-        checkOther = 0
-        Aidx = 0
-        for i in range(len(email)):
-            if (email[i] == '@' and i != 0):
-                checkA = 1
-                Aidx = i
-        for i in range(Aidx, len(email)):
-            if (email[i] == '.' and email[i - 1] != '@' and email[-1] != '.'):
-                checkOther = 1
-        if (checkA == checkOther == 1):
-            return 1
-        else:
-            return 0
+        emailList = self.db.GetDataWithCol('tbl_user', 'user_email')
+        if email in emailList and len(emailList) > 0:
+            return False
+        return True
 
     def tupeToDict(self, data, key):
         returnDict = []
@@ -316,7 +284,4 @@ class Utility:
         return returnDict
     
 u = Utility()
-# encod = u.encode("admin", "admin")
-# decod = u.decode(encod, "admin")
-# print(encod)
-# print(decod)
+# u.isValidEmail("truonghieu23d12@gmail.com")

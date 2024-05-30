@@ -24,9 +24,12 @@ class Database:
         cursor = self.db.cursor()
         cursor.execute(f"select {col} from {table}")
         rows = cursor.fetchall()
+        ret = []
+        for row in rows:
+            ret.append(row[0])
 
         cursor.close()
-        return rows
+        return ret
 
 
     def InsertUser(self, username, password, email):

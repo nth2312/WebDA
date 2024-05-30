@@ -36,7 +36,7 @@ def AdminPage():
 def LoginPage():
     return render_template('login.html')
 
-@app.route('/signin')
+@app.route('/signup')
 def SignInPage():
     return render_template('signin.html')
 
@@ -63,20 +63,22 @@ def HotelDetailPage(hotel_name):
 @app.route('/login', methods = ['POST', 'GET'])
 def Login():
     if request.method == 'POST':
-        if IsValidLogin(request.form['username'], request.form['password']) == 1:
+        username = request.form['username'].strip()
+        password = request.form['password'].strip()
+        if IsValidLogin(username, password) == 1:
             try:
                 remember = request.form['remember-account']
             except:
                 remember = "off"
             if remember == "on":
                     index = make_response(redirect(url_for('MainPage')))
-                    index.set_cookie('username', request.form['username'])
+                    index.set_cookie('username', username)
                     return index
             else:
                 index = make_response(redirect(url_for('MainPage')))
-                index.set_cookie('username', request.form['username'], max_age=10)
+                index.set_cookie('username', username, max_age=20)
                 return index
-        elif IsValidLogin(request.form['username'], request.form['password']) == 0:
+        elif IsValidLogin(username, password) == 0:
             return redirect(url_for('AdminPage'))
         else:
             flash('Invalid username or password', 'error')
@@ -88,38 +90,21 @@ def Logout():
     res.delete_cookie('username')
     return res
 
-@app.route('/signin', methods = ['POST', 'GET'])
+@app.route('/requestSignUp', methods = ['POST'])
 def SignIn():
-    if request.method == 'POST':
-        userInfor = [request.form['username'], request.form['password'], request.form['email']]
-        username = userInfor[0]
-        password = userInfor[1]
-        if (utility.checkValidUsername(userInfor[0]) == 0 and utility.isValidPassword(userInfor[1]) == 0 and utility.isValidEmail(userInfor[2]) == 1):
-            db.InsertUser(username, utility.encode(password, username), request.form['email'])
-            return redirect(url_for('LoginPage'))
-        else:
-            if (utility.checkValidUsername(userInfor[0]) == 5):
-                flash('This username is already exist', 'error')
-            if (utility.checkValidUsername(userInfor[0]) == 1):
-                flash('Username must have 5-10 characters', 'error')
-            if (utility.checkValidUsername(userInfor[0]) == 2):
-                flash('Username must have at least 1 uppercase letter', 'error')
-            if (utility.checkValidUsername(userInfor[0]) == 3):
-                flash('Username must have at least 1 lowercase letter', 'error')
-            if (utility.checkValidUsername(userInfor[0]) == 4):
-                flash('Username must have at least 1 character', 'error')
-            if (utility.isValidPassword(userInfor[1]) == 1):
-                flash('Password must have 5-10 characters', 'error')
-            if (utility.isValidPassword(userInfor[1]) == 2):
-                flash('Password must have at least 1 uppercase letter', 'error')
-            if (utility.isValidPassword(userInfor[1]) == 3):
-                flash('Password must have at least 1 lowercase letter', 'error')
-            if (utility.isValidPassword(userInfor[1]) == 4):
-                flash('Password must have at least 1 character', 'error')
-            if (utility.isValidEmail(userInfor[2]) == 0):
-                flash('Invalid email', 'error')
-            return render_template('signin.html')
-
+    res = request.json
+    username = res['username']
+    password = res['password']
+    email = res['email']
+    if utility.isValidUsername(username) == False:
+        flash('Tên người dùng đã tồn tại', 'error')
+        return jsonify({"redirect": url_for('SignInPage'), "error": "Tên người dùng đã tồn tại"}), 400
+    elif utility.isValidEmail(email) == False:
+        flash('Email đã tồn tại', 'error')
+        return jsonify({"redirect": url_for('SignInPage'), "error": "Email đã tồn tại"}), 400
+    print('correct')
+    db.InsertUser(username, utility.encode(password, username), email)
+    return jsonify({"redirect": url_for('LoginPage'), "error": "None"})
 #------------------------------------API-------------------------------------   
 
   
@@ -274,4 +259,4 @@ def get_filtered_infor():
 def TestAPI():
     return utility.getAllInfor('place')
 
-app.run(debug=True, host="0.0.0.0")
+app.run(debug=True)

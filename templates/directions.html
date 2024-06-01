@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Directions</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://cdn.jsdelivr.net/npm/@goongmaps/goong-js@1.0.9/dist/goong-js.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@goongmaps/goong-js@1.0.9/dist/goong-js.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@goongmaps/goong-places@1.0.0/dist/goong-places.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@goongmaps/goong-places@1.0.0/dist/goong-places.css" rel="stylesheet" />
+<style>
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    #controls {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1;
+        background: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .input-group {
+        margin-bottom: 10px;
+    }
+    
+    .input-group label {
+        display: inline-block;
+        width: 100px;
+    }
+    
+    .input-group input[type="text"],
+    .input-group select {
+        width: calc(100% - 110px);
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+    
+    #getDirections {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    
+    #getDirections:hover {
+        background-color: #0056b3;
+    }
+    
+</style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/@mapbox/polyline/src/polyline.js"></script>
+<script src="https://unpkg.com/@goongmaps/goong-sdk/umd/goong-sdk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@goongmaps/goong-geocoder@1.1.1/dist/goong-geocoder.min.js"></script>
+<link
+    href="https://cdn.jsdelivr.net/npm/@goongmaps/goong-geocoder@1.1.1/dist/goong-geocoder.css"
+    rel="stylesheet"
+    type="text/css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+<div id="controls">
+    <div class="input-group">
+        <label for="origin">Origin:</label>
+        <input type="text" id="origin" placeholder="Enter origin" />
+    </div>
+    <div class="input-group">
+        <label for="destination">Destination:</label>
+        <input type="text" id="destination" placeholder="Enter destination" />
+    </div>
+    <div class="input-group">
+        <label for="vehicle">Vehicle:</label>
+        <select id="vehicle">
+            <option value="car">Car</option>
+            <option value="bike">Bike</option>
+        </select>
+    </div>
+    <button id="getDirections">Get Directions</button>
+</div>
+
+<div id="map"></div>
+<script>
+    goongjs.accessToken = 'W1JZs9IWjMbtpfNFr14dcnIDC8B48Bwu5jUv1j21';
+    var map = new goongjs.Map({
+        container: 'map',
+        style: 'https://tiles.goong.io/assets/goong_map_web.json',
+        center: [105.80278, 20.99245],
+        zoom: 11.5
+    });
+    map.addControl(
+        new GoongGeocoder({
+            accessToken: '8iwgtB5P7kOijSNa1wSuUuFrVgNMf2QqKg3uoOzT',
+            goongjs: goongjs,
+        })
+    );
+    // Add zoom and rotation controls to the map.
+    map.addControl(
+        new goongjs.NavigationControl()
+        );
+
+    map.addControl(
+            new goongjs.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                trackUserLocation: true
+            })
+        );
+
+    map.on('load', function () {
+        var layers = map.getStyle().layers;
+        var firstSymbolId;
+        for (var i = 0; i < layers.length; i++) {
+            if (layers[i].type === 'symbol') {
+                firstSymbolId = layers[i].id;
+                break;
+            }
+        }
+    // Define the minimum and maximum zoom levels
+var minZoom = 6;
+var maxZoom = 16;
+
+map.on('zoom', function() {
+    var currentZoom = map.getZoom();
+    if (currentZoom < minZoom) {
+        map.setZoom(minZoom); // Nếu đang zoom quá nhỏ, sẽ đặt lại zoom level là minZoom
+    } else if (currentZoom > maxZoom) {
+        map.setZoom(maxZoom); // Nếu đang zoom quá lớn, sẽ đặt lại zoom level là maxZoom
+    }
+});
+
+        
+        var goongClient = goongSdk({
+            accessToken: '34Qe5UqjnxQ9bOxygmH0rL4vRRwdw6tnPCkjYZYV'
+        });
+
+        function getCoordinates(address) {
+            return fetch(`https://rsapi.goong.io/Geocode?address=${encodeURIComponent(address)}&api_key=34Qe5UqjnxQ9bOxygmH0rL4vRRwdw6tnPCkjYZYV`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.results && data.results.length > 0) {
+                        return data.results[0].geometry.location;
+                    } else {
+                        throw new Error('No results found');
+                    }
+                });
+        }
+
+        function getDirections(origin, destination, vehicle) {
+            goongClient.directions
+                .getDirections({
+                    origin: `${origin.lat},${origin.lng}`,
+                    destination: `${destination.lat},${destination.lng}`,
+                    vehicle: vehicle
+                })
+                .send()
+                .then(function (response) {
+                    var directions = response.body;
+                    var route = directions.routes[0];
+                    var geometry_string = route.overview_polyline.points;
+                    var geoJSON = polyline.toGeoJSON(geometry_string);
+                    if (map.getSource('route')) {
+                        map.getSource('route').setData(geoJSON);
+                    } else {
+                        map.addSource('route', {
+                            'type': 'geojson',
+                            'data': geoJSON
+                        });
+                        map.addLayer(
+                            {
+                                'id': 'route',
+                                'type': 'line',
+                                'source': 'route',
+                                'layout': {
+                                    'line-join': 'round',
+                                    'line-cap': 'round'
+                                },
+                                'paint': {
+                                    'line-color': '#1e88e5',
+                                    'line-width': 8
+                                }
+                            },
+                            firstSymbolId
+                        );
+                    }
+                });
+        }
+
+        document.getElementById('getDirections').addEventListener('click', function () {
+            var originAddress = document.getElementById('origin').value;
+            var destinationAddress = document.getElementById('destination').value;
+            var vehicle = document.getElementById('vehicle').value;
+            Promise.all([getCoordinates(originAddress), getCoordinates(destinationAddress)])
+                .then(function (locations) {
+                    var origin = locations[0];
+                    var destination = locations[1];
+
+                    // Add markers for origin and destination
+                    new goongjs.Marker({ color: 'blue' })
+                        .setLngLat([origin.lng, origin.lat])
+                        .addTo(map);
+
+                    new goongjs.Marker({ color: 'red' })
+                        .setLngLat([destination.lng, destination.lat])
+                        .addTo(map);
+
+                    getDirections(origin, destination, vehicle);
+                })
+                .catch(function (error) {
+                    alert('Error: ' + error.message);
+                });
+        });
+       
+
+    });
+</script>
+
+</body>
+</html>

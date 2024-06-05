@@ -88,29 +88,34 @@ function validateForm() {
     var usernameLength = (5 <= username.length && username.length <= 10);
     var validEmail = isEmailValid(email);
 
-    if (lengthValid && numberValid && caseValid && usernameLength && validEmail && checkEmpty){
-        fetch('/requestSignUp', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ password, username, email })
-        })
-        .then(response => response.json()) // Lấy dữ liệu JSON từ phản hồi
-        .then(data => {
-            if (data.redirect) {
-                window.location.href = data.redirect;
-            } else if (data.error) {
-                alert(data.error); // Hiển thị lỗi nếu có
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred: ' + error);
+    if (lengthValid && numberValid && caseValid && usernameLength && validEmail && checkEmpty) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/requestSignUp', true);
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     
-        });
-    }
-    else{
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                console.log(`ReadyState: ${xhr.readyState}`);
+                console.log(`Status: ${xhr.status}`);
+                if (xhr.status === 200) {
+                    try {
+                        const data = JSON.parse(xhr.responseText);
+                        console.log('Response Data:', data);
+                    } catch (e) {
+                        console.error('Error parsing JSON:', e);
+                        console.log('Raw response:', xhr.responseText);
+                    }
+                } else {
+                    console.error('Request failed with status:', xhr.status);
+                }
+            }
+        };
+    
+        const requestData = JSON.stringify({ password, username, email });
+        console.log('Request Data:', requestData);
+        xhr.send(requestData);
+    } else {
         alert("Thông tin người dùng chưa xác thực");
     }
+    
 }

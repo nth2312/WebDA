@@ -60,6 +60,15 @@ def HotelDetailPage(hotel_name):
     hotel = utility.getDetailHotelInfor(hotel_name)
     return render_template('detailHotel.html', hotel=hotel)
 
+@app.route('/logout')
+def Logout():
+    res = make_response(redirect(url_for('Login')))
+    res.delete_cookie('username')
+    return res
+
+#------------------------------------API-------------------------------------   
+#-----------------------------------LOGIN/SIGNUP-----------------------------
+
 @app.route('/login', methods = ['POST', 'GET'])
 def Login():
     if request.method == 'POST':
@@ -84,12 +93,6 @@ def Login():
             flash('Invalid username or password', 'error')
     return render_template('login.html')
 
-@app.route('/logout')
-def Logout():
-    res = make_response(redirect(url_for('Login')))
-    res.delete_cookie('username')
-    return res
-
 @app.route('/requestSignUp', methods = ['POST'])
 def SignIn():
     res = request.json
@@ -102,11 +105,9 @@ def SignIn():
     elif utility.isValidEmail(email) == False:
         flash('Email đã tồn tại', 'error')
         return jsonify({"redirect": url_for('SignInPage'), "error": "Email đã tồn tại"}), 400
-    print('correct')
     db.InsertUser(username, utility.encode(password, username), email)
     return jsonify({"redirect": url_for('LoginPage'), "error": "None"})
-#------------------------------------API-------------------------------------   
-
+#-----------------------------------END LOGIN--------------------------------
   
 #------------------------------------PLACE-----------------------------------
 @app.route('/PlaceCommentSubmit', methods=['POST'])
@@ -160,7 +161,6 @@ def react_comment():
         db.InsertQuery(f'Update tbl_place_review Set review_dislike = {new_dislike_count} Where id = {comment_id}')
         return jsonify({'new_dislike_count': new_dislike_count})
 # -----------------------------------ENDPLACE--------------------------------
-
 
 
 #------------------------------------HOTEL-----------------------------------
@@ -253,6 +253,145 @@ def get_filtered_infor():
         return datas
     else:
         return {"data": "None"}
+    
+@app.route('/chatbot',methods=['POST'])
+def test():
+    req = request.get_json(silent=True, force=True)
+    intent_name = req.get('queryResult').get('intent').get('displayName')
+
+    if intent_name == 'detail_diadiem':
+        query = "SELECT * FROM tbl_place"
+        data = db.Query(query=query)
+        list_items = []
+        for row in data:
+            list_item = {
+                "type": "info",
+                "title": row[1],  # Tên địa điểm
+                "subtitle": f"Địa chỉ: {row[2]}, Phí vào cửa: {row[3]} VND",
+                "actionLink": f"https://c128-2402-800-61ae-fcf1-9d04-370e-eea5-784a.ngrok-free.app/pdetail/{row[1]}"
+            }
+            list_items.append(list_item)
+            list_items.append({"type": "divider"})
+        
+        if list_items and list_items[-1]["type"] == "divider":
+            list_items.pop()
+        response = {
+            "fulfillmentMessages": [
+                {
+                    "payload": {
+                        "richContent": [
+                            [
+                                {
+                                    "type": "info",
+                                    "title": "Đây là toàn bộ thông tin các địa điểm mà chúng tôi biết:"
+                                }
+                            ] + list_items
+                        ]
+                    }
+                }
+            ]
+        }
+
+        return jsonify(response)
+
+    if intent_name == 'detail_hotel':
+        query = "SELECT * FROM tbl_hotel"
+        data = db.Query(query=query)
+        list_items = []
+        for row in data:
+            list_item = {
+                "type": "info",
+                "title": row[1],  # Tên địa điểm
+                "subtitle": f"Địa chỉ: {row[2]}, Giá phòng 1 đêm: {row[3]} VND",
+                "actionLink": "https://www.youtube.com/watch?v=_qLaIDHWjtU&t=153s"
+
+            }
+            list_items.append(list_item)
+            list_items.append({"type": "divider"})
+            list_items.append(list_item)
+            list_items.append({"type": "divider"}) 
+        if list_items and list_items[-1]["type"] == "divider":
+            list_items.pop()
+        response = {
+            "fulfillmentMessages": [
+                {
+                    "payload": {
+                        "richContent": [
+                            [
+                                {
+                                    "type": "info",
+                                    "title": "Đây là toàn bộ thông tin hotel mà chúng tôi biết:"
+                                }
+                            ] + list_items
+                        ]
+                    }
+                }
+            ]
+        }
+
+        return jsonify(response)
+    if intent_name == 'gia_vevaocua':
+        #lấy giá trị từ request
+        place_name = req.get('queryResult').get("parameters").get("diadiem_dulich")
+        query = f"SELECT entry_price FROM tbl_place WHERE place_name = '{place_name}'"
+        data = db.Query(query=query)
+        if data:
+            entry_fee = data[0][0]
+            response_text = f"Giá vé vào cửa của {place_name} là {entry_fee} VND."
+        else:
+            response_text = "Xin lỗi, chúng tôi không tìm thấy thông tin về địa điểm này hay chắc chắn rằng bạn nhập đúng tên điạ điểm"
+
+        return jsonify({
+        'fulfillmentText':response_text
+        })
+    if intent_name == 'giaphong_khachsan':
+        #lấy tên địa điểm từ request
+        place_name = req.get('queryResult').get("parameters").get("hotel_name")
+        # print(place_name)
+        query = f"SELECT average_price FROM tbl_hotel WHERE hotel_name = '{place_name}'"
+        data = db.Query(query=query)
+        if data:
+            entry_fee = data[0][0]
+            response_text = f"Giá phòng trung bình 1 đêm của {place_name} là {entry_fee} VND."
+        else:
+            response_text = "Xin lỗi, chúng tôi không tìm thấy thông tin về địa điểm này hay chắc chắn rằng bạn nhập đúng tên điạ điểm"
+        return jsonify({
+        'fulfillmentText':response_text
+        })
+
+    if intent_name == 'vitri_dddl':
+        #lấy giá trị tên địa điểm du lịch từ request
+        place_name = req.get('queryResult').get("parameters").get("diadiem_dulich")
+        # print(place_name)
+        query = f"SELECT place_address FROM tbl_place WHERE place_name = '{place_name}'"
+        data = db.Query(query=query)
+        if data:
+            place_address = data[0][0]
+            response_text = f"Vị tri của {place_name} ở {place_address}"
+        else:
+            response_text = "Xin lỗi, chúng tôi không tìm thấy thông tin về địa điểm này hay chắc chắn rằng bạn nhập đúng tên điạ điểm"
+        return jsonify({
+        'fulfillmentText':response_text
+        })
+    if intent_name == 'vitri_hotel':
+        #lấy giá trị tên địa điểm du lịch từ request
+        place_name = req.get('queryResult').get("parameters").get("hotel_name")
+        # print(place_name)
+        query = f"SELECT hotel_address FROM tbl_hotel WHERE hotel_name = '{place_name}'"
+        data = db.Query(query=query)
+        if data:
+            place_address = data[0][0]
+            response_text = f"Vị tri của {place_name} ở {place_address}"
+        else:
+            response_text = "Xin lỗi, chúng tôi không tìm thấy thông tin về địa điểm này hay chắc chắn rằng bạn nhập đúng tên điạ điểm"
+
+        return jsonify({
+        'fulfillmentText':response_text
+        })
+
+@app.route('/directions')
+def Directionpage():
+    return render_template('directions.html')
 #---------------------------------ENDELSE------------------------------------
 
 @app.route('/TestAPI')

@@ -16,18 +16,6 @@
     margin-top: 10px; */
 }
 
-/* .form-input:focus + .password-criteria{
-    display: block;
-    opacity: 1;
-    max-height: 200px;
-}
-
-.form-input:not(:focus) + .password-criteria{
-    display: none;
-    opacity: 0;
-    max-height: 0;
-} */
-
 .input-error {
     border: 1px solid red;
 }

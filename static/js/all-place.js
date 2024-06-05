@@ -1,5 +1,5 @@
 const showPlace = (place) => `
-<div class="strip_all_tour_list wow fadeIn" data-wow-delay="0.1s">
+<div class="strip_all_tour_list wow fadeIn" data-wow-delay="0.1s" style="border-radius: 10px; overflow: hidden;">
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4">
             <div class="img_list">
@@ -18,7 +18,7 @@ const showPlace = (place) => `
                     <i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star-empty"></i>
                 </div>
                 <h3 style="font-weight: bold">${place.place_name}</h3>
-                <p style="padding">${place.place_short}</p>
+                <p style="font-size: 20px;">${place.place_short}</p>
             </div>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2">
@@ -35,7 +35,15 @@ const showPlace = (place) => `
 
 const showFixedPlaces = (places) => {
     const tourListContainer = document.getElementById('place-container');
-    tourListContainer.innerHTML = places.map(showPlace).join('');
+    tourListContainer.classList.add('show-fade-out');
+    setTimeout(() => {
+        tourListContainer.innerHTML = places.map(showPlace).join('');
+        tourListContainer.classList.remove('show-fade-out');
+        tourListContainer.classList.add('show-fade-in');
+        setTimeout(() => {
+            tourListContainer.classList.remove('show-fade-in');
+        }, 500);
+    }, 500);
 };
 
 const loadAllPlaces = async () => {
@@ -56,10 +64,10 @@ const loadAllPlaces = async () => {
 
 const loadFilteredPlaces = async () => {
     const selectedRadio = document.querySelector('input[name="price_filter[]"]:checked');
+    let inputLabelText = '';
     if (selectedRadio) {
         const label = selectedRadio.parentElement;
-        priceRange = label.textContent.trim();
-        inputLabelText = selectedRadio.parentElement.textContent.trim();
+        inputLabelText = label.textContent.trim();
     }
     const type = 'place';
     try {
@@ -71,19 +79,24 @@ const loadFilteredPlaces = async () => {
             body: JSON.stringify({ inputLabelText, type })
         });
         const places = await response.json();
-        console.log(places.status);
-        if (places.status != "none"){
+        if (places.status !== "none") {
             showFixedPlaces(places);
-        }
-        else{
-            placeContainer = document.getElementById('place-container');
-            placeContainer.innerHTML = "Không có địa điểm nào phù hợp!";
+        } else {
+            const placeContainer = document.getElementById('place-container');
+            placeContainer.classList.add('show-fade-out');
+            setTimeout(() => {
+                placeContainer.innerHTML = "Không có địa điểm nào phù hợp!";
+                placeContainer.classList.remove('show-fade-out');
+                placeContainer.classList.add('show-fade-in');
+                setTimeout(() => {
+                    placeContainer.classList.remove('show-fade-in');
+                }, 500);
+            }, 500);
         }
     } catch (error) {
         console.error('Error fetching filtered places:', error);
     }
 };
-
 
 document.addEventListener('DOMContentLoaded', () => loadAllPlaces());
 document.getElementById('search-button').addEventListener('click', () => {

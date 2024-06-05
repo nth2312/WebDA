@@ -1,5 +1,5 @@
 const showHotel = (hotel) => `
-<div class="strip_all_tour_list wow fadeIn" data-wow-delay="0.1s">
+<div class="strip_all_tour_list wow fadeIn" data-wow-delay="0.1s" style="border-radius: 10px; overflow: hidden;">
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4">
             <div class="img_list">
@@ -18,7 +18,7 @@ const showHotel = (hotel) => `
                     <i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star-empty"></i>
                 </div>
                 <h3 style="font-weight: bold">${hotel.hotel_name}</h3>
-                <p style="padding">${hotel.hotel_short}</p>
+                <p style="font-size: 20px;">${hotel.hotel_short}</p>
             </div>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2">
@@ -35,7 +35,15 @@ const showHotel = (hotel) => `
 
 const showFixedHotels = (hotels) => {
     const tourListContainer = document.getElementById('hotel-container');
-    tourListContainer.innerHTML = hotels.map(showHotel).join('');
+    tourListContainer.classList.add('show-fade-out');
+    setTimeout(() => {
+        tourListContainer.innerHTML = hotels.map(showHotel).join('');
+        tourListContainer.classList.remove('show-fade-out');
+        tourListContainer.classList.add('show-fade-in');
+        setTimeout(() => {
+            tourListContainer.classList.remove('show-fade-in');
+        }, 500);
+    }, 500);
 };
 
 const loadAllHotels = async () => {
@@ -56,10 +64,10 @@ const loadAllHotels = async () => {
 
 const loadFilteredHotels = async () => {
     const selectedRadio = document.querySelector('input[name="price_filter[]"]:checked');
+    let inputLabelText = '';
     if (selectedRadio) {
         const label = selectedRadio.parentElement;
-        priceRange = label.textContent.trim();
-        inputLabelText = selectedRadio.parentElement.textContent.trim();
+        inputLabelText = label.textContent.trim();
     }
     const type = 'hotel';
     try {
@@ -71,19 +79,24 @@ const loadFilteredHotels = async () => {
             body: JSON.stringify({ inputLabelText, type })
         });
         const hotels = await response.json();
-        console.log(hotels.status);
-        if (hotels.status != "none"){
+        if (hotels.status !== "none") {
             showFixedHotels(hotels);
-        }
-        else{
-            hotelContainer = document.getElementById('hotel-container');
-            hotelContainer.innerHTML = "Không có khách sạn nào phù hợp!";
+        } else {
+            const hotelContainer = document.getElementById('hotel-container');
+            hotelContainer.classList.add('show-fade-out');
+            setTimeout(() => {
+                hotelContainer.innerHTML = "Không có khách sạn nào phù hợp!";
+                hotelContainer.classList.remove('show-fade-out');
+                hotelContainer.classList.add('show-fade-in');
+                setTimeout(() => {
+                    hotelContainer.classList.remove('show-fade-in');
+                }, 500);
+            }, 500);
         }
     } catch (error) {
         console.error('Error fetching filtered hotels:', error);
     }
 };
-
 
 document.addEventListener('DOMContentLoaded', () => loadAllHotels());
 document.getElementById('search-button').addEventListener('click', () => {

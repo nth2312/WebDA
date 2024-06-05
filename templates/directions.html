@@ -104,16 +104,16 @@
     // Add zoom and rotation controls to the map.
     map.addControl(
         new goongjs.NavigationControl()
-        );
+    );
 
     map.addControl(
-            new goongjs.GeolocateControl({
-                positionOptions: {
-                    enableHighAccuracy: true
-                },
-                trackUserLocation: true
-            })
-        );
+        new goongjs.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        })
+    );
 
     map.on('load', function () {
         var layers = map.getStyle().layers;
@@ -124,23 +124,24 @@
                 break;
             }
         }
-    // Define the minimum and maximum zoom levels
-var minZoom = 6;
-var maxZoom = 16;
 
-map.on('zoom', function() {
-    var currentZoom = map.getZoom();
-    if (currentZoom < minZoom) {
-        map.setZoom(minZoom); // Nếu đang zoom quá nhỏ, sẽ đặt lại zoom level là minZoom
-    } else if (currentZoom > maxZoom) {
-        map.setZoom(maxZoom); // Nếu đang zoom quá lớn, sẽ đặt lại zoom level là maxZoom
-    }
-});
+        var minZoom = 6;
+        var maxZoom = 16;
 
-        
+        map.on('zoom', function() {
+            var currentZoom = map.getZoom();
+            if (currentZoom < minZoom) {
+                map.setZoom(minZoom);
+            } else if (currentZoom > maxZoom) {
+                map.setZoom(maxZoom);
+            }
+        });
+
         var goongClient = goongSdk({
             accessToken: '34Qe5UqjnxQ9bOxygmH0rL4vRRwdw6tnPCkjYZYV'
         });
+
+        var markers = [];
 
         function getCoordinates(address) {
             return fetch(`https://rsapi.goong.io/Geocode?address=${encodeURIComponent(address)}&api_key=34Qe5UqjnxQ9bOxygmH0rL4vRRwdw6tnPCkjYZYV`)
@@ -198,19 +199,28 @@ map.on('zoom', function() {
             var originAddress = document.getElementById('origin').value;
             var destinationAddress = document.getElementById('destination').value;
             var vehicle = document.getElementById('vehicle').value;
+
+            // Remove existing markers
+            markers.forEach(function(marker) {
+                marker.remove();
+            });
+            markers = [];
+
             Promise.all([getCoordinates(originAddress), getCoordinates(destinationAddress)])
                 .then(function (locations) {
                     var origin = locations[0];
                     var destination = locations[1];
 
                     // Add markers for origin and destination
-                    new goongjs.Marker({ color: 'blue' })
+                    var originMarker = new goongjs.Marker({ color: 'blue' })
                         .setLngLat([origin.lng, origin.lat])
                         .addTo(map);
-
-                    new goongjs.Marker({ color: 'red' })
+                    var destinationMarker = new goongjs.Marker({ color: 'red' })
                         .setLngLat([destination.lng, destination.lat])
                         .addTo(map);
+
+                    // Store markers in the array
+                    markers.push(originMarker, destinationMarker);
 
                     getDirections(origin, destination, vehicle);
                 })
@@ -218,7 +228,6 @@ map.on('zoom', function() {
                     alert('Error: ' + error.message);
                 });
         });
-       
 
     });
 </script>

@@ -107,6 +107,28 @@ INSERT INTO stores (store_id, store_name, link) VALUES (64, 'Bánh cốm Hồng 
 INSERT INTO stores (store_id, store_name, link) VALUES (65, 'Bò nướng Cúc Phương', 'https://maps.app.goo.gl/XzrmEcjLGugqoPay8');
 INSERT INTO stores (store_id, store_name, link) VALUES (66, 'Bò Chất - Lẩu Nướng', 'https://maps.app.goo.gl/GpXt5gXRhE5VyZ9R6');
 
+
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (1, 'Bảo tàng Lịch sử Quốc gia', 21.02461539727238, 105.85977239563464);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (2, 'Hồ Gươm', 21.02890491644988, 105.85219303426125);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (3, 'Tràng Tiền Plaza', 21.024876868000593, 105.85315584960455);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (4, 'Nhà tù hỏa lò', 21.0253296806232, 105.84653173981394);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (5, 'Cầu Thê Húc', 21.030821193932, 105.85281569563485);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (6, 'Nhà hát múa rối Thăng Long', 21.03192291890948, 105.85326076494813);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (7, 'Phố sách Hà Nội', 21.02525911510973, 105.84788260912715);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (8, 'Vườn hoa Lý Thái Tổ', 21.027645582640996, 105.85474871097819);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (9, 'Con đường gốm sứ', 21.030277064713818, 105.85740172261967);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (10, 'Phố Bích họa Phùng Hưng', 21.03867190801747, 105.84694511097847);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (11, 'Nhà Thờ lớn Hà Nội', 21.028813795141076, 105.84887799563474);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (12, 'Đền Ngọc Sơn', 21.03084910725805, 105.85245433981407);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (13, 'Chùa Quán Sứ', 21.02468365764751, 105.84538161097807);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (14, 'Tháp Bút', 21.030855148984344, 105.8533911821424);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (15, 'Khu phố cổ Hà Nội', 21.03443740515579, 105.85081186676028);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (16, 'Bốt Hàng Đậu', 21.040512168582826, 105.84762542837362);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (17, 'Nhà hát Lớn Hà Nội', 21.02425521207461, 105.85798932632146);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (18, 'Phố đi bộ Hồ Gươm', 21.025955199530063, 105.85323158029134);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (19, 'Bưu điện Hà Nội', 21.02661847852201, 105.8537895649649);
+INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (20, 'Tháp Hòa Phong', 21.026377541011538, 105.85320842261967);
+
 #Place_Stores
 INSERT INTO place_store (id, place_id, store_id) VALUES (1, 1, 1);
 INSERT INTO place_store (id, place_id, store_id) VALUES (2, 1, 2);
@@ -220,26 +242,6 @@ INSERT INTO place_store (id, place_id, store_id) VALUES (109, 16, 62);
 INSERT INTO place_store (id, place_id, store_id) VALUES (110, 16, 63);
 INSERT INTO place_store (id, place_id, store_id) VALUES (111, 16, 64);
 INSERT INTO place_store (id, place_id, store_id) VALUES (112, 16, 65);
-INSERT INTO place_store (id, place_id, store_id) VALUES (113, 16, 66);
+INSERT INTO place_store (id, place_id, store_id) VALUES (113, 16, 66);tbl_user
 
 #Place
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (1, 'Bảo tàng Lịch sử Quốc gia', 21.02461539727238, 105.85977239563464);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (2, 'Hồ Gươm', 21.02890491644988, 105.85219303426125);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (3, 'Tràng Tiền Plaza', 21.024876868000593, 105.85315584960455);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (4, 'Nhà tù hỏa lò', 21.0253296806232, 105.84653173981394);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (5, 'Cầu Thê Húc', 21.030821193932, 105.85281569563485);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (6, 'Nhà hát múa rối Thăng Long', 21.03192291890948, 105.85326076494813);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (7, 'Phố sách Hà Nội', 21.02525911510973, 105.84788260912715);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (8, 'Vườn hoa Lý Thái Tổ', 21.027645582640996, 105.85474871097819);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (9, 'Con đường gốm sứ', 21.030277064713818, 105.85740172261967);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (10, 'Phố Bích họa Phùng Hưng', 21.03867190801747, 105.84694511097847);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (11, 'Nhà Thờ lớn Hà Nội', 21.028813795141076, 105.84887799563474);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (12, 'Đền Ngọc Sơn', 21.03084910725805, 105.85245433981407);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (13, 'Chùa Quán Sứ', 21.02468365764751, 105.84538161097807);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (14, 'Tháp Bút', 21.030855148984344, 105.8533911821424);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (15, 'Khu phố cổ Hà Nội', 21.03443740515579, 105.85081186676028);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (16, 'Bốt Hàng Đậu', 21.040512168582826, 105.84762542837362);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (17, 'Nhà hát Lớn Hà Nội', 21.02425521207461, 105.85798932632146);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (18, 'Phố đi bộ Hồ Gươm', 21.025955199530063, 105.85323158029134);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (19, 'Bưu điện Hà Nội', 21.02661847852201, 105.8537895649649);
-INSERT INTO place (place_id, place_name, latitude, longitude) VALUES (20, 'Tháp Hòa Phong', 21.026377541011538, 105.85320842261967);

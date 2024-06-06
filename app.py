@@ -95,18 +95,29 @@ def Login():
 
 @app.route('/requestSignUp', methods = ['POST'])
 def SignIn():
-    res = request.json
-    username = res['username']
-    password = res['password']
-    email = res['email']
+    username = request.form.get('username')
+    password = request.form.get('password')
+    email = request.form.get('email')
+
     if utility.isValidUsername(username) == False:
-        flash('Tên người dùng đã tồn tại', 'error')
-        return jsonify({"redirect": url_for('SignInPage'), "error": "Tên người dùng đã tồn tại"}), 400
+        response_data = {
+            "redirect": "/signup",
+            "error": "Username đã tồn tại"
+        }
+        return jsonify(response_data)
     elif utility.isValidEmail(email) == False:
-        flash('Email đã tồn tại', 'error')
-        return jsonify({"redirect": url_for('SignInPage'), "error": "Email đã tồn tại"}), 400
+        response_data = {
+            "redirect": "/signup",
+            "error": "Email da ton tai"
+        }
+        return jsonify(response_data)
+    
+    response_data = {
+        "redirect": "/login",
+        "error": "None"
+    }
     db.InsertUser(username, utility.encode(password, username), email)
-    return jsonify({"redirect": url_for('LoginPage'), "error": "None"})
+    return jsonify(response_data)
 #-----------------------------------END LOGIN--------------------------------
   
 #------------------------------------PLACE-----------------------------------

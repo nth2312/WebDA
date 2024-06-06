@@ -88,32 +88,35 @@ function validateForm() {
     var usernameLength = (5 <= username.length && username.length <= 10);
     var validEmail = isEmailValid(email);
 
+    console.log(password + " " + username + " " + email);
+
     if (lengthValid && numberValid && caseValid && usernameLength && validEmail && checkEmpty) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', '/requestSignUp', true);
-        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-    
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                console.log(`ReadyState: ${xhr.readyState}`);
-                console.log(`Status: ${xhr.status}`);
-                if (xhr.status === 200) {
-                    try {
-                        const data = JSON.parse(xhr.responseText);
-                        console.log('Response Data:', data);
-                    } catch (e) {
-                        console.error('Error parsing JSON:', e);
-                        console.log('Raw response:', xhr.responseText);
-                    }
+
+        xhr.onload = function(){
+            if (xhr.status == 200){
+                const responseData = JSON.parse(xhr.responseText);
+                
+                const redirectURL = responseData.redirect;
+                const responseError = responseData.error;
+                
+                if (redirectURL && responseError == "None") {
+                    window.location.href = redirectURL;
                 } else {
-                    console.error('Request failed with status:', xhr.status);
+                    window.location.href = redirectURL;
+                    alert(responseError);
                 }
             }
-        };
-    
-        const requestData = JSON.stringify({ password, username, email });
-        console.log('Request Data:', requestData);
-        xhr.send(requestData);
+        }
+
+        let userData = new FormData();
+        userData.append('username', username);
+        userData.append('password', password);
+        userData.append('email', email);
+
+        console.log('Request Data:', userData);
+        xhr.send(userData);
     } else {
         alert("Thông tin người dùng chưa xác thực");
     }

@@ -4,7 +4,7 @@ class Database:
     def __init__(self):
         self.db = mysql.connector.connect(
             host="localhost",
-            user="nth2312",
+            user="root",
             password="NTH23122",
             database="dtb_web"
         )

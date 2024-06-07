@@ -1,4 +1,6 @@
 #User data
+insert into tbl_user values("nth2312", "Nth23122", "truonghieu2312@gmail.com", 0);
+insert into tbl_user values("hieu2312", "Nth23122", "truonghieu2312@gmail.com", 0);
 insert into tbl_user values("admin", "admin", "admin@gmail.com", 1);
 
 #Place data

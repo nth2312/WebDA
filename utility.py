@@ -1,5 +1,7 @@
 from database import Database
 import os
+import string
+import time
 
 class Utility:
     def __init__(self):
@@ -10,16 +12,22 @@ class Utility:
         self.hotelList = self.tupeToDict(hotels, hotelkeys)
 
         places = self.db.GetData('tbl_place')
-        placekeys = ['place_id', 'place_name', 'place_address', 'entry_price']
+        placekeys = ['place_id', 'place_name', 'place_address', 'entry_price', 'latitude', 'longtitude']
         self.placeList = self.tupeToDict(places, placekeys)
+
+        self.charset = string.ascii_letters + string.digits
+        self.charset_len = len(self.charset)
 
     def encode(self, text, key):
         encoded_chars = []
         key_length = len(key)
         for i, char in enumerate(text):
-            key_char = key[i % key_length]
-            encoded_char = chr((ord(char) + ord(key_char)) % 256)
-            encoded_chars.append(encoded_char)
+            if char in self.charset:
+                key_char = key[i % key_length]
+                encoded_index = (self.charset.index(char) + self.charset.index(key_char)) % self.charset_len
+                encoded_chars.append(self.charset[encoded_index])
+            else:
+                encoded_chars.append(char)  # Giữ nguyên ký tự nếu không có trong bảng mã hóa
         encoded_string = ''.join(encoded_chars)
         return encoded_string
 
@@ -27,9 +35,12 @@ class Utility:
         decoded_chars = []
         key_length = len(key)
         for i, char in enumerate(encoded_text):
-            key_char = key[i % key_length]
-            decoded_char = chr((ord(char) - ord(key_char)) % 256)
-            decoded_chars.append(decoded_char)
+            if char in self.charset:
+                key_char = key[i % key_length]
+                decoded_index = (self.charset.index(char) - self.charset.index(key_char)) % self.charset_len
+                decoded_chars.append(self.charset[decoded_index])
+            else:
+                decoded_chars.append(char)  # Giữ nguyên ký tự nếu không có trong bảng mã hóa
         decoded_string = ''.join(decoded_chars)
         return decoded_string
 
@@ -151,8 +162,8 @@ class Utility:
         return detail
     
     def getPlacecoordinates(self, place_id):
-        placeInfor = self.db.Query(f"select * from place where place_id = {place_id}")
-        keys = ['place_id', 'place_name', 'lat', 'long']
+        placeInfor = self.db.Query(f"select * from tbl_place where place_id = {place_id}")
+        keys = ['place_id', 'place_name', 'place_address', 'entry_price', 'lat', 'long']
         placeInfor = self.tupeToDict(placeInfor, keys)[0]
         placeInfor['lat'] = float(placeInfor['lat'])
         placeInfor['long'] = float(placeInfor['long'])
@@ -160,7 +171,7 @@ class Utility:
         return placeInfor
 
     def getNearStore(self, place_id):
-        stores = self.db.Query(f"select stores.store_name, stores.link from stores inner join place_store on stores.store_id = place_store.store_id where place_store.place_id = {place_id}")
+        stores = self.db.Query(f"select tbl_stores.store_name, tbl_stores.link from tbl_stores inner join tbl_place_stores on tbl_stores.store_id = tbl_place_stores.store_id where tbl_place_stores.place_id = {place_id}")
         keys = ['store_name', 'store_link']
         stores = self.tupeToDict(stores, keys)
         return stores
@@ -276,12 +287,24 @@ class Utility:
             return False
         return True
 
+    def IsValidLogin(self, username, password):
+        userInfor = self.db.GetData("tbl_user")
+        ret = 2
+        for user in userInfor:
+            if username == user[0] and self.encode(password, username) == user[1]:
+                if user[3] == "0":
+                    ret = 1
+                else:
+                    ret = 0
+        return ret
+
+
     def tupeToDict(self, data, key):
         returnDict = []
         for row in data:
             data_dict = {key: value for key, value in zip(key, row)}
             returnDict.append(data_dict)
         return returnDict
-    
+
 u = Utility()
-# u.isValidEmail("truonghieu23d12@gmail.com")
+# print(u.IsValidLogin("hieu000", "Nth23122"))

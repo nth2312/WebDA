@@ -1,5 +1,5 @@
-create database dtb_web;
-use dtb_web;
+create database dtb_web1;
+use dtb_web1;
 
 create table tbl_user(
 	user_username varchar(10) primary key,

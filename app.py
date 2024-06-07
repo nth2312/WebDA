@@ -11,14 +11,19 @@ utility = Utility()
 
 def IsValidLogin(username, password):
     userInfor = db.GetData("tbl_user")
-    adminInfor = db.GetData("tbl_admin")
+    print(userInfor)
+    ret = 2
     for user in userInfor:
         if (username == user[0] and utility.encode(password, username) == user[1]):
-            return 1
-    for admin in adminInfor:
-        if (username == admin[0] and utility.encode(password, username) == admin[1]):
-            return 0
-    return 2
+            print(username + " " + password + ": correct")
+            print(user[3] + " " + str(type(user[3])))
+            print(user[3] == "0")
+            print(user[3] == "1")
+            if (user[3] == "0"):
+                ret = 1
+            else:
+                ret = 0
+    return ret
 
 @app.route('/')
 def MainPage():
@@ -42,56 +47,81 @@ def SignInPage():
 
 @app.route('/all/hotel')
 def AllPage():
-    return render_template('allHotel.html')
+    cookie = request.cookies.get('username')
+    if cookie is not None:
+        return render_template('allHotel.html')
+    else:
+        return redirect(url_for('LoginPage'))
 
 @app.route('/all/place')
 def AllPlace():
-    return render_template('allPlace.html')
+    cookie = request.cookies.get('username')
+    if cookie is not None:
+        return render_template('allPlace.html')
+    else:
+        return redirect(url_for('LoginPage'))
 
 @app.route('/pdetail/<place_name>')
 def PlaceDetailPage(place_name):
     place = utility.getDetailPlaceInfor(place_name)
     coordinates = utility.getPlacecoordinates(place['place_id'])
     stores = utility.getNearStore(place['place_id'])
-    return render_template('detailPlace.html', place=place, stores=stores, coord=coordinates)
+    cookie = request.cookies.get('username')
+    if cookie is not None:
+        return render_template('detailPlace.html', place=place, stores=stores, coord=coordinates)
+    else:
+        return redirect(url_for('LoginPage'))
 
 @app.route('/hdetail/<hotel_name>')
 def HotelDetailPage(hotel_name):
     hotel = utility.getDetailHotelInfor(hotel_name)
-    return render_template('detailHotel.html', hotel=hotel)
+    cookie = request.cookies.get('username')
+    if cookie is not None:
+        return render_template('detailHotel.html', hotel=hotel)
+    else:
+        return redirect(url_for('LoginPage'))
 
 @app.route('/logout')
 def Logout():
     res = make_response(redirect(url_for('Login')))
     res.delete_cookie('username')
+    res.delete_cookie('ncode_username')
     return res
 
 #------------------------------------API-------------------------------------   
 #-----------------------------------LOGIN/SIGNUP-----------------------------
 
-@app.route('/login', methods = ['POST', 'GET'])
+@app.route('/login', methods=['POST', 'GET'])
 def Login():
     if request.method == 'POST':
         username = request.form['username'].strip()
         password = request.form['password'].strip()
-        if IsValidLogin(username, password) == 1:
+        print(f"Attempting login for user: {username}")
+        
+        login_status = IsValidLogin(username, password)
+        print(f"Login status: {login_status}")
+        
+        if login_status == 1:
             try:
                 remember = request.form['remember-account']
             except:
                 remember = "off"
             if remember == "on":
-                    index = make_response(redirect(url_for('MainPage')))
-                    index.set_cookie('username', username)
-                    return index
+                index = make_response(redirect(url_for('MainPage')))
+                index.set_cookie('username', username)
+                index.set_cookie('ncode_username', utility.encode(username, "hoankiem"))
+                return index
             else:
                 index = make_response(redirect(url_for('MainPage')))
                 index.set_cookie('username', username, max_age=20)
+                index.set_cookie('ncode_username', utility.encode(username, "hoankiem"))
                 return index
-        elif IsValidLogin(username, password) == 0:
+        elif login_status == 0:
             return redirect(url_for('AdminPage'))
         else:
             flash('Invalid username or password', 'error')
     return render_template('login.html')
+
 
 @app.route('/requestSignUp', methods = ['POST'])
 def SignIn():
@@ -116,7 +146,13 @@ def SignIn():
         "redirect": "/login",
         "error": "None"
     }
-    db.InsertUser(username, utility.encode(password, username), email)
+    data = {
+        'user_username': username,
+        'user_password': utility.encode(password, username),
+        'user_email': email,
+        'user_role': "0"
+    }
+    db.InsertData("tbl_user", data)
     return jsonify(response_data)
 #-----------------------------------END LOGIN--------------------------------
   
@@ -181,7 +217,7 @@ def submit_hotel_review():
     #Prepare data
     reviewList = db.GetData('tbl_hotel_review')
     comment_id = len(reviewList) + 1
-    comment_username = request.cookies['username']
+    comment_username = utility.decode(request.cookies['ncode_username'], "hoankiem")
     comment_hotelid = review.split("|")[0]
     comment_like = comment_dislike = 0
     comment_comment = review.split("|")[1]

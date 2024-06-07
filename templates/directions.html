@@ -8,6 +8,12 @@
 <link href="https://cdn.jsdelivr.net/npm/@goongmaps/goong-js@1.0.9/dist/goong-js.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/@goongmaps/goong-places@1.0.0/dist/goong-places.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/@goongmaps/goong-places@1.0.0/dist/goong-places.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@mapbox/polyline/src/polyline.js"></script>
+<script src="https://unpkg.com/@goongmaps/goong-sdk/umd/goong-sdk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@goongmaps/goong-geocoder@1.1.1/dist/goong-geocoder.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@goongmaps/goong-geocoder@1.1.1/dist/goong-geocoder.css" rel="stylesheet" type="text/css"/>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
 <style>
     body { margin: 0; padding: 0; }
     #map { position: absolute; top: 0; bottom: 0; width: 100%; }
@@ -24,12 +30,10 @@
     .input-group {
         margin-bottom: 10px;
     }
-    
     .input-group label {
         display: inline-block;
         width: 100px;
     }
-    
     .input-group input[type="text"],
     .input-group select {
         width: calc(100% - 110px);
@@ -39,7 +43,6 @@
         box-sizing: border-box;
         font-size: 14px;
     }
-    
     #getDirections {
         padding: 10px 20px;
         background-color: #007bff;
@@ -49,87 +52,81 @@
         cursor: pointer;
         font-size: 16px;
     }
-    
     #getDirections:hover {
         background-color: #0056b3;
     }
-    
+    #getCurrentLocation {
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    #getCurrentLocation:hover {
+        background-color: #218838;
+    }
 </style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@mapbox/polyline/src/polyline.js"></script>
-<script src="https://unpkg.com/@goongmaps/goong-sdk/umd/goong-sdk.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@goongmaps/goong-geocoder@1.1.1/dist/goong-geocoder.min.js"></script>
-<link
-    href="https://cdn.jsdelivr.net/npm/@goongmaps/goong-geocoder@1.1.1/dist/goong-geocoder.css"
-    rel="stylesheet"
-    type="text/css"
-/>
-<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
 <div id="controls">
     <div class="input-group">
-        <label for="origin">Origin:</label>
-        <input type="text" id="origin" placeholder="Enter origin" />
+        <label for="origin">Điểm bắt đầu:</label>
+        <input type="text" id="origin" placeholder="Nhập vào" />
     </div>
     <div class="input-group">
-        <label for="destination">Destination:</label>
-        <input type="text" id="destination" placeholder="Enter destination" />
+        <label for="destination">Đích:</label>
+        <input type="text" id="destination" placeholder="Nhập vào" />
     </div>
     <div class="input-group">
-        <label for="vehicle">Vehicle:</label>
+        <label for="vehicle">Phương tiện:</label>
         <select id="vehicle">
-            <option value="car">Car</option>
-            <option value="bike">Bike</option>
+            <option value="car">Oto</option>
+            <option value="bike">Xe Máy</option>
         </select>
     </div>
-    <button id="getDirections">Get Directions</button>
+    <button id="getDirections">Chỉ Đường</button>
+    <button id="getCurrentLocation">Chọn vị trí hiện tại</button>
 </div>
-
 <div id="map"></div>
 <script>
     goongjs.accessToken = 'W1JZs9IWjMbtpfNFr14dcnIDC8B48Bwu5jUv1j21';
-    var map = new goongjs.Map({
+    const map = new goongjs.Map({
         container: 'map',
         style: 'https://tiles.goong.io/assets/goong_map_web.json',
         center: [105.80278, 20.99245],
         zoom: 11.5
     });
-    map.addControl(
-        new GoongGeocoder({
-            accessToken: '8iwgtB5P7kOijSNa1wSuUuFrVgNMf2QqKg3uoOzT',
-            goongjs: goongjs,
-        })
-    );
-    // Add zoom and rotation controls to the map.
-    map.addControl(
-        new goongjs.NavigationControl()
-    );
 
-    map.addControl(
-        new goongjs.GeolocateControl({
-            positionOptions: {
-                enableHighAccuracy: true
-            },
-            trackUserLocation: true
-        })
-    );
+    map.addControl(new GoongGeocoder({
+        accessToken: '8iwgtB5P7kOijSNa1wSuUuFrVgNMf2QqKg3uoOzT',
+        goongjs: goongjs,
+    }));
 
-    map.on('load', function () {
-        var layers = map.getStyle().layers;
-        var firstSymbolId;
-        for (var i = 0; i < layers.length; i++) {
-            if (layers[i].type === 'symbol') {
-                firstSymbolId = layers[i].id;
+    map.addControl(new goongjs.NavigationControl());
+    const geolocateControl = new goongjs.GeolocateControl({
+        positionOptions: { enableHighAccuracy: true },
+        trackUserLocation: false
+    });
+    map.addControl(geolocateControl);
+
+    map.on('load', () => {
+        const layers = map.getStyle().layers;
+        let firstSymbolId;
+        for (const layer of layers) {
+            if (layer.type === 'symbol') {
+                firstSymbolId = layer.id;
                 break;
             }
         }
 
-        var minZoom = 6;
-        var maxZoom = 16;
+        const minZoom = 6;
+        const maxZoom = 16;
 
-        map.on('zoom', function() {
-            var currentZoom = map.getZoom();
+        map.on('zoom', () => {
+            const currentZoom = map.getZoom();
             if (currentZoom < minZoom) {
                 map.setZoom(minZoom);
             } else if (currentZoom > maxZoom) {
@@ -137,14 +134,12 @@
             }
         });
 
-        var goongClient = goongSdk({
-            accessToken: '34Qe5UqjnxQ9bOxygmH0rL4vRRwdw6tnPCkjYZYV'
-        });
+        const goongClient = goongSdk({ accessToken: '34Qe5UqjnxQ9bOxygmH0rL4vRRwdw6tnPCkjYZYV' });
+        let markers = [];
 
-        var markers = [];
-
-        function getCoordinates(address) {
-            return fetch(`https://rsapi.goong.io/Geocode?address=${encodeURIComponent(address)}&api_key=34Qe5UqjnxQ9bOxygmH0rL4vRRwdw6tnPCkjYZYV`)
+        const getCoordinates = (address) => {
+            const url = `https://rsapi.goong.io/Geocode?address=${encodeURIComponent(address)}&api_key=34Qe5UqjnxQ9bOxygmH0rL4vRRwdw6tnPCkjYZYV`;
+            return fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     if (data.results && data.results.length > 0) {
@@ -153,84 +148,84 @@
                         throw new Error('No results found');
                     }
                 });
-        }
+        };
 
-        function getDirections(origin, destination, vehicle) {
-            goongClient.directions
-                .getDirections({
-                    origin: `${origin.lat},${origin.lng}`,
-                    destination: `${destination.lat},${destination.lng}`,
-                    vehicle: vehicle
-                })
-                .send()
-                .then(function (response) {
-                    var directions = response.body;
-                    var route = directions.routes[0];
-                    var geometry_string = route.overview_polyline.points;
-                    var geoJSON = polyline.toGeoJSON(geometry_string);
-                    if (map.getSource('route')) {
-                        map.getSource('route').setData(geoJSON);
+        const getDirections = (origin, destination, vehicle) => {
+            goongClient.directions.getDirections({
+                origin: `${origin.lat},${origin.lng}`,
+                destination: `${destination.lat},${destination.lng}`,
+                vehicle: vehicle
+            }).send().then(response => {
+                const directions = response.body;
+                const route = directions.routes[0];
+                const geoJSON = polyline.toGeoJSON(route.overview_polyline.points);
+
+                if (map.getSource('route')) {
+                    map.getSource('route').setData(geoJSON);
+                } else {
+                    map.addSource('route', { 'type': 'geojson', 'data': geoJSON });
+                    map.addLayer({
+                        'id': 'route',
+                        'type': 'line',
+                        'source': 'route',
+                        'layout': { 'line-join': 'round', 'line-cap': 'round' },
+                        'paint': { 'line-color': '#1e88e5', 'line-width': 8 }
+                    }, firstSymbolId);
+                }
+            });
+        };
+
+        const reverseGeocode = (lat, lng) => {
+            const url = `https://rsapi.goong.io/Geocode?latlng=${lat},${lng}&api_key=34Qe5UqjnxQ9bOxygmH0rL4vRRwdw6tnPCkjYZYV`;
+            return fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.results && data.results.length > 0) {
+                        return data.results[0].formatted_address;
                     } else {
-                        map.addSource('route', {
-                            'type': 'geojson',
-                            'data': geoJSON
-                        });
-                        map.addLayer(
-                            {
-                                'id': 'route',
-                                'type': 'line',
-                                'source': 'route',
-                                'layout': {
-                                    'line-join': 'round',
-                                    'line-cap': 'round'
-                                },
-                                'paint': {
-                                    'line-color': '#1e88e5',
-                                    'line-width': 8
-                                }
-                            },
-                            firstSymbolId
-                        );
+                        throw new Error('No address found');
                     }
                 });
-        }
+        };
 
-        document.getElementById('getDirections').addEventListener('click', function () {
-            var originAddress = document.getElementById('origin').value;
-            var destinationAddress = document.getElementById('destination').value;
-            var vehicle = document.getElementById('vehicle').value;
+        document.getElementById('getDirections').addEventListener('click', () => {
+            const originAddress = document.getElementById('origin').value;
+            const destinationAddress = document.getElementById('destination').value;
+            const vehicle = document.getElementById('vehicle').value;
 
-            // Remove existing markers
-            markers.forEach(function(marker) {
-                marker.remove();
-            });
+            markers.forEach(marker => marker.remove());
             markers = [];
 
             Promise.all([getCoordinates(originAddress), getCoordinates(destinationAddress)])
-                .then(function (locations) {
-                    var origin = locations[0];
-                    var destination = locations[1];
-
-                    // Add markers for origin and destination
-                    var originMarker = new goongjs.Marker({ color: 'blue' })
+                .then(([origin, destination]) => {
+                    const originMarker = new goongjs.Marker({ color: 'blue' })
                         .setLngLat([origin.lng, origin.lat])
                         .addTo(map);
-                    var destinationMarker = new goongjs.Marker({ color: 'red' })
+                    const destinationMarker = new goongjs.Marker({ color: 'red' })
                         .setLngLat([destination.lng, destination.lat])
                         .addTo(map);
 
-                    // Store markers in the array
                     markers.push(originMarker, destinationMarker);
-
                     getDirections(origin, destination, vehicle);
                 })
-                .catch(function (error) {
-                    alert('Error: ' + error.message);
-                });
+                .catch(error => alert('Error: ' + error.message));
         });
 
+        document.getElementById('getCurrentLocation').addEventListener('click', () => {
+            geolocateControl.trigger();
+        });
+        
+        geolocateControl.on('geolocate', (e) => {
+            const { latitude, longitude } = e.coords;
+            reverseGeocode(latitude, longitude)
+                .then(address => {
+                    document.getElementById('origin').value = address; // Set the address to the "Origin" input field
+                })
+                .catch(error => alert('Error: ' + error.message));
+        });
+        
     });
+    
 </script>
-
 </body>
 </html>

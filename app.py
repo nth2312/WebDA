@@ -64,8 +64,6 @@ def UpdateTableData():
             return jsonify({'status': 'failed'})
     return jsonify({'status': 'success'})
 
-
-
 @app.route('/login')
 def LoginPage():
     return render_template('login.html')

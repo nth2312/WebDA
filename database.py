@@ -59,3 +59,23 @@ class Database:
             print(f"Error executing query: {e}")
         finally:
             cursor.close()
+
+    def UpdateData(self, query, params):
+        cursor = self.db.cursor()
+        try:
+            cursor.execute(query, params)
+            self.db.commit()
+            return True  # Trả về True nếu cập nhật thành công
+        except Exception as e:
+            self.db.rollback()
+            print(f"Error updating data: {e}")
+            return False  # Trả về False nếu có lỗi xảy ra
+        finally:
+            cursor.close()
+
+    def GetColumns(self, table):
+        cursor = self.db.cursor()
+        cursor.execute(f"SHOW COLUMNS FROM {table}")
+        columns = cursor.fetchall()
+        cursor.close()
+        return [column[0] for column in columns]

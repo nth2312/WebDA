@@ -3,6 +3,7 @@ from flask import render_template, url_for, make_response, request, session, red
 from database import Database
 from utility import Utility
 from datetime import datetime
+import json
 
 app = Flask(__name__)
 app.secret_key = 'DHCNHN'
@@ -35,7 +36,33 @@ def MainPage():
 
 @app.route('/administrator')
 def AdminPage():
-    return render_template('adminView.html')
+    tables = ['tbl_hotel', 'tbl_hotel_review', 'tbl_place', 'tbl_place_review', 'tbl_stores', 'tbl_user']
+    return render_template('adminView.html', tables=tables)
+
+@app.route('/get_table_data', methods=['GET'])
+def GetTableData():
+    table_name = request.args.get('table_name')
+    columns = db.GetColumns(table_name)
+    data = db.GetData(table_name)
+    return jsonify({'columns': columns, 'data': data})
+
+@app.route('/update_table_data', methods=['POST'])
+def UpdateTableData():
+    table_name = request.form['table_name']
+    data_str = request.form['data']
+    data = json.loads(data_str)
+    for cell in data:
+        row_id = cell['row']
+        column = cell['column']
+        value = cell['value']
+        primary_key_column = db.GetColumns(table_name)[0]
+        primary_key_value = db.GetData(table_name)[row_id][0]
+        update_query = f"UPDATE {table_name} SET {column} = %s WHERE {primary_key_column} = %s"
+        params = [value, primary_key_value]
+        result = db.UpdateData(update_query, params)
+        if result is False:
+            return jsonify({'status': 'failed'})
+    return jsonify({'status': 'success'})
 
 @app.route('/login')
 def LoginPage():
@@ -88,7 +115,7 @@ def Logout():
     res.delete_cookie('ncode_username')
     return res
 
-#------------------------------------API-------------------------------------   
+#------------------------------------API-------------------------------------
 #-----------------------------------LOGIN/SIGNUP-----------------------------
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -97,10 +124,10 @@ def Login():
         username = request.form['username'].strip()
         password = request.form['password'].strip()
         print(f"Attempting login for user: {username}")
-        
+
         login_status = IsValidLogin(username, password)
         print(f"Login status: {login_status}")
-        
+
         if login_status == 1:
             try:
                 remember = request.form['remember-account']
@@ -141,7 +168,7 @@ def SignIn():
             "error": "Email da ton tai"
         }
         return jsonify(response_data)
-    
+
     response_data = {
         "redirect": "/login",
         "error": "None"
@@ -155,7 +182,7 @@ def SignIn():
     db.InsertData("tbl_user", data)
     return jsonify(response_data)
 #-----------------------------------END LOGIN--------------------------------
-  
+
 #------------------------------------PLACE-----------------------------------
 @app.route('/PlaceCommentSubmit', methods=['POST'])
 def submit_place_review():
@@ -176,7 +203,7 @@ def submit_place_review():
         'review_like': comment_like,
         'review_dislike': comment_dislike,
         'review_comment': comment_comment,
-        'review_time': comment_time,    
+        'review_time': comment_time,
     }
     db.InsertData('tbl_place_review', comment)
 
@@ -230,7 +257,7 @@ def submit_hotel_review():
         'review_like': comment_like,
         'review_dislike': comment_dislike,
         'review_comment': comment_comment,
-        'review_time': comment_time,   
+        'review_time': comment_time,
     }
     db.InsertData('tbl_hotel_review', comment)
 
@@ -261,7 +288,7 @@ def react_hotel_comment():
         new_dislike_count = int(currentDisLike) + 1
         db.InsertQuery(f'Update tbl_hotel_review Set review_dislike = {new_dislike_count} Where id = {comment_id}')
         return jsonify({'new_dislike_count': new_dislike_count})
-    
+
 @app.route('/PlaceReact', methods=['POST'])
 def react_place_comment():
     data = request.json
@@ -300,7 +327,7 @@ def get_filtered_infor():
         return datas
     else:
         return {"data": "None"}
-    
+
 @app.route('/chatbot',methods=['POST'])
 def test():
     req = request.get_json(silent=True, force=True)
@@ -319,7 +346,7 @@ def test():
             }
             list_items.append(list_item)
             list_items.append({"type": "divider"})
-        
+
         if list_items and list_items[-1]["type"] == "divider":
             list_items.pop()
         response = {
@@ -356,7 +383,7 @@ def test():
             list_items.append(list_item)
             list_items.append({"type": "divider"})
             list_items.append(list_item)
-            list_items.append({"type": "divider"}) 
+            list_items.append({"type": "divider"})
         if list_items and list_items[-1]["type"] == "divider":
             list_items.pop()
         response = {

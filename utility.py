@@ -304,3 +304,4 @@ class Utility:
         return returnDict
 
 u = Utility()
+# print(u.encode('admin', 'admin'))

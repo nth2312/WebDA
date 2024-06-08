@@ -1,0 +1,21 @@
+.password-criteria{
+    display: none;
+    transition: all 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+#user-criteria{
+    display: none;
+    /* transition: all 0.3s ease-in-out;
+    margin-top: 10px; */
+}
+
+#email-criteria{
+    display: none;
+    /* transition: all 0.3s ease-in-out;
+    margin-top: 10px; */
+}
+
+.input-error {
+    border: 1px solid red;
+}

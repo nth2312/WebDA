@@ -1,0 +1,9 @@
+- file description, history viết ngắn gọn khoảng 100 từ (có thể dùng chatpgt generate)
+- file entry(giá vé vào cửa): Viết theo format trong file
+- file open(Giờ mở cửa): Viết theo format trong file
+ Nếu entry và open là miễn phí hoặc luôn mở cửa thì để trống
+- cần 2 ảnh, để tên là id của địa điểm.
+  + File id.jpg: kích thước 1400x470 (pixel)
+  + File id_body.jpg: kích thước 800x533 (pixel)
+ Gợi ý là nên tìm ảnh nào có kích thước lớn (kích thước lớn hơn, ví dụ 1500x800 pixel) để khi resize và crop không bị vỡ ảnh
+- file video: link video về địa điểm

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/signup.css">
+    <link rel="stylesheet" href="/static/mdb/css/login.css">
+    <title>Sign up</title>
+</head>
+<body>
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <div class="container">
+        <div class="bt-form-login-simple-1">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category == 'error' %}
+                            <style>
+                            .error-message {
+                            color: #ffffff;
+                            background-color: red;
+                            border-radius: 5px;
+                            padding: 10px;
+                            margin-bottom: 20px;
+                            }
+                            </style>
+                                <div class="error-message">
+                                    {{ message }}
+                                </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <div style="display: none;"><input type="text"></div>
+            <form class="form" autocomplete="off">
+                <div class="form-group">
+                    <label for="username">Username *</label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        id="username" 
+                        placeholder="Username" 
+                        class="form-input" 
+                        onfocus="showUserCriteria()"
+                        onblur="hideUserCriteria()"
+                    />
+                    <div id="user-criteria" style="padding-top: 10px; padding-left: 20px;">
+                        <small id="user-length-criteria" class="form-text text-muted">Username phải có từ 5 đến 10 kí tự</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="Password"
+                        class="form-input"
+                        onfocus="showPasswordCriteria()"
+                        onblur="hidePasswordCriteria()"
+                    />
+                    <ul id="password-criteria" class="password-criteria">
+                        <li>
+                            <small id="length-criteria" class="form-text text-muted">Mật khẩu phải có ít nhất 8 kí tự (> 8)</small>
+                        </li>
+                        <li>
+                            <small id="number-criteria" class="form-text text-muted">Mật khẩu phải có ít nhất 1 kí tự số (0 - 9)</small>
+                        </li>
+                        <li>
+                            <small id="case-criteria" class="form-text text-muted">Mật khẩu phải có ít nhất 1 kí tự in hoa và in thường (a-z & A-Z)</small>
+                        </li>
+                    </ul>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input 
+                        type="text" 
+                        name="email" 
+                        id="email" 
+                        placeholder="Email" 
+                        class="form-input" 
+                        onfocus="showEmailCriteria()"
+                        onblur="hideEmailCriteria()"
+                    />
+                    <div id="email-criteria" style="padding-top: 10px; padding-left: 20px;">
+                        <small id="valid-email-criteria" class="form-text text-muted">Email chính xác</small>
+                    </div>
+                </div>
+                <a href="/login">Trở về đăng nhập ?</a>
+                <button onclick="validateForm()" class="form-btn">Sign up</button>
+            </form>
+            <script src="/static/js/signup.js"> </script>
+        </div>
+    </div>
+</body>
+</html>

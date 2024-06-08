@@ -43,7 +43,6 @@
         box-sizing: border-box;
         font-size: 14px;
     }
-
     #getDirections {
         padding: 10px 20px;
         background-color: #007bff;
@@ -84,7 +83,7 @@
     <div class="input-group">
         <label for="vehicle">Phương tiện:</label>
         <select id="vehicle">
-            <option value="car">Oto</option>
+<option value="car">Oto</option>
             <option value="bike">Xe Máy</option>
         </select>
     </div>
@@ -128,7 +127,6 @@
 
         map.on('zoom', () => {
             const currentZoom = map.getZoom();
-
             if (currentZoom < minZoom) {
                 map.setZoom(minZoom);
             } else if (currentZoom > maxZoom) {
@@ -168,7 +166,7 @@
                 }
                 if (map.getSource('route')) {
                     map.removeSource('route');
-                }
+}
 
                 // Add new route
                 map.addSource('route', { 'type': 'geojson', 'data': geoJSON });
@@ -236,11 +234,10 @@
                     document.getElementById('origin').value = address; // Set the address to the "Origin" input field
                 })
                 .catch(error => alert('Error: ' + error.message));
-        });
+});
 
     });
 
 </script>
 </body>
 </html>
-

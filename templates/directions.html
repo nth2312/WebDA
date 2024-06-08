@@ -177,6 +177,13 @@
                     'layout': { 'line-join': 'round', 'line-cap': 'round' },
                     'paint': { 'line-color': '#1e88e5', 'line-width': 8 }
                 }, firstSymbolId);
+
+                // Fit the map to the route bounds
+                const bounds = new goongjs.LngLatBounds();
+                geoJSON.coordinates.forEach(coord => {
+                    bounds.extend(coord);
+                });
+                map.fitBounds(bounds, { padding: 50 });
             });
         };
 

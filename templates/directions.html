@@ -43,6 +43,7 @@
         box-sizing: border-box;
         font-size: 14px;
     }
+
     #getDirections {
         padding: 10px 20px;
         background-color: #007bff;
@@ -127,6 +128,7 @@
 
         map.on('zoom', () => {
             const currentZoom = map.getZoom();
+
             if (currentZoom < minZoom) {
                 map.setZoom(minZoom);
             } else if (currentZoom > maxZoom) {
@@ -241,3 +243,4 @@
 </script>
 </body>
 </html>
+

@@ -83,7 +83,7 @@
     <div class="input-group">
         <label for="vehicle">Phương tiện:</label>
         <select id="vehicle">
-            <option value="car">Oto</option>
+<option value="car">Oto</option>
             <option value="bike">Xe Máy</option>
         </select>
     </div>
@@ -166,7 +166,7 @@
                 }
                 if (map.getSource('route')) {
                     map.removeSource('route');
-                }
+}
 
                 // Thêm tuyến đường mới
                 map.addSource('route', { 'type': 'geojson', 'data': geoJSON });
@@ -209,3 +209,38 @@
             markers = [];
 
             Promise.all([getCoordinates(originAddress), getCoordinates(destinationAddress)])
+<<<<<<< HEAD
+=======
+                .then(([origin, destination]) => {
+                    const originMarker = new goongjs.Marker({ color: 'blue' })
+                        .setLngLat([origin.lng, origin.lat])
+                        .addTo(map);
+                    const destinationMarker = new goongjs.Marker({ color: 'red' })
+                        .setLngLat([destination.lng, destination.lat])
+                        .addTo(map);
+
+                    markers.push(originMarker, destinationMarker);
+                    getDirections(origin, destination, vehicle);
+                })
+                .catch(error => alert('Error: ' + error.message));
+        });
+
+        document.getElementById('getCurrentLocation').addEventListener('click', () => {
+            geolocateControl.trigger();
+        });
+
+        geolocateControl.on('geolocate', (e) => {
+            const { latitude, longitude } = e.coords;
+            reverseGeocode(latitude, longitude)
+                .then(address => {
+                    document.getElementById('origin').value = address; // Set the address to the "Origin" input field
+                })
+                .catch(error => alert('Error: ' + error.message));
+});
+
+    });
+
+</script>
+</body>
+</html>
+>>>>>>> 858f8ea3048f577a1cead6266e81ded8dc2cd7b7

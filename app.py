@@ -51,10 +51,18 @@ def UpdateTableData():
     table_name = request.form['table_name']
     data_str = request.form['data']
     data = json.loads(data_str)
+    updated_data = []
+
     for cell in data:
         row_id = cell['row']
         column = cell['column']
         value = cell['value']
+
+        if table_name == 'tbl_user' and column == 'user_password':
+            # Mã hóa mật khẩu
+            username = db.GetData(table_name)[row_id][0]  # Giả định rằng username là cột đầu tiên
+            value = utility.encode(value, username)
+
         primary_key_column = db.GetColumns(table_name)[0]
         primary_key_value = db.GetData(table_name)[row_id][0]
         update_query = f"UPDATE {table_name} SET {column} = %s WHERE {primary_key_column} = %s"
@@ -62,8 +70,9 @@ def UpdateTableData():
         result = db.UpdateData(update_query, params)
         if result is False:
             return jsonify({'status': 'failed'})
-    return jsonify({'status': 'success'})
+        updated_data.append({'row': row_id, 'column': column, 'value': value})
 
+    return jsonify({'status': 'success', 'updated_data': updated_data})
 
 
 @app.route('/login')

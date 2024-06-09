@@ -25,7 +25,7 @@ class Utility:
                 encoded_index = (self.charset.index(char) + self.charset.index(key_char)) % self.charset_len
                 encoded_chars.append(self.charset[encoded_index])
             else:
-                encoded_chars.append(char)  # Giữ nguyên ký tự nếu không có trong bảng mã hóa
+                encoded_chars.append(char)
         encoded_string = ''.join(encoded_chars)
         return encoded_string
 
@@ -304,4 +304,4 @@ class Utility:
         return returnDict
 
 u = Utility()
-# print(u.encode('admin', 'admin'))
+print(u.encode('admin', 'admin'))

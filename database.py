@@ -5,7 +5,7 @@ class Database:
         self.db = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="@Vtb28042002",
+            password="NTH23122",
             database="dtb_web"
         )
 
@@ -35,10 +35,10 @@ class Database:
             sql = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
             cursor.execute(sql, list(data.values()))
             self.db.commit()
-            print(f"Data inserted into {table_name}: {data}")
+            #print(f"Data inserted into {table_name}: {data}")
         except Exception as e:
             self.db.rollback()  # Rollback nếu có lỗi xảy ra
-            print(f"Error inserting data: {e}")
+            #print(f"Error inserting data: {e}")
         finally:
             cursor.close()
 
@@ -56,7 +56,7 @@ class Database:
             self.db.commit()
         except Exception as e:
             self.db.rollback()  # Rollback nếu có lỗi xảy ra
-            print(f"Error executing query: {e}")
+            #print(f"Error executing query: {e}")
         finally:
             cursor.close()
 
@@ -68,7 +68,7 @@ class Database:
             return True  # Trả về True nếu cập nhật thành công
         except Exception as e:
             self.db.rollback()
-            print(f"Error updating data: {e}")
+            #print(f"Error updating data: {e}")
             return False  # Trả về False nếu có lỗi xảy ra
         finally:
             cursor.close()

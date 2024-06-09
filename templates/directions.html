@@ -209,8 +209,7 @@
             markers = [];
 
             Promise.all([getCoordinates(originAddress), getCoordinates(destinationAddress)])
-<<<<<<< HEAD
-=======
+
                 .then(([origin, destination]) => {
                     const originMarker = new goongjs.Marker({ color: 'blue' })
                         .setLngLat([origin.lng, origin.lat])
@@ -243,4 +242,4 @@
 </script>
 </body>
 </html>
->>>>>>> 858f8ea3048f577a1cead6266e81ded8dc2cd7b7
+

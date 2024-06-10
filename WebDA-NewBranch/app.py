@@ -12,14 +12,9 @@ utility = Utility()
 
 def IsValidLogin(username, password):
     userInfor = db.GetData("tbl_user")
-    print(userInfor)
     ret = 2
     for user in userInfor:
         if (username == user[0] and utility.encode(password, username) == user[1]):
-            print(username + " " + password + ": correct")
-            print(user[3] + " " + str(type(user[3])))
-            print(user[3] == "0")
-            print(user[3] == "1")
             if (user[3] == "0"):
                 ret = 1
             else:
@@ -51,10 +46,18 @@ def UpdateTableData():
     table_name = request.form['table_name']
     data_str = request.form['data']
     data = json.loads(data_str)
+    updated_data = []
+
     for cell in data:
         row_id = cell['row']
         column = cell['column']
         value = cell['value']
+
+        if table_name == 'tbl_user' and column == 'user_password':
+            # Mã hóa mật khẩu
+            username = db.GetData(table_name)[row_id][0]  # Giả định rằng username là cột đầu tiên
+            value = utility.encode(value, username)
+
         primary_key_column = db.GetColumns(table_name)[0]
         primary_key_value = db.GetData(table_name)[row_id][0]
         update_query = f"UPDATE {table_name} SET {column} = %s WHERE {primary_key_column} = %s"
@@ -62,9 +65,31 @@ def UpdateTableData():
         result = db.UpdateData(update_query, params)
         if result is False:
             return jsonify({'status': 'failed'})
+        updated_data.append({'row': row_id, 'column': column, 'value': value})
+
+    return jsonify({'status': 'success', 'updated_data': updated_data})
+
+@app.route('/delete_table_row', methods=['POST'])
+def DeleteTableRow():
+    table_name = request.form['table_name']
+    row_index = int(request.form['row_index'])
+
+    if table_name == 'tbl_user':
+        # Xóa các review liên quan trước khi xóa user
+        username = db.GetData(table_name)[row_index][0]
+        delete_hotel_reviews_query = "DELETE FROM tbl_hotel_review WHERE user_username = %s"
+        db.UpdateData(delete_hotel_reviews_query, [username])
+        delete_place_reviews_query = "DELETE FROM tbl_place_review WHERE user_username = %s"
+        db.UpdateData(delete_place_reviews_query, [username])
+
+    primary_key_column = db.GetColumns(table_name)[0]
+    primary_key_value = db.GetData(table_name)[row_index][0]
+    delete_query = f"DELETE FROM {table_name} WHERE {primary_key_column} = %s"
+    params = [primary_key_value]
+    result = db.UpdateData(delete_query, params)
+    if result is False:
+        return jsonify({'status': 'failed'})
     return jsonify({'status': 'success'})
-
-
 
 @app.route('/login')
 def LoginPage():
@@ -125,10 +150,8 @@ def Login():
     if request.method == 'POST':
         username = request.form['username'].strip()
         password = request.form['password'].strip()
-        print(f"Attempting login for user: {username}")
 
         login_status = IsValidLogin(username, password)
-        print(f"Login status: {login_status}")
 
         if login_status == 1:
             try:
@@ -335,7 +358,7 @@ def test():
     req = request.get_json(silent=True, force=True)
     intent_name = req.get('queryResult').get('intent').get('displayName')
 
-    if intent_name == 'detail_diadiem':
+    if intent_name == 'thongtin_diadiem':
         query = "SELECT * FROM tbl_place"
         data = db.Query(query=query)
         list_items = []
@@ -370,7 +393,7 @@ def test():
 
         return jsonify(response)
 
-    if intent_name == 'detail_hotel':
+    if intent_name == 'thongtin_hotel':
         query = "SELECT * FROM tbl_hotel"
         data = db.Query(query=query)
         list_items = []
@@ -474,4 +497,4 @@ def Directionpage():
 def TestAPI():
     return utility.getAllInfor('place')
 
-app.run(debug=True)
+app.run(debug=True, host="0.0.0.0")

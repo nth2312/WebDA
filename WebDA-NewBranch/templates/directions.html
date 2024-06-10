@@ -83,7 +83,7 @@
     <div class="input-group">
         <label for="vehicle">Phương tiện:</label>
         <select id="vehicle">
-            <option value="car">Oto</option>
+<option value="car">Oto</option>
             <option value="bike">Xe Máy</option>
         </select>
     </div>
@@ -160,15 +160,15 @@
                 const route = directions.routes[0];
                 const geoJSON = polyline.toGeoJSON(route.overview_polyline.points);
 
-                // Remove existing route if it exists
+                // Xóa tuyến đường hiện tại nếu tồn tại
                 if (map.getLayer('route')) {
                     map.removeLayer('route');
                 }
                 if (map.getSource('route')) {
                     map.removeSource('route');
-                }
+}
 
-                // Add new route
+                // Thêm tuyến đường mới
                 map.addSource('route', { 'type': 'geojson', 'data': geoJSON });
                 map.addLayer({
                     'id': 'route',
@@ -177,6 +177,13 @@
                     'layout': { 'line-join': 'round', 'line-cap': 'round' },
                     'paint': { 'line-color': '#1e88e5', 'line-width': 8 }
                 }, firstSymbolId);
+
+                // Điều chỉnh bản đồ để hiển thị toàn bộ tuyến đường
+                const bounds = new goongjs.LngLatBounds();
+                geoJSON.coordinates.forEach(coord => {
+                    bounds.extend(coord);
+                });
+                map.fitBounds(bounds, { padding: 50 });
             });
         };
 
@@ -202,6 +209,7 @@
             markers = [];
 
             Promise.all([getCoordinates(originAddress), getCoordinates(destinationAddress)])
+
                 .then(([origin, destination]) => {
                     const originMarker = new goongjs.Marker({ color: 'blue' })
                         .setLngLat([origin.lng, origin.lat])
@@ -227,7 +235,7 @@
                     document.getElementById('origin').value = address; // Set the address to the "Origin" input field
                 })
                 .catch(error => alert('Error: ' + error.message));
-        });
+});
 
     });
 

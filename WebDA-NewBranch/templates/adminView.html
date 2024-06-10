@@ -7,19 +7,25 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0; /* Loại bỏ margin mặc định */
+            padding: 0; /* Loại bỏ padding mặc định */
         }
         #sidebar {
+            position: fixed; /* Đặt sidebar cố định */
+            top: 0; /* Đặt sidebar ở đầu trang */
             width: 200px;
             background-color: #f4f4f4;
             padding: 10px;
-            float: left;
-            height: 100vh; /* Full height sidebar */
-            overflow-y: auto; /* Scrollable sidebar */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         #table-list {
             list-style-type: none;
             padding: 0;
             margin: 0;
+            flex-grow: 1;
         }
         #table-list li {
             padding: 12px;
@@ -35,13 +41,15 @@
             background-color: #ccc;
         }
         #main-content {
-            margin-left: 220px; /* Width of sidebar + some space */
+            margin-left: 200px; /* Width of sidebar */
             padding: 20px;
         }
         table {
-            width: 100%;
+            width: 90%; /* Thay đổi kích thước bảng thành 90% của phần tử chứa */
+            max-width: 800px; /* Giới hạn kích thước tối đa của bảng */
             border-collapse: collapse;
             margin-top: 20px;
+            margin-left: 30px;
         }
         th, td {
             padding: 8px;
@@ -53,6 +61,7 @@
         }
         button {
             margin-top: 20px;
+            margin-left: 30px;
             padding: 10px 20px;
             background-color: #4CAF50;
             color: white;
@@ -62,19 +71,32 @@
         button:hover {
             background-color: #45a049;
         }
+        #logout-button {
+            padding: 10px 10px;
+            margin-left:-5px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            top: -20px;
+        }
+        #logout-button:hover {
+            background-color: #e53935;
+        }
         #notification {
             display: none;
             position: fixed;
             top: 20px;
             right: 20px;
             padding: 10px;
-            background-color: #4CAF50; /* Success color */
+            background-color: #4CAF50;
             color: white;
             border-radius: 5px;
             z-index: 1000;
         }
         .notification-error {
-            background-color: #f44336; /* Error color */
+            background-color: #f44336;
         }
     </style>
 </head>
@@ -88,6 +110,7 @@
             <li onclick="loadTable('tbl_stores')">Cửa hàng</li>
             <li onclick="loadTable('tbl_user')">Thông tin tài khoản</li>
         </ul>
+        <button id="logout-button" onclick="redirectToLogin()">Trở về trang đăng nhập</button>
     </div>
     <div id="main-content">
         <h1>Admin View</h1>
@@ -105,16 +128,35 @@
                 columns.forEach(col => {
                     tableHtml += `<th>${col}</th>`;
                 });
+
+                if (tableName === 'tbl_hotel_review' || tableName === 'tbl_place_review' || tableName === 'tbl_user') {
+                    tableHtml += '<th>Actions</th>'; // Thêm cột hành động
+                }
+
                 tableHtml += '</tr>';
                 tableData.forEach((row, rowIndex) => {
                     tableHtml += '<tr>';
                     row.forEach((cell, colIndex) => {
-                        tableHtml += `<td contenteditable="true" data-row="${rowIndex}" data-column="${columns[colIndex]}" oninput="trackChange(this)">${cell}</td>`;
+                        if (tableName === 'tbl_hotel_review' || tableName === 'tbl_place_review') {
+                            tableHtml += `<td>${cell}</td>`;
+                        } else if (tableName === 'tbl_user') {
+                            tableHtml += `<td>${cell}</td>`;
+                        } else {
+                            tableHtml += `<td contenteditable="true" data-row="${rowIndex}" data-column="${columns[colIndex]}" oninput="trackChange(this)">${cell}</td>`;
+                        }
                     });
+
+                    if (tableName === 'tbl_hotel_review' || tableName === 'tbl_place_review' || tableName === 'tbl_user') {
+                        tableHtml += `<td><button onclick="deleteRow('${tableName}', ${rowIndex})">Delete</button></td>`;
+                    }
+
                     tableHtml += '</tr>';
                 });
-                tableHtml += '</table>';
-                tableHtml += `<button onclick="saveTable('${tableName}')">Save Table</button>`;
+
+                if (!(tableName === 'tbl_hotel_review' || tableName === 'tbl_place_review' || tableName === 'tbl_user')) {
+                    tableHtml += `<button onclick="saveTable('${tableName}')">Save Table</button>`;
+                }
+
                 $('#table-container').html(tableHtml);
                 changedCells.clear(); // Clear changes on new table load
                 // Highlight the selected table in the sidebar
@@ -136,12 +178,30 @@
             changedCells.forEach(cell => {
                 data.push(cell);
             });
+
             $.post('/update_table_data', { table_name: tableName, data: JSON.stringify(data) }, function(response) {
                 if (response.status === 'success') {
                     showNotification('Cập nhật thành công');
+
+                    // Cập nhật bảng với mật khẩu mới đã mã hóa
+                    response.updated_data.forEach(updatedCell => {
+                        $(`td[data-row="${updatedCell.row}"][data-column="${updatedCell.column}"]`).text(updatedCell.value);
+                    });
+
                     changedCells.clear(); // Clear changes after save
                 } else {
                     showNotification('Cập nhật thất bại', true);
+                }
+            });
+        }
+
+        function deleteRow(tableName, rowIndex) {
+            $.post('/delete_table_row', { table_name: tableName, row_index: rowIndex }, function(response) {
+                if (response.status === 'success') {
+                    showNotification('Xóa thành công');
+                    loadTable(tableName); // Reload table after deletion
+                } else {
+                    showNotification('Xóa thất bại', true);
                 }
             });
         }
@@ -170,6 +230,10 @@
                 case 'tbl_user': return 'Thông tin tài khoản';
                 default: return '';
             }
+        }
+
+        function redirectToLogin() {
+            window.location.href = '/login'; // Đảm bảo rằng đường dẫn tới trang đăng nhập là chính xác
         }
     </script>
 </body>

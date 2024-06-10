@@ -1,7 +1,5 @@
 from database import Database
-import os
-import string
-import time
+import os, string
 
 class Utility:
     def __init__(self):
@@ -298,7 +296,6 @@ class Utility:
                     ret = 0
         return ret
 
-
     def tupeToDict(self, data, key):
         returnDict = []
         for row in data:
@@ -307,4 +304,4 @@ class Utility:
         return returnDict
 
 u = Utility()
-# print(u.IsValidLogin("hieu000", "Nth23122"))
+# print(u.encode('admin', 'admin'))

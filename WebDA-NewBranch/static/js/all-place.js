@@ -24,7 +24,7 @@ const showPlace = (place) => `
         <div class="col-lg-2 col-md-2 col-sm-2">
             <div class="price_list">
                 <div>
-                    <span>${place.place_entryPrice}<sup>đ</sup></span> 
+                    <span id="price">${place.place_entryPrice}<sup>đ</sup></span>
                     <p><a class="btn_1" href="/pdetail/${place.place_name}">Chi tiết</a></p>
                 </div>
             </div>

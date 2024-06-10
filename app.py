@@ -13,8 +13,14 @@ utility = Utility()
 def IsValidLogin(username, password):
     userInfor = db.GetData("tbl_user")
     ret = 2
+    uPassword = utility.encode(password, username)
     for user in userInfor:
-        if (username == user[0] and utility.encode(password, username) == user[1]):
+        dbPassword = user[1]
+        if (username == user[0] and uPassword == dbPassword):
+            # print(username + " " + password + ": correct")
+            # print(user[3] + " " + str(type(user[3])))
+            # print(user[3] == "0")
+            # print(user[3] == "1")
             if (user[3] == "0"):
                 ret = 1
             else:
@@ -150,7 +156,6 @@ def Login():
     if request.method == 'POST':
         username = request.form['username'].strip()
         password = request.form['password'].strip()
-
         login_status = IsValidLogin(username, password)
 
         if login_status == 1:
@@ -165,7 +170,7 @@ def Login():
                 return index
             else:
                 index = make_response(redirect(url_for('MainPage')))
-                index.set_cookie('username', username, max_age=20)
+                index.set_cookie('username', username, max_age=360)
                 index.set_cookie('ncode_username', utility.encode(username, "hoankiem"))
                 return index
         elif login_status == 0:
@@ -215,7 +220,7 @@ def submit_place_review():
     #Prepare data
     reviewList = db.GetData('tbl_place_review')
     comment_id = len(reviewList) + 1
-    comment_username = request.cookies['username']
+    comment_username = utility.decode(request.cookies['ncode_username'], "hoankiem")
     comment_placeid = review.split("|")[0]
     comment_like = comment_dislike = 0
     comment_comment = review.split("|")[1]

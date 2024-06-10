@@ -97,11 +97,11 @@ function validateForm() {
         xhr.onload = function(){
             if (xhr.status == 200){
                 const responseData = JSON.parse(xhr.responseText);
-                
                 const redirectURL = responseData.redirect;
                 const responseError = responseData.error;
                 
                 if (redirectURL && responseError == "None") {
+                    console.log(redirectURL);
                     window.location.href = redirectURL;
                 } else {
                     window.location.href = redirectURL;

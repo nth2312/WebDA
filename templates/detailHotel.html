@@ -7,9 +7,6 @@
     <meta content="IE=Edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <link href="/static/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.css" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-    
     <script>
         /* You can add more configuration options to webfontloader by previously defining the WebFontConfig with your options */
         if (typeof WebFontConfig === "undefined") {
@@ -29,7 +26,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots">
     <!-- This site is optimized with the Yoast SEO Premium plugin v18.4 (Yoast SEO v18.6) - https://yoast.com/wordpress/plugins/seo/ -->
-    <title>{{place.place_name}}</title>
+    <title>{{hotel.hotel_name}}</title>
     <meta content="Est. reading time" name="twitter:label1" />
     <meta content="2 minutes" name="twitter:data1" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -55,6 +52,9 @@
     <link href="/static/css/styles.css" id="contact-form-7-css" media="all" rel="stylesheet" type="text/css" />
     <link href="/static/css/thumbs-grid.min.css" id="crp-style-thumbs-grid-css" media="all" rel="stylesheet"
         type="text/css" />
+        
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <style id="crp-style-thumbs-grid-inline-css" type="text/css">
         .crp_related.crp-thumbs-grid ul li a.crp_link {
             grid-template-rows: 100px auto;
@@ -159,11 +159,11 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-3 col-sm-3 col-xs-3">
-					<div id="logo">
-						<a href="#"><img alt="City tours" class="logo_normal" data-retina="true" height="34"
-								src="/static/images/logo-ngang.webp" width="100%" height="100%" /></a>
-						<a href="#"><img alt="City tours" class="logo_sticky" data-retina="true" height="34"
-								src="/static/images/logo-ngang.webp" width="100%" height="100%" /></a>
+					<div id="logo" >
+						<img alt="City tours" class="logo_normal" data-retina="true" height="34"
+								src="/static/images/logo-ngang.webp" width="100%" height="100%" />
+						<img alt="City tours" class="logo_sticky" data-retina="true" height="34"
+								src="/static/images/logo-ngang.webp" width="100%" height="100%" />
 					</div>
 				</div>
 				<nav class="col-md-9 col-sm-9 col-xs-9">
@@ -180,18 +180,16 @@
 									id="menu-item-1455"><a aria-current="page" href="/">Trang chủ</a></li>
                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1457"
 									id="menu-item-1457"><a href="/all/hotel">Khách sạn</a></li>
-								<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2201"
-									id="menu-item-2201"><a href="#blog">Blog</a></li>
 								<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2451"
 									id="menu-item-2451"><a href="/all/place">Địa điểm</a></li>
-                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1458" id="menu-item-1458"><a>Trợ giúp</a>
+                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1458"
+									id="menu-item-1458"><a>Trợ giúp</a>
 									<ul class="sub-menu">
 										<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1495"
 											id="menu-item-1495"><a href="https://www.google.com/maps/place/Ho%C3%A0n+Ki%E1%BA%BFm,+H%C3%A0+N%E1%BB%99i,+Vi%E1%BB%87t+Nam/@21.0304298,105.8343224,14z/data=!3m1!4b1!4m6!3m5!1s0x3135abbf59d8f429:0x7830a3dfd6e566a1!8m2!3d21.027964!4d105.8510132!16s%2Fm%2F03m3vn7?hl=vi-VN&entry=ttu">Bản đồ</a>
 										</li>
 										<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1484"
-											id="menu-item-1484"><a href="/directions">Chỉ đường</a>
-                                        </li>
+											id="menu-item-1484"><a href="/directions">Chỉ đường</a></li>
 									</ul>
 								</li>
 								<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1478 logout-menu-item" id="menu-item-1478">
@@ -225,14 +223,14 @@
 			</div>
 		</div><!-- container -->
 	</header><!-- End Header -->
-    <section class="parallax-window" data-image-src="/static/detail/{{place.place_id}}/{{place.place_id}}.jpg" data-natural-height="470"
+    <section class="parallax-window" data-image-src="/static/hdetail/{{hotel.hotel_id}}/{{hotel.hotel_id}}.jpg" data-natural-height="470"
         data-natural-width="1400" data-parallax="scroll">
         <div class="parallax-content-2">
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-sm-8">
-                        <h1>{{place.place_name}}</h1>
-                        <span>{{place.place_address}}</span>
+                        <h1>{{hotel.hotel_name}}</h1>
+                        <span>{{hotel.hotel_address}}</span>
                     </div>
                 </div>
             </div>
@@ -242,7 +240,7 @@
         <div class="container">
             <ul>
                 <li><a href="{{url_for('MainPage')}}" title="Trang chủ">Trang chủ</a></li>
-                <li class="active">{{place.place_name}}</li>
+                <li class="active">{{hotel.hotel_name}}</li>
             </ul>
         </div>
     </div><!-- End Position -->
@@ -260,10 +258,10 @@
                     <div class="sp-slides">
                         <div class="sp-slide">
                             <img class="sp-image" height="533"
-                                src="/static/detail/{{place.place_id}}/{{place.place_id}}_body.jpg"
+                                src="/static/hdetail/{{hotel.hotel_id}}/{{hotel.hotel_id}}_body.jpg"
                                 width="800">
                             <img class="sp-thumbnail"
-                                src="/static/detail/{{place.place_id}}/{{place.place_id}}_body.jpg" />
+                                src="/static/hdetail/{{hotel.hotel_id}}/{{hotel.hotel_id}}_body.jpg" />
                         </div>
                     </div>
                 </div>
@@ -273,35 +271,16 @@
                         <h3>Thông tin</h3>
                     </div>
                     <div class="col-md-9">
-                        <h4><strong> {{place.place_name}} <!-- Ten dia diem --> </strong></h4>
+                        <h4><strong> {{hotel.hotel_name}} <!-- Ten dia diem --> </strong></h4>
                         <p style="text-align: justify;">
-                            {{place.place_history}}
+                            {{hotel.hotel_history}}
                             <!--Mo ta ngan gon ve lich su dia diem--></p>
-                        <div class="meta-related">
-                            <div class="rpbt_shortcode">
-                                <ul> <!-- Cac quan an o gan --> <strong>Các cửa hàng ở gần</strong>
-                                    {% for store in stores %}
-                                        <li style="padding-left: 20px;">
-                                            <a href="{{store.store_link}}">
-                                                {{store.store_name}}
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
                         <p style="text-align: justify;">
-                            {{place.place_description}}    
+                            {{hotel.hotel_description}}    
                         </p>
-                        <p><strong>GIỜ MỞ CỬA</strong></p>
-                        <ul> <!-- Thong tin ve gia ve -->
-                            {% for time in place.place_time %}
-                                <li>{{time['date']}}: {{time['hour']}}</li>
-                            {% endfor %}
-                        </ul>
-                        <p><strong>THÔNG TIN VÉ</strong></p>
+                        <p><strong>GIÁ PHÒNG</strong></p>
                         <ul> 
-                            {% for price in place.place_price %}
+                            {% for price in hotel.hotel_price %}
                                 <li>{{price['type']}}: {{price['price']}}</li>
                             {% endfor %}
                         </ul>
@@ -313,10 +292,10 @@
                     data-share="true" data-show-faces="true" data-size="small"></div>
                 <div class="row">
                     <section class="content-item" id="comments">
-                        <div class="container">   
+                        <div class="container">
                             <div class="row">
                                 <div class="col-sm-8" id="comments-container">   
-                                    <h3>Bình luận</h3>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -331,7 +310,7 @@
                         <div class="row" id="rating_summary">
                             <div class="col-md-12">
                                 <form id="comment_form">
-                                    <textarea id="review" name="review" style="width: 100%; height:100px" placeholder="Your review..."></textarea>
+                                    <textarea id="review" name="review" style="width: 100%; height:100px" hotelholder="Your review..."></textarea>
                                     <input type="submit" name="submit" style="background-color: #04AA6D; border: none; color: white; padding: 16px 32px; text-decoration: none; margin: 4px 2px; cursor: pointer;" value="Submit">
                                 </form>
                             </div>
@@ -419,12 +398,12 @@
                         }
                 
                         // Fetch existing comments when the page loads
-                        fetch('/GetPlaceComment', {
+                        fetch('/GetHotelComment', {
                             method: 'POST', // Phương thức của yêu cầu
                             headers: {
                                 'Content-Type': 'application/json' // Định dạng dữ liệu của yêu cầu
                             },
-                            body: JSON.stringify({ place_id: '{{place.place_id}}' }) // Dữ liệu cần gửi đi, ở đây là id của place
+                            body: JSON.stringify({ hotel_id: '{{hotel.hotel_id}}' }) // Dữ liệu cần gửi đi, ở đây là id của hotel
                         })
                         .then(response => response.json())
                         .then(data => {
@@ -437,16 +416,16 @@
                             event.preventDefault();
                 
                             var review = document.getElementById('review').value;
-                            var place_id = "{{place.place_id}}";
+                            var hotel_id = "{{hotel.hotel_id}}";
                 
                             if (review != ""){
-                                var data = place_id + "|" + review;
+                                var data = hotel_id + "|" + review;
                     
                                 var formData = new FormData();
                                 formData.append('review', data);
                     
                                 var xhr = new XMLHttpRequest();
-                                xhr.open('POST', '/PlaceCommentSubmit', true);
+                                xhr.open('POST', '/HotelCommentSubmit', true);
                     
                                 xhr.onload = function() {
                                     if (xhr.status === 200) {
@@ -479,7 +458,7 @@
                                     'action': 'like'
                                 };
                 
-                                fetch('/PlaceReact', {
+                                fetch('/HotelReact', {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json'
@@ -507,7 +486,7 @@
                                     'action': 'dislike'
                                 };
                 
-                                fetch('/PlaceReact', {
+                                fetch('/HotelReact', {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json'
@@ -527,18 +506,13 @@
                 
             </div><!--End  single_tour_desc-->
             <aside class="col-md-4">
-                <p class="hidden-sm hidden-xs">
-                    <a aria-controls="collapseMap" aria-expanded="false" class="btn_map" data-toggle="collapse"
-                        href="#collapseMap">Xem trên bản đồ</a>
-                </p>
-                
                 <div class="widget widget_media_video" id="media_video-2">
                     <h4 class="widgettitle">Video</h4>
                     <div class="wp-video" style="width:100%;">
                         <!--[if lt IE 9]><script>document.createElement('video');</script><![endif]-->
                         <video class="wp-video-shortcode" controls="controls" id="video-2385-1" preload="metadata">
-                            <source src="{{place.place_video}}&amp;_=1" type="video/youtube" /><a
-                                href="{{place.place_video}}">{{place.place_video}}</a>
+                            <source src="{{hotel.hotel_video}}&amp;_=1" type="video/youtube" /><a
+                                href="{{hotel.hotel_video}}">{{hotel.hotel_video}}</a>
                         </video>
                     </div>
                 </div>
@@ -655,7 +629,6 @@
             <p class="text-white">NguyenTruongHieu - VuTheBao - DuongThiHue</p>
         </div>
     </footer>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
     <script>
         $ = jQuery.noConflict();
         var price_per_person = 0;
@@ -754,35 +727,9 @@
             additionalMarginTop: 80
         });
     </script>
-    <script type="text/javascript">
-        // Đảm bảo biến coord được định nghĩa trước khi sử dụng
-        var coord = {{ coord | tojson }};
-        
-        // Kiểm tra xem giá trị của coord có hợp lệ không trước khi sử dụng
-        if (coord && coord.lat !== undefined && coord.long !== undefined) {
-            var lat = coord.lat;
-            var long = coord.long;
-            console.log("lat: " + lat + " - long: " + long);
-    
-            $('#collapseMap').on('shown.bs.collapse', function (e) {
-                var markersData = {
-                    'Center': [
-                        {
-                            location_latitude: lat,
-                            location_longitude: long,
-                        },
-                    ]
-                };
-                var _center = [lat, long];
-                renderMap(_center, markersData, 14, google.maps.MapTypeId.ROADMAP, false);
-            });
-        } else {
-            console.error("Giá trị của coord không hợp lệ.");
-        }
-    </script>
     <!-- <div id="toTop"></div> -->
     <div id="overlay"><i class="icon-spin3 animate-spin"></i></div>
-    <div class="hk-option-button-contact" style="padding-bottom: 40px; padding-left: 20px;">
+    <div class="hk-option-button-contact" style="padding-bottom: 40px; padding-left:20px;">
         <ul>
             <li class="phone-container">
                 <a href="https://zalo.me/0967296991" target="_blank"><span class="button-hk-contact zalo"

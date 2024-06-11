@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <title>Admin View</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-   <style>
+    <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0; /* Loại bỏ margin mặc định */
-            padding: 0; /* Loại bỏ padding mặc định */
+            margin: 0;
+            padding: 0;
         }
         #sidebar {
-            position: fixed; /* Đặt sidebar cố định */
-            top: 0; /* Đặt sidebar ở đầu trang */
+            position: fixed;
+            top: 0;
             width: 200px;
             background-color: #f4f4f4;
             padding: 10px;
@@ -41,12 +41,12 @@
             background-color: #ccc;
         }
         #main-content {
-            margin-left: 200px; /* Width of sidebar */
+            margin-left: 200px;
             padding: 20px;
         }
         table {
-            width: 90%; /* Thay đổi kích thước bảng thành 90% của phần tử chứa */
-            max-width: 800px; /* Giới hạn kích thước tối đa của bảng */
+            width: 90%;
+            max-width: 800px;
             border-collapse: collapse;
             margin-top: 20px;
             margin-left: 30px;
@@ -73,7 +73,7 @@
         }
         #logout-button {
             padding: 10px 10px;
-            margin-left:-5px;
+            margin-left: -5px;
             background-color: #f44336;
             color: white;
             border: none;
@@ -130,7 +130,7 @@
                 });
 
                 if (tableName === 'tbl_hotel_review' || tableName === 'tbl_place_review' || tableName === 'tbl_user') {
-                    tableHtml += '<th>Actions</th>'; // Thêm cột hành động
+                    tableHtml += '<th>Actions</th>';
                 }
 
                 tableHtml += '</tr>';
@@ -140,26 +140,27 @@
                         if (tableName === 'tbl_hotel_review' || tableName === 'tbl_place_review') {
                             tableHtml += `<td>${cell}</td>`;
                         } else if (tableName === 'tbl_user') {
-                            tableHtml += `<td>${cell}</td>`;
+                            tableHtml += `<td contenteditable="true" data-row="${rowIndex}" data-column="${columns[colIndex]}" oninput="trackChange(this)">${cell}</td>`;
                         } else {
                             tableHtml += `<td contenteditable="true" data-row="${rowIndex}" data-column="${columns[colIndex]}" oninput="trackChange(this)">${cell}</td>`;
                         }
                     });
 
-                    if (tableName === 'tbl_hotel_review' || tableName === 'tbl_place_review' || tableName === 'tbl_user') {
+                    if (tableName === 'tbl_hotel_review' || tableName === 'tbl_place_review') {
                         tableHtml += `<td><button onclick="deleteRow('${tableName}', ${rowIndex})">Delete</button></td>`;
+                    } else if (tableName === 'tbl_user') {
+                        tableHtml += `<td><button onclick="deleteUser(${rowIndex})">Delete</button></td>`;
                     }
 
                     tableHtml += '</tr>';
                 });
 
-                if (!(tableName === 'tbl_hotel_review' || tableName === 'tbl_place_review' || tableName === 'tbl_user')) {
+                if (!(tableName === 'tbl_hotel_review' || tableName === 'tbl_place_review')) {
                     tableHtml += `<button onclick="saveTable('${tableName}')">Save Table</button>`;
                 }
 
                 $('#table-container').html(tableHtml);
-                changedCells.clear(); // Clear changes on new table load
-                // Highlight the selected table in the sidebar
+                changedCells.clear();
                 $('#table-list li').removeClass('active');
                 $(`#table-list li:contains(${getFriendlyName(tableName)})`).addClass('active');
             });
@@ -182,13 +183,10 @@
             $.post('/update_table_data', { table_name: tableName, data: JSON.stringify(data) }, function(response) {
                 if (response.status === 'success') {
                     showNotification('Cập nhật thành công');
-
-                    // Cập nhật bảng với mật khẩu mới đã mã hóa
                     response.updated_data.forEach(updatedCell => {
                         $(`td[data-row="${updatedCell.row}"][data-column="${updatedCell.column}"]`).text(updatedCell.value);
                     });
-
-                    changedCells.clear(); // Clear changes after save
+                    changedCells.clear();
                 } else {
                     showNotification('Cập nhật thất bại', true);
                 }
@@ -199,9 +197,20 @@
             $.post('/delete_table_row', { table_name: tableName, row_index: rowIndex }, function(response) {
                 if (response.status === 'success') {
                     showNotification('Xóa thành công');
-                    loadTable(tableName); // Reload table after deletion
+                    loadTable(tableName);
                 } else {
                     showNotification('Xóa thất bại', true);
+                }
+            });
+        }
+
+        function deleteUser(rowIndex) {
+            $.post('/delete_user', { row_index: rowIndex }, function(response) {
+                if (response.status === 'success') {
+                    showNotification('Xóa người dùng thành công');
+                    loadTable('tbl_user');
+                } else {
+                    showNotification('Xóa người dùng thất bại', true);
                 }
             });
         }
@@ -233,7 +242,7 @@
         }
 
         function redirectToLogin() {
-            window.location.href = '/login'; // Đảm bảo rằng đường dẫn tới trang đăng nhập là chính xác
+            window.location.href = '/login';
         }
     </script>
 </body>

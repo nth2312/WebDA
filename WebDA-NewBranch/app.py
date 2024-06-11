@@ -15,7 +15,10 @@ def IsValidLogin(username, password):
     ret = 2
     uPassword = utility.encode(password, username)
     for user in userInfor:
-        dbPassword = user[1]
+
+        if (username == user[0] and utility.encode(password, username) == user[1]):
+
+         dbPassword = user[1]
         if (username == user[0] and uPassword == dbPassword):
             # print(username + " " + password + ": correct")
             # print(user[3] + " " + str(type(user[3])))
@@ -60,7 +63,8 @@ def UpdateTableData():
         value = cell['value']
 
         if table_name == 'tbl_user' and column == 'user_password':
-            username = db.GetData(table_name)[row_id][0]
+            # Mã hóa mật khẩu
+            username = db.GetData(table_name)[row_id][0]  # Giả định rằng username là cột đầu tiên
             value = utility.encode(value, username)
 
         primary_key_column = db.GetColumns(table_name)[0]
@@ -78,28 +82,18 @@ def UpdateTableData():
 def DeleteTableRow():
     table_name = request.form['table_name']
     row_index = int(request.form['row_index'])
+
+    if table_name == 'tbl_user':
+        # Xóa các review liên quan trước khi xóa user
+        username = db.GetData(table_name)[row_index][0]
+        delete_hotel_reviews_query = "DELETE FROM tbl_hotel_review WHERE user_username = %s"
+        db.UpdateData(delete_hotel_reviews_query, [username])
+        delete_place_reviews_query = "DELETE FROM tbl_place_review WHERE user_username = %s"
+        db.UpdateData(delete_place_reviews_query, [username])
+
     primary_key_column = db.GetColumns(table_name)[0]
     primary_key_value = db.GetData(table_name)[row_index][0]
     delete_query = f"DELETE FROM {table_name} WHERE {primary_key_column} = %s"
-    params = [primary_key_value]
-    result = db.UpdateData(delete_query, params)
-    if result is False:
-        return jsonify({'status': 'failed'})
-    return jsonify({'status': 'success'})
-
-@app.route('/delete_user', methods=['POST'])
-def DeleteUser():
-    row_index = int(request.form['row_index'])
-    username = db.GetData('tbl_user')[row_index][0]
-
-    delete_hotel_reviews_query = "DELETE FROM tbl_hotel_review WHERE user_username = %s"
-    db.UpdateData(delete_hotel_reviews_query, [username])
-    delete_place_reviews_query = "DELETE FROM tbl_place_review WHERE user_username = %s"
-    db.UpdateData(delete_place_reviews_query, [username])
-
-    primary_key_column = db.GetColumns('tbl_user')[0]
-    primary_key_value = db.GetData('tbl_user')[row_index][0]
-    delete_query = f"DELETE FROM tbl_user WHERE {primary_key_column} = %s"
     params = [primary_key_value]
     result = db.UpdateData(delete_query, params)
     if result is False:
@@ -165,6 +159,7 @@ def Login():
     if request.method == 'POST':
         username = request.form['username'].strip()
         password = request.form['password'].strip()
+
         login_status = IsValidLogin(username, password)
 
         if login_status == 1:

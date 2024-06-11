@@ -1,3 +1,10 @@
+function formatPrice(price){
+    if (price === 0) {
+        return "miễn phí";
+    }
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "<sup>đ</sup> ";
+}
+
 const showPlace = (place) => `
 <div class="strip_all_tour_list wow fadeIn" data-wow-delay="0.1s" style="border-radius: 10px; overflow: hidden;">
     <div class="row">
@@ -24,7 +31,7 @@ const showPlace = (place) => `
         <div class="col-lg-2 col-md-2 col-sm-2">
             <div class="price_list">
                 <div>
-                    <span id="price">${place.place_entryPrice}<sup>đ</sup></span>
+                    <span id="price">${formatPrice(place.place_entryPrice)}</span>
                     <p><a class="btn_1" href="/pdetail/${place.place_name}">Chi tiết</a></p>
                 </div>
             </div>
